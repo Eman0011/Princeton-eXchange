@@ -58,19 +58,19 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         let today = NSDate()
         print(formatter.stringFromDate(today))
         
-        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: MealType.Lunch)
+        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
         x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
         x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
         historyData.append(x1)
         
-        let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  MealType.Dinner)
+        let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  "Lunch")
         x2.meal1.date = formatter.dateFromString("3-12-2016, 1:30 pm")!
         x2.meal2?.date = formatter.dateFromString("3-16-2016, 12:30 pm")!
         historyData.append(x2)
         
         
-        let x3 = eXchange(host: Emanuel, guest: Danielle, type:  MealType.Lunch)
-        x3.meal1.date = formatter.dateFromString("3-14-2016, 1:30 pm")!
+        let x3 = eXchange(host: Emanuel, guest: Danielle, type:  "Dinner")
+        x3.meal1.date = formatter.dateFromString("3-14-2016, 6:30 pm")!
         unfinishedXData.append(x3)
     }
 

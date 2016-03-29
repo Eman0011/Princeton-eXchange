@@ -3,20 +3,20 @@
 //  eXchange
 //
 //  Created by Emanuel Castaneda on 3/20/16.
-//  Copyright © 2016 Emanuel Castaneda + James Almeida. All rights reserved.
+//  Copyright © 2016 Emanuel Castaneda. All rights reserved.
 //
 
 import Foundation
 
-enum MealType {
-    case Lunch
-    case Dinner
-}
-
 class Meal {
+    var host: Student
+    var guest: Student
     var date: NSDate
-    var type: MealType
-    init(date: NSDate, type: MealType) {
+    var type: String
+    
+    init(date: NSDate, type: String, host: Student, guest: Student) {
+        self.host = host
+        self.guest = guest
         self.date = date
         self.type = type
     }
