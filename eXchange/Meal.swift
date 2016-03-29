@@ -3,7 +3,7 @@
 //  eXchange
 //
 //  Created by Emanuel Castaneda on 3/20/16.
-//  Copyright © 2016 Emanuel Castaneda. All rights reserved.
+//  Copyright © 2016 Emanuel Castaneda + James Almeida. All rights reserved.
 //
 
 import Foundation
