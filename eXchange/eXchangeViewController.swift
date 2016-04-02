@@ -147,13 +147,26 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-    
+    func dueDateChanged(sender:UIDatePicker){
+//        var dateFormatter = NSDateFormatter()
+//        dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+//        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+//        self.myLabel.text = dateFormatter.stringFromDate(dueDatePickerView.date)
+    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
        
         if requestSelected {
-            
+            performSegueWithIdentifier("createRequestSegue", sender: nil)
+//            let picker : UIDatePicker = UIDatePicker()
+//            picker.datePickerMode = UIDatePickerMode.Date
+//            picker.addTarget(self, action: "dueDateChanged:", forControlEvents: UIControlEvents.ValueChanged)
+//            let screenSize : CGRect = UIScreen.mainScreen().bounds
+//            picker.frame = CGRectMake(0.0, screenSize.height - 299, screenSize.width, 250)
+//            //you probably don't want to set background color as black
+//            picker.backgroundColor = UIColor.whiteColor()
+//            self.view.addSubview(picker)
         } else {
             
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
@@ -230,14 +243,18 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     
-    /*
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
+        let indexPath = self.tableView.indexPathForSelectedRow
+        viewController.temp = self.mockData[indexPath!.row]
+        
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     }
-    */
+
 
 }
