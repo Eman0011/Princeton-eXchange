@@ -1,30 +1,29 @@
 //
-//  ExchangeTableViewCell.swift
-//  Exchange
+//  UserTableViewCell.swift
+//  eXchange
 //
-//  Created by Emanuel Castaneda on 3/11/16.
+//  Created by James Almeida on 4/1/16.
 //  Copyright © 2016 Emanuel Castaneda. All rights reserved.
 //
 
 import UIKit
 
-
-class eXchangeTableViewCell: UITableViewCell {
-
-    @IBOutlet var emoji: UIImageView!
-    @IBOutlet var clubLabel: UILabel!
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var studentImage: UIImageView!
+class UserTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var studentImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var meal1Label: UILabel!
+    @IBOutlet weak var meal2Label: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
 }

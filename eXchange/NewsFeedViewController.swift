@@ -12,24 +12,35 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet var eXchangeBanner: UIImageView!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var friendButton: UIButton!
+    @IBOutlet weak var princetonButton: UIButton!
     @IBOutlet var myClubButton: UIButton!
     
-    var friendButtonSelected = true
+    var princetonButtonSelected = true
+    var currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
     
     var mockMeals: [Meal] = []
+    var filteredMeals: [Meal] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.tableView.rowHeight = 100.0
         
-        friendButton.layer.cornerRadius = 5
-        friendButton.backgroundColor = UIColor.orangeColor()
+        princetonButton.layer.cornerRadius = 5
+        princetonButton.backgroundColor = UIColor.orangeColor()
         myClubButton.layer.cornerRadius = 5
         myClubButton.backgroundColor = UIColor.blackColor()
         
         loadMockData()
+        
+        for meal in mockMeals {
+            if (meal.host.club == currentUser.club) {
+                filteredMeals.append(meal)
+            }
+        }
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -77,17 +88,17 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Button Actions
-    @IBAction func friendButtonPressed(sender: AnyObject) {
-        friendButtonSelected = true
-        friendButton.backgroundColor = UIColor.orangeColor()
+    @IBAction func princetonButtonPressed(sender: AnyObject) {
+        princetonButtonSelected = true
+        princetonButton.backgroundColor = UIColor.orangeColor()
         myClubButton.backgroundColor = UIColor.blackColor()
         tableView.reloadData()
     }
     
     @IBAction func myClubButtonPressed(sender: AnyObject) {
-        friendButtonSelected = false
+        princetonButtonSelected = false
         myClubButton.backgroundColor = UIColor.orangeColor()
-        friendButton.backgroundColor = UIColor.blackColor()
+        princetonButton.backgroundColor = UIColor.blackColor()
         tableView.reloadData()
     }
 
@@ -97,19 +108,39 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mockMeals.count
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if princetonButtonSelected {
+            return mockMeals.count
+        }
+        else {
+            return filteredMeals.count
+        }
+    }
     
     /* NOTE: uses the eXchangeTableViewCell layout for simplicity. nameLabel serves as description label, and clubLabel serves as information label */
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.numberOfLines = 0
-        let meal = mockMeals[indexPath.row]
-        cell.imageView?.image = UIImage(named: meal.host.club + ".jpg")
-        cell.textLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
-        return cell
+        
+        var meal: Meal
+        if princetonButtonSelected {
+            let cell = UITableViewCell()
+            cell.textLabel?.numberOfLines = 0
+            meal = mockMeals[indexPath.row]
+            cell.imageView?.image = UIImage(named: meal.host.club + ".jpg")
+            cell.textLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            return cell
+        }
+        else {
+            let cell = UITableViewCell()
+            cell.textLabel?.numberOfLines = 0
+            meal = filteredMeals[indexPath.row]
+            cell.imageView?.image = UIImage(named: meal.host.club + ".jpg")
+            cell.textLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            return cell
+        }
     }
 
     /*

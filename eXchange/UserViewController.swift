@@ -10,8 +10,8 @@ import UIKit
 
 class UserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet var eXchangeBanner: UIImageView!
-    @IBOutlet var tableView: UITableView!
     @IBOutlet var historyButton: UIButton!
     @IBOutlet var unfinishedButton: UIButton!
     
@@ -100,6 +100,10 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 1
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if historySelected {
             return historyData.count
@@ -111,7 +115,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     /* NOTE: uses the eXchangeTableViewCell layout for simplicity. nameLabel serves as description label, and clubLabel serves as information label */
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("userCell", forIndexPath: indexPath) as! UserTableViewCell
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MMM dd, yyyy"
         var student: Student
@@ -125,16 +129,15 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
                 } else {
                     meal2String = dateFormatter.stringFromDate(exchange.meal2!.date)
                 }
-                cell.clubLabel.text = "Meal 1: " + dateFormatter.stringFromDate(exchange.meal1.date)
-                cell.meal2Label.text = "\n Meal 2: " + meal2String
+                cell.meal1Label.text = "Meal 1: " + dateFormatter.stringFromDate(exchange.meal1.date)
+                cell.meal2Label.text = "Meal 2: " + meal2String
             } else {
                 let exchange = unfinishedXData[indexPath.row]
                 student = exchange.guest
                 cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
-                cell.clubLabel.text = "\(daysLeft) days left to complete!"
+                cell.meal1Label.text = "\(daysLeft) days left to complete!"
             }
         cell.studentImage.image = UIImage(named: student.imageName)
-        
         return cell
     }
 

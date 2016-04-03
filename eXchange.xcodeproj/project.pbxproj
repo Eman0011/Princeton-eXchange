@@ -23,6 +23,7 @@
 		032E92E61C9F713B00A2ABF7 /* eXchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E92E51C9F713B00A2ABF7 /* eXchange.swift */; };
 		032E92EA1C9F801700A2ABF7 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E92E91C9F801700A2ABF7 /* Meal.swift */; };
 		B3AD32451CAF54CE004F2FC6 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */; };
+		B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		032E92E51C9F713B00A2ABF7 /* eXchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = eXchange.swift; sourceTree = "<group>"; };
 		032E92E91C9F801700A2ABF7 /* Meal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 		B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
+		B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			children = (
 				032E92DB1C9E28C600A2ABF7 /* Assets.xcassets */,
 				032E92DC1C9E28C600A2ABF7 /* eXchangeTableViewCell.swift */,
+				B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */,
 				032E92DD1C9E28C600A2ABF7 /* eXchangeViewController.swift */,
 				B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */,
 				032E92DE1C9E28C600A2ABF7 /* Student.swift */,
@@ -287,6 +290,7 @@
 			files = (
 				032E92B01C9DDC9200A2ABF7 /* ViewController.swift in Sources */,
 				032E92E41C9F6B4700A2ABF7 /* UserViewController.swift in Sources */,
+				B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */,
 				0314C2EF1C9FC8FA0030A957 /* NewsFeedViewController.swift in Sources */,
 				032E92E11C9E28C600A2ABF7 /* eXchangeViewController.swift in Sources */,
 				032E92AE1C9DDC9200A2ABF7 /* AppDelegate.swift in Sources */,
