@@ -53,18 +53,23 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
         let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
         let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-//        let James = Student(name: "James Almeida", netid: "", club: "", proxNumber: "")
+        let James = Student(name: "James Almeida", netid: "", club: "Cap & Gown", proxNumber: "")
 
         let today = NSDate()
         print(formatter.stringFromDate(today))
         
+        
         let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
         x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
+        let m1 = Meal(date: NSDate(), type: "Lunch", host: Sumer, guest: Emanuel)
+        x1.meal2 = m1
         x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
         historyData.append(x1)
         
         let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  "Lunch")
         x2.meal1.date = formatter.dateFromString("3-12-2016, 1:30 pm")!
+        let m2 = Meal(date: NSDate(), type: "Lunch", host: Meaghan, guest: Emanuel)
+        x2.meal2 = m2
         x2.meal2?.date = formatter.dateFromString("3-16-2016, 12:30 pm")!
         historyData.append(x2)
         
@@ -125,7 +130,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.nameLabel.text = exchange.guest.name
                 let meal2String: String
                 if (exchange.meal2 == nil) {
-                    meal2String = "N/A"
+                    meal2String = "MEAL WAS NOT INITIALIZED"
                 } else {
                     meal2String = dateFormatter.stringFromDate(exchange.meal2!.date)
                 }
@@ -136,6 +141,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
                 student = exchange.guest
                 cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
                 cell.meal1Label.text = "\(daysLeft) days left to complete!"
+                cell.meal2Label.text = ""
             }
         cell.studentImage.image = UIImage(named: student.imageName)
         return cell
