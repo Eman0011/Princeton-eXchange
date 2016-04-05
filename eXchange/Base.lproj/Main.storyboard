@@ -423,7 +423,11 @@
                                                 <action selector="cancelButton:" destination="M7A-2j-bbn" id="owv-oF-VFR"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="me3-o5-6DK"/>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="me3-o5-6DK">
+                                            <connections>
+                                                <action selector="doneButton:" destination="M7A-2j-bbn" id="OX7-SS-6Z1"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>

@@ -63,7 +63,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
         mockData.append(Sumer)
         
-        let James = Student(name: "James Almeida", netid: "", club: "", proxNumber: "")
+        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "")
         mockData.append(James)
         
         let Extra = Student(name: "Other", netid: "", club: "--", proxNumber: "")
@@ -184,6 +184,30 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let response = alert.title!
         print(response)
         print(indexPath.row)
+        
+        if (response == "Accept") {
+            //send the exchange to the database
+            
+            //remove the request from pending requests
+            pendingData.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+            
+        }
+        else if (response == "Reschedule") {
+            //prompt the user to create a new exchange
+            
+            //if user hits cancel, do nothing
+            //if user hits done, create the new exchange and delete the old one
+            tableView.reloadData()
+        }
+        
+        else if (response == "Decline") {
+            //remove the request
+            pendingData.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+            
+            //optionally send a notification to requester that user couldn't make it
+        }
     }
     
     
@@ -250,7 +274,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
         let indexPath = self.tableView.indexPathForSelectedRow
-        viewController.temp = self.mockData[indexPath!.row]
+        viewController.selectedUser = self.mockData[indexPath!.row]
         
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
