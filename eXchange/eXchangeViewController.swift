@@ -10,17 +10,26 @@ import UIKit
 
 class eXchangeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
 
+    // MARK: View Controller Outlets
+    
     @IBOutlet var eXchangeBanner: UIImageView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var requestButton: UIButton!
     @IBOutlet var pendingButton: UIButton!
 
     
+    
+    // MARK: Global variable initialization
+    
     var mockData: [Student] = []
     var searchData: [Student] = []
     var pendingData: [Student] = []
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
+    
+    
+    
+    // MARK: Initializing functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +59,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    // used as a filler until we have a database to access
     func loadMockData() {
         let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
         mockData.append(Emanuel)
@@ -81,7 +91,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     // MARK: - Button Actions
+    
     @IBAction func requestButtonPressed(sender: AnyObject) {
         requestSelected = true
         requestButton.backgroundColor = UIColor.orangeColor()
@@ -95,6 +108,8 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         requestButton.backgroundColor = UIColor.blackColor()
         tableView.reloadData()
     }
+    
+    
     
     // MARK: - Table view data source
     
@@ -116,8 +131,9 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
-        
         var student: Student
+        
+        // If the user has searched for another student, populate cells with matching users
         if searchController.active && searchController.searchBar.text != "" {
             student = searchData[indexPath.row]
             if requestSelected {
@@ -129,7 +145,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                     cell.clubLabel.text = student.club
                 }
             }
-        } else {
+        }
+        
+        // If the user is not searching, just populate cells with all appropriate groups of users
+        else {
             if requestSelected {
                 student = mockData[indexPath.row]
                 cell.nameLabel.text = student.name
@@ -147,32 +166,22 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-    func dueDateChanged(sender:UIDatePicker){
-//        var dateFormatter = NSDateFormatter()
-//        dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-//        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-//        self.myLabel.text = dateFormatter.stringFromDate(dueDatePickerView.date)
-    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 //        let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
-       
+        
+        // If the user taps on a cell in the request a meal tab, then segue to the create request view controller
         if requestSelected {
             performSegueWithIdentifier("createRequestSegue", sender: nil)
-//            let picker : UIDatePicker = UIDatePicker()
-//            picker.datePickerMode = UIDatePickerMode.Date
-//            picker.addTarget(self, action: "dueDateChanged:", forControlEvents: UIControlEvents.ValueChanged)
-//            let screenSize : CGRect = UIScreen.mainScreen().bounds
-//            picker.frame = CGRectMake(0.0, screenSize.height - 299, screenSize.width, 250)
-//            //you probably don't want to set background color as black
-//            picker.backgroundColor = UIColor.whiteColor()
-//            self.view.addSubview(picker)
-        } else {
+        }
+        
+        // If the user taps on a cell in the pending meals tab, then popup an alert allowing them to accept, reschedule, decline, or cancel the action
+        else {
             
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Accept", style: .Default, handler:{ action in self.exexuteAction(action, indexPath:indexPath)}))
-            alert.addAction(UIAlertAction(title: "Reschedule", style: .Default, handler:{ action in self.exexuteAction(action, indexPath:indexPath)}))
-            alert.addAction(UIAlertAction(title: "Decline", style: .Default, handler:{ action in self.exexuteAction(action, indexPath:indexPath)}))
+            alert.addAction(UIAlertAction(title: "Accept", style: .Default, handler:{ action in self.executeAction(action, indexPath:indexPath)}))
+            alert.addAction(UIAlertAction(title: "Reschedule", style: .Default, handler:{ action in self.executeAction(action, indexPath:indexPath)}))
+            alert.addAction(UIAlertAction(title: "Decline", style: .Default, handler:{ action in self.executeAction(action, indexPath:indexPath)}))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
@@ -180,7 +189,8 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    func exexuteAction(alert: UIAlertAction!, indexPath: NSIndexPath){
+    // Define special actions for accept, reschedule, and decline options
+    func executeAction(alert: UIAlertAction!, indexPath: NSIndexPath){
         let response = alert.title!
         print(response)
         print(indexPath.row)
