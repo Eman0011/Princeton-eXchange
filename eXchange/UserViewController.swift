@@ -60,7 +60,11 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
+        print("test")
+        print(x1.meal1.date)
         x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
+        print(x1.meal1.date)
+        print("end test")
         let m1 = Meal(date: NSDate(), type: "Lunch", host: Sumer, guest: Emanuel)
         x1.meal2 = m1
         x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!

@@ -26,6 +26,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var pendingData: [Student] = []
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
+    var path = -1
     
     
     
@@ -99,13 +100,22 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         requestSelected = true
         requestButton.backgroundColor = UIColor.orangeColor()
         pendingButton.backgroundColor = UIColor.blackColor()
+        
+        tableView.tableHeaderView = searchController.searchBar
         tableView.reloadData()
+
     }
     
     @IBAction func pendingButtonPressed(sender: AnyObject) {
         requestSelected = false
         pendingButton.backgroundColor = UIColor.orangeColor()
         requestButton.backgroundColor = UIColor.blackColor()
+        
+        self.searchController.searchBar.text = ""
+        self.searchController.searchBar.endEditing(true)
+        self.searchController.active = false
+        
+        tableView.tableHeaderView = nil
         tableView.reloadData()
     }
     
@@ -194,20 +204,31 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let response = alert.title!
         print(response)
         print(indexPath.row)
+        path = indexPath.row
         
         if (response == "Accept") {
             //send the exchange to the database
             
             //remove the request from pending requests
-            pendingData.removeAtIndex(indexPath.row)
-            tableView.reloadData()
+            if searchController.active && searchController.searchBar.text != "" {
+                searchData.removeAtIndex(indexPath.row)
+                tableView.reloadData()
+            }
+            else {
+                pendingData.removeAtIndex(indexPath.row)
+                tableView.reloadData()
+            }
             
         }
         else if (response == "Reschedule") {
             //prompt the user to create a new exchange
             
+            performSegueWithIdentifier("createRequestSegue", sender: nil)
+            
             //if user hits cancel, do nothing
             //if user hits done, create the new exchange and delete the old one
+            
+            pendingData.removeAtIndex(indexPath.row)
             tableView.reloadData()
         }
         
@@ -282,9 +303,27 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
-        let indexPath = self.tableView.indexPathForSelectedRow
-        viewController.selectedUser = self.mockData[indexPath!.row]
+        if requestSelected {
+            let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
+            let indexPath = self.tableView.indexPathForSelectedRow
+            if searchController.active && searchController.searchBar.text != "" {
+                viewController.selectedUser = self.searchData[indexPath!.row]
+            }
+            else {
+                viewController.selectedUser = self.mockData[indexPath!.row]
+            }
+            print("debugging")
+        }
+        else {
+            let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
+            if searchController.active && searchController.searchBar.text != "" {
+                viewController.selectedUser = self.searchData[path]
+            }
+            else {
+                viewController.selectedUser = self.pendingData[path]
+            }
+            path = -1
+        }
         
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
