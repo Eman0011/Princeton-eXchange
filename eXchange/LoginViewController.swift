@@ -19,7 +19,6 @@ class LoginViewController: UIViewController, WKNavigationDelegate {
         let width:CGFloat = self.view.bounds.width - marginLeft
         let height = self.view.bounds.height - marginTop
         let webView = WKWebView(frame: CGRectMake(marginLeft, marginTop, width, height))
-        webView.contentScaleFactor = 0.5
 
         webView.navigationDelegate = self
         self.view.addSubview(webView)
