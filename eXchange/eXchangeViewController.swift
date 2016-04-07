@@ -27,14 +27,16 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
     var path = -1
-    
+    var userNetID: String = ""
     
     
     // MARK: Initializing functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let tbc = self.tabBarController as! eXchangeTabBarController
+        self.userNetID = tbc.userNetID;
+        
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.tableView.rowHeight = 100.0
         
