@@ -27,6 +27,7 @@
 		B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */; };
 		B3EC70761CB7441A0087283F /* NewsFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */; };
 		B3EC70781CB763580087283F /* RescheduleRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */; };
+		B3EC707A1CB77BCB0087283F /* CompleteUnfinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC70791CB77BCB0087283F /* CompleteUnfinishedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedTableViewCell.swift; sourceTree = "<group>"; };
 		B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RescheduleRequestViewController.swift; sourceTree = SOURCE_ROOT; };
+		B3EC70791CB77BCB0087283F /* CompleteUnfinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteUnfinishedViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				032E92E31C9F6B4700A2ABF7 /* UserViewController.swift */,
 				B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */,
 				B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */,
+				B3EC70791CB77BCB0087283F /* CompleteUnfinishedViewController.swift */,
 				032E92DC1C9E28C600A2ABF7 /* eXchangeTableViewCell.swift */,
 				B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */,
 				B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */,
@@ -301,6 +304,7 @@
 				03F1944D1CB60A6300BBB16E /* LoginViewController.swift in Sources */,
 				03F1944F1CB612BC00BBB16E /* eXchangeTabBarController.swift in Sources */,
 				032E92E41C9F6B4700A2ABF7 /* UserViewController.swift in Sources */,
+				B3EC707A1CB77BCB0087283F /* CompleteUnfinishedViewController.swift in Sources */,
 				B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */,
 				0314C2EF1C9FC8FA0030A957 /* NewsFeedViewController.swift in Sources */,
 				032E92E11C9E28C600A2ABF7 /* eXchangeViewController.swift in Sources */,

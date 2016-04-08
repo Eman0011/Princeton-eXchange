@@ -278,6 +278,7 @@
                                             <outlet property="meal2Label" destination="cEl-CX-5uU" id="Uil-fE-rH6"/>
                                             <outlet property="nameLabel" destination="Bz1-D8-Nvr" id="GN9-XI-6EI"/>
                                             <outlet property="studentImage" destination="5kr-pw-u5d" id="3BV-dM-spn"/>
+                                            <segue destination="bNo-te-tj6" kind="show" identifier="completeUnfinished" id="X5B-6u-S4Q"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -515,7 +516,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rh7-Zk-h4d">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <items>
-                                    <navigationItem title="Exchange Request" id="8sJ-pi-jtn">
+                                    <navigationItem title="eXchange Request" id="8sJ-pi-jtn">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="MKj-SU-OMt">
                                             <connections>
                                                 <action selector="cancelButton:" destination="M7A-2j-bbn" id="owv-oF-VFR"/>
@@ -554,7 +555,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QSe-6X-hpq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1798" y="-591"/>
+            <point key="canvasLocation" x="1958" y="543"/>
         </scene>
         <!--Reschedule Request View Controller-->
         <scene sceneID="HXQ-gh-kHe">
@@ -628,12 +629,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uKk-9J-LT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="5JN-tD-u6d" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1798" y="95"/>
+            <point key="canvasLocation" x="1958" y="-172"/>
         </scene>
-        <!--View Controller-->
+        <!--Complete Unfinished View Controller-->
         <scene sceneID="bdn-p6-nHG">
             <objects>
-                <viewController id="bNo-te-tj6" sceneMemberID="viewController">
+                <viewController id="bNo-te-tj6" customClass="CompleteUnfinishedViewController" customModule="eXchange" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rh8-yL-yco"/>
                         <viewControllerLayoutGuide type="bottom" id="iPi-t3-sDd"/>
@@ -641,11 +642,69 @@
                     <view key="view" contentMode="scaleToFill" id="NYW-sZ-OZh">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="F4k-MX-V8c" customClass="I">
+                                <rect key="frame" x="0.0" y="64" width="600" height="216"/>
+                                <date key="date" timeIntervalSinceReferenceDate="481252159.44744402">
+                                    <!--2016-04-02 01:09:19 +0000-->
+                                </date>
+                            </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Selected:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I3f-rA-TBc">
+                                <rect key="frame" x="0.0" y="410" width="600" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yen-od-Me3">
+                                <rect key="frame" x="0.0" y="288" width="600" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="oud-a1-kkC"/>
+                                </constraints>
+                            </pickerView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NYA-hQ-8qs">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="eXchange Request" id="9Od-9b-oS8">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="aBE-77-OIl">
+                                            <connections>
+                                                <segue destination="s4G-Hm-BJq" kind="unwind" identifier="unwindCancel" unwindAction="unfinishedUnwind:" id="qbU-4g-M9a"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="BTd-4c-N89">
+                                            <connections>
+                                                <segue destination="s4G-Hm-BJq" kind="unwind" identifier="unwindDone" unwindAction="unfinishedUnwind:" id="iFW-Zu-3G8"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="leading" secondItem="F4k-MX-V8c" secondAttribute="leading" id="4xb-oS-b4q"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="leading" secondItem="I3f-rA-TBc" secondAttribute="leading" id="BJS-b9-Adh"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="leading" secondItem="NYW-sZ-OZh" secondAttribute="leading" id="CvP-II-VTR"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="trailing" secondItem="F4k-MX-V8c" secondAttribute="trailing" id="KQU-bg-16e"/>
+                            <constraint firstItem="I3f-rA-TBc" firstAttribute="top" secondItem="Yen-od-Me3" secondAttribute="bottom" constant="22" id="N0A-yl-cuv"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="trailing" secondItem="I3f-rA-TBc" secondAttribute="trailing" id="Rp9-Aa-tmg"/>
+                            <constraint firstItem="NYA-hQ-8qs" firstAttribute="trailing" secondItem="F4k-MX-V8c" secondAttribute="trailing" id="RyU-m1-aIX"/>
+                            <constraint firstAttribute="trailing" secondItem="Yen-od-Me3" secondAttribute="trailing" id="WIa-Lg-nnf"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="top" secondItem="F4k-MX-V8c" secondAttribute="bottom" constant="8" symbolic="YES" id="fjI-vp-zIG"/>
+                            <constraint firstItem="NYA-hQ-8qs" firstAttribute="top" secondItem="rh8-yL-yco" secondAttribute="bottom" id="o1W-6d-Mhd"/>
+                            <constraint firstItem="NYA-hQ-8qs" firstAttribute="leading" secondItem="F4k-MX-V8c" secondAttribute="leading" id="orj-oT-Fwu"/>
+                            <constraint firstItem="Yen-od-Me3" firstAttribute="top" secondItem="NYW-sZ-OZh" secondAttribute="top" constant="288" id="uBb-v1-Trc"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="clubPicker" destination="Yen-od-Me3" id="Sfg-Gh-rMj"/>
+                        <outlet property="datePicker" destination="F4k-MX-V8c" id="oXc-jh-Zg9"/>
+                        <outlet property="mealSelectedLabel" destination="I3f-rA-TBc" id="tXF-dm-zbk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5RV-qK-JUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="s4G-Hm-BJq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
+            <point key="canvasLocation" x="1958" y="1277"/>
         </scene>
     </scenes>
     <resources>

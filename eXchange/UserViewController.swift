@@ -230,4 +230,26 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
      }
      */
     
+    @IBAction func unfinishedUnwind(unwindSegue: UIStoryboardSegue) {
+        if unwindSegue.identifier == "unwindCancel" {
+            print("cancel")
+        }
+            
+        else if unwindSegue.identifier == "unwindDone" {
+            print("done")
+            //this should send an exchange request to another user
+            //probably shouldn't get rid of cell in table
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (unfinishedSelected) {
+            let newViewController:CompleteUnfinishedViewController = segue.destinationViewController as! CompleteUnfinishedViewController
+            let indexPath = self.tableView.indexPathForSelectedRow
+            newViewController.selectedUser = self.unfinishedXData[indexPath!.row].host
+            
+            print(historySelected)
+            print(upcomingSelected)
+        }
+    }
 }

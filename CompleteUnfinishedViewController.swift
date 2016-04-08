@@ -1,18 +1,19 @@
 //
-//  RescheduleRequestViewController.swift
+//  CompleteUnfinishedViewController.swift
 //  eXchange
 //
-//  Created by James Almeida on 4/7/16.
+//  Created by James Almeida on 4/8/16.
 //  Copyright © 2016 Emanuel Castaneda. All rights reserved.
 //
 
 import UIKit
 
-class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class CompleteUnfinishedViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var clubPicker: UIPickerView!
     @IBOutlet weak var mealSelectedLabel: UILabel!
+
     
     var temp: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
@@ -45,9 +46,9 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         mealSelectedLabel.text = pickerData[row]
-
+        
     }
-    
+
     
     
 }
