@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0314C2EF1C9FC8FA0030A957 /* NewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0314C2EE1C9FC8FA0030A957 /* NewsFeedViewController.swift */; };
 		032E92AE1C9DDC9200A2ABF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E92AD1C9DDC9200A2ABF7 /* AppDelegate.swift */; };
-		032E92B01C9DDC9200A2ABF7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E92AF1C9DDC9200A2ABF7 /* ViewController.swift */; };
 		032E92B31C9DDC9200A2ABF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 032E92B11C9DDC9200A2ABF7 /* Main.storyboard */; };
 		032E92B51C9DDC9200A2ABF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 032E92B41C9DDC9200A2ABF7 /* Assets.xcassets */; };
 		032E92B81C9DDC9200A2ABF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 032E92B61C9DDC9200A2ABF7 /* LaunchScreen.storyboard */; };
@@ -27,6 +26,7 @@
 		B3AD32451CAF54CE004F2FC6 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */; };
 		B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */; };
 		B3EC70761CB7441A0087283F /* NewsFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */; };
+		B3EC70781CB763580087283F /* RescheduleRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,6 @@
 		0314C2EE1C9FC8FA0030A957 /* NewsFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedViewController.swift; sourceTree = "<group>"; };
 		032E92AA1C9DDC9200A2ABF7 /* eXchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eXchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		032E92AD1C9DDC9200A2ABF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		032E92AF1C9DDC9200A2ABF7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		032E92B21C9DDC9200A2ABF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		032E92B41C9DDC9200A2ABF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		032E92B71C9DDC9200A2ABF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,6 +72,7 @@
 		B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedTableViewCell.swift; sourceTree = "<group>"; };
+		B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RescheduleRequestViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +131,7 @@
 				0314C2EE1C9FC8FA0030A957 /* NewsFeedViewController.swift */,
 				032E92E31C9F6B4700A2ABF7 /* UserViewController.swift */,
 				B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */,
-				032E92AF1C9DDC9200A2ABF7 /* ViewController.swift */,
+				B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */,
 				032E92DC1C9E28C600A2ABF7 /* eXchangeTableViewCell.swift */,
 				B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */,
 				B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */,
@@ -300,7 +300,6 @@
 				B3EC70761CB7441A0087283F /* NewsFeedTableViewCell.swift in Sources */,
 				03F1944D1CB60A6300BBB16E /* LoginViewController.swift in Sources */,
 				03F1944F1CB612BC00BBB16E /* eXchangeTabBarController.swift in Sources */,
-				032E92B01C9DDC9200A2ABF7 /* ViewController.swift in Sources */,
 				032E92E41C9F6B4700A2ABF7 /* UserViewController.swift in Sources */,
 				B3AD32471CAF72D6004F2FC6 /* UserTableViewCell.swift in Sources */,
 				0314C2EF1C9FC8FA0030A957 /* NewsFeedViewController.swift in Sources */,
@@ -308,6 +307,7 @@
 				032E92AE1C9DDC9200A2ABF7 /* AppDelegate.swift in Sources */,
 				032E92EA1C9F801700A2ABF7 /* Meal.swift in Sources */,
 				032E92E21C9E28C600A2ABF7 /* Student.swift in Sources */,
+				B3EC70781CB763580087283F /* RescheduleRequestViewController.swift in Sources */,
 				032E92E01C9E28C600A2ABF7 /* eXchangeTableViewCell.swift in Sources */,
 				B3AD32451CAF54CE004F2FC6 /* CreateRequestViewController.swift in Sources */,
 				032E92E61C9F713B00A2ABF7 /* eXchange.swift in Sources */,

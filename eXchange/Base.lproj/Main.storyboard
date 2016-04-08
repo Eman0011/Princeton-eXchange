@@ -146,11 +146,12 @@
                         <outlet property="requestButton" destination="4fO-NY-Egl" id="fRf-Nv-Md2"/>
                         <outlet property="tableView" destination="xB9-88-g04" id="KP6-FW-aFV"/>
                         <segue destination="M7A-2j-bbn" kind="show" identifier="createRequestSegue" id="ydu-fp-czp"/>
+                        <segue destination="Nai-Km-kL8" kind="show" identifier="rescheduleRequestSegue" id="PdF-wt-yew"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BIe-fu-Ztf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1084" y="-153"/>
+            <point key="canvasLocation" x="1069" y="-172"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="URA-uU-zQm">
@@ -555,10 +556,10 @@
             </objects>
             <point key="canvasLocation" x="1798" y="-591"/>
         </scene>
-        <!--View Controller-->
+        <!--Reschedule Request View Controller-->
         <scene sceneID="HXQ-gh-kHe">
             <objects>
-                <viewController id="Nai-Km-kL8" sceneMemberID="viewController">
+                <viewController id="Nai-Km-kL8" customClass="RescheduleRequestViewController" customModule="eXchange" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZUp-3K-y28"/>
                         <viewControllerLayoutGuide type="bottom" id="QA6-NJ-fn1"/>
@@ -571,8 +572,18 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <items>
                                     <navigationItem title="Reschedule a Request" id="jtf-39-3Tq">
-                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="05F-5O-s3a"/>
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="9l3-WH-uKM"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="05F-5O-s3a">
+                                            <connections>
+                                                <action selector="cancelButton:" destination="Nai-Km-kL8" id="Be6-cW-7wL"/>
+                                                <segue destination="5JN-tD-u6d" kind="unwind" identifier="unwindCancel" unwindAction="myUnwindAction:" id="Lrs-zM-WFE"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="9l3-WH-uKM">
+                                            <connections>
+                                                <action selector="doneButton:" destination="Nai-Km-kL8" id="UU2-m1-0UH"/>
+                                                <segue destination="5JN-tD-u6d" kind="unwind" identifier="unwindDone" unwindAction="myUnwindAction:" id="May-tm-skZ"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -588,6 +599,12 @@
                                     <constraint firstAttribute="height" constant="100" id="QZt-Gq-Cfe"/>
                                 </constraints>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n05-da-BBs">
+                                <rect key="frame" x="0.0" y="464" width="158" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -602,10 +619,33 @@
                             <constraint firstItem="hya-7L-6n2" firstAttribute="leading" secondItem="LbN-UG-Sfq" secondAttribute="leading" id="oNE-rZ-k0u"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="clubPicker" destination="dOk-Bb-86q" id="cht-Op-4BB"/>
+                        <outlet property="datePicker" destination="hya-7L-6n2" id="jEi-qq-QVM"/>
+                        <outlet property="mealSelectedLabel" destination="n05-da-BBs" id="9uO-OZ-KNN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uKk-9J-LT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="5JN-tD-u6d" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1798" y="67"/>
+            <point key="canvasLocation" x="1798" y="95"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="bdn-p6-nHG">
+            <objects>
+                <viewController id="bNo-te-tj6" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rh8-yL-yco"/>
+                        <viewControllerLayoutGuide type="bottom" id="iPi-t3-sDd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NYW-sZ-OZh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5RV-qK-JUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

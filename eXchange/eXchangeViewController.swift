@@ -28,6 +28,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var requestSelected = true
     var path = -1
     var userNetID: String = ""
+    var rescheduleDoneButtonHit: Bool = false
     
     
     // MARK: Initializing functions
@@ -87,6 +88,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
         pendingData.append(Danielle)
         pendingData.append(Emanuel)
+        pendingData.append(James)
+        pendingData.append(Sumer)
+
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -212,25 +217,25 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             //send the exchange to the database
             
             //remove the request from pending requests
-            if searchController.active && searchController.searchBar.text != "" {
-                searchData.removeAtIndex(indexPath.row)
-                tableView.reloadData()
-            }
-            else {
-                pendingData.removeAtIndex(indexPath.row)
-                tableView.reloadData()
-            }
+            pendingData.removeAtIndex(indexPath.row)
+            tableView.reloadData()
             
         }
         else if (response == "Reschedule") {
             //prompt the user to create a new exchange
             
-            performSegueWithIdentifier("createRequestSegue", sender: nil)
+            performSegueWithIdentifier("rescheduleRequestSegue", sender: nil)
+            //let tempStudent: Student = pendingData[indexPath.row]
+
+//            if rescheduleDoneButtonHit {
+//                //if user hits done, create the new exchange and delete the old one
+//                pendingData.removeAtIndex(indexPath.row)
+//                print("removed")
+//            }
             
             //if user hits cancel, do nothing
-            //if user hits done, create the new exchange and delete the old one
+
             
-            pendingData.removeAtIndex(indexPath.row)
             tableView.reloadData()
         }
         
@@ -303,28 +308,40 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - Navigation
     
+    @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
+        if unwindSegue.identifier == "unwindCancel" {
+            rescheduleDoneButtonHit = false
+            print("cancel")
+        }
+        
+        else if unwindSegue.identifier == "unwindDone" {
+            rescheduleDoneButtonHit = true
+            pendingData.removeAtIndex(path)
+            tableView.reloadData()
+            print("removed")
+            print("done")
+        }
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if requestSelected {
-            let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
+        if segue.identifier == "createRequestSegue" {
+            let newViewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
             let indexPath = self.tableView.indexPathForSelectedRow
             if searchController.active && searchController.searchBar.text != "" {
-                viewController.selectedUser = self.searchData[indexPath!.row]
+                newViewController.selectedUser = self.searchData[indexPath!.row]
             }
             else {
-                viewController.selectedUser = self.mockData[indexPath!.row]
+                newViewController.selectedUser = self.mockData[indexPath!.row]
             }
             print("debugging")
         }
-        else {
-            let viewController:CreateRequestViewController = segue.destinationViewController as! CreateRequestViewController
-            if searchController.active && searchController.searchBar.text != "" {
-                viewController.selectedUser = self.searchData[path]
-            }
-            else {
-                viewController.selectedUser = self.pendingData[path]
-            }
-            path = -1
+        else if segue.identifier == "rescheduleRequestSegue" {
+            let newViewController:RescheduleRequestViewController = segue.destinationViewController as! RescheduleRequestViewController
+            
+            newViewController.selectedUser = self.pendingData[path]
+            
+            //path = -1
         }
         
     // Get the new view controller using segue.destinationViewController.
