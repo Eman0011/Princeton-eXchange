@@ -125,20 +125,63 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var meal: Meal
+        let attrs1 = [NSFontAttributeName : UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: UIColor.orangeColor()]
+        let attrs2 = [NSFontAttributeName : UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: UIColor.blackColor()]
+        let attrs3 = [NSFontAttributeName : UIFont.boldSystemFontOfSize(15), NSForegroundColorAttributeName: UIColor.blackColor()]
+        
         if princetonButtonSelected {
-            let cell = UITableViewCell()
-            cell.textLabel?.numberOfLines = 0
+            let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+            cell.newsLabel?.numberOfLines = 0
             meal = mockMeals[indexPath.row]
-            cell.imageView?.image = UIImage(named: meal.host.club + ".jpg")
-            cell.textLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            // old way of setting text:
+            // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            
+            let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
+            let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
+            let boldMeal = NSMutableAttributedString(string:meal.type, attributes:attrs3)
+            //let boldClub = NSMutableAttributedString(string:meal.host.club, attributes:attrs1)
+            
+
+            // + " and " + boldName1 + " eXchanged for " + boldMeal + " at " + boldClub
+            let newsText: NSMutableAttributedString = boldName1
+            
+            newsText.appendAttributedString(NSMutableAttributedString(string: " and "))
+            newsText.appendAttributedString(boldName2)
+            newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
+            newsText.appendAttributedString(boldMeal)
+//            newsText.appendAttributedString(NSMutableAttributedString(string: " at "))
+//            newsText.appendAttributedString(boldClub)
+            
+            cell.newsLabel!.attributedText = newsText
+            
             return cell
         }
         else {
-            let cell = UITableViewCell()
-            cell.textLabel?.numberOfLines = 0
+            let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+            cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
-            cell.imageView?.image = UIImage(named: meal.host.club + ".jpg")
-            cell.textLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            //cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
+            
+            let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
+            let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
+            let boldMeal = NSMutableAttributedString(string:meal.type, attributes:attrs3)
+            //let boldClub = NSMutableAttributedString(string:meal.host.club, attributes:attrs1)
+            
+            
+            // + " and " + boldName1 + " eXchanged for " + boldMeal + " at " + boldClub
+            let newsText: NSMutableAttributedString = boldName1
+            
+            newsText.appendAttributedString(NSMutableAttributedString(string: " and "))
+            newsText.appendAttributedString(boldName2)
+            newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
+            newsText.appendAttributedString(boldMeal)
+            //            newsText.appendAttributedString(NSMutableAttributedString(string: " at "))
+            //            newsText.appendAttributedString(boldClub)
+            
+            cell.newsLabel!.attributedText = newsText
+            
             return cell
         }
     }
