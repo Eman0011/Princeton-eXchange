@@ -154,6 +154,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         dateFormatter.dateFormat = "MMM dd, yyyy"
         var student: Student
         if historySelected {
+            unfinishedSelected = false
+            upcomingSelected = false
             let exchange = historyData[indexPath.row]
             student = exchange.guest
             cell.nameLabel.text = exchange.guest.name
@@ -168,6 +170,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
             
         else if unfinishedSelected {
+            historySelected = false
+            upcomingSelected = false
             let exchange = unfinishedXData[indexPath.row]
             student = exchange.guest
             cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
@@ -175,6 +179,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.meal2Label.text = ""
         }
         else {
+            historySelected = false
+            unfinishedSelected = false
             let exchange = upcomingData[indexPath.row]
             student = exchange.guest
             cell.nameLabel.text = "You have scheduled a meal eXchange with " + exchange.guest.name + "."
@@ -241,6 +247,16 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             //probably shouldn't get rid of cell in table
         }
     }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String,sender: AnyObject?) -> Bool {
+        if (unfinishedSelected) {
+        return true
+        }
+        else {
+            return false
+        }
+    }
+
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (unfinishedSelected) {
