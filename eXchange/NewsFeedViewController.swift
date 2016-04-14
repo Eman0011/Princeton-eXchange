@@ -7,6 +7,9 @@
 //
 
 import UIKit
+var princetonButtonSelected = true
+var mealLiked = [Bool]()
+var currCellNum = 0
 
 class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -15,7 +18,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var princetonButton: UIButton!
     @IBOutlet var myClubButton: UIButton!
     
-    var princetonButtonSelected = true
     var currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
     
     var mockMeals: [Meal] = []
@@ -130,6 +132,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         let attrs3 = [NSFontAttributeName : UIFont.boldSystemFontOfSize(15), NSForegroundColorAttributeName: UIColor.blackColor()]
         
         if princetonButtonSelected {
+            currCellNum = indexPath.row
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.newsLabel?.numberOfLines = 0
             meal = mockMeals[indexPath.row]
@@ -158,6 +161,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             return cell
         }
         else {
+            currCellNum = indexPath.row
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]

@@ -262,10 +262,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         if (unfinishedSelected) {
             let newViewController:CompleteUnfinishedViewController = segue.destinationViewController as! CompleteUnfinishedViewController
             let indexPath = self.tableView.indexPathForSelectedRow
-            newViewController.selectedUser = self.unfinishedXData[indexPath!.row].host
+            newViewController.selectedUser = self.unfinishedXData[indexPath!.row].guest
             
-            print(historySelected)
-            print(upcomingSelected)
         }
     }
 }
