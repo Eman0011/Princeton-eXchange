@@ -43,7 +43,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.PMSymbol = "pm"
         
         daysLeft = getDaysLeft()
-        self.loadMockData()
+//        self.loadMockData()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -53,40 +53,40 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    func loadMockData() {
-        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
-        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
-        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-        let James = Student(name: "James Almeida", netid: "", club: "Cap & Gown", proxNumber: "")
-        
-        let today = NSDate()
-        print(formatter.stringFromDate(today))
-        
-        
-        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
-        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
-        let m1 = Meal(date: NSDate(), type: "Lunch", host: Sumer, guest: Emanuel)
-        x1.meal2 = m1
-        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
-        historyData.append(x1)
-        
-        let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  "Lunch")
-        x2.meal1.date = formatter.dateFromString("3-12-2016, 1:30 pm")!
-        let m2 = Meal(date: NSDate(), type: "Lunch", host: Meaghan, guest: Emanuel)
-        x2.meal2 = m2
-        x2.meal2?.date = formatter.dateFromString("3-16-2016, 12:30 pm")!
-        historyData.append(x2)
-        
-        
-        let x3 = eXchange(host: Emanuel, guest: Danielle, type:  "Dinner")
-        x3.meal1.date = formatter.dateFromString("3-14-2016, 6:30 pm")!
-        unfinishedXData.append(x3)
-        
-        let x4 = eXchange(host: Emanuel, guest: James, type:  "Dinner")
-        x4.meal1.date = formatter.dateFromString("4-20-2016, 6:30 pm")!
-        upcomingData.append(x4)
-    }
+//    func loadMockData() {
+//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
+//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
+//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+//        let James = Student(name: "James Almeida", netid: "", club: "Cap & Gown", proxNumber: "")
+//        
+//        let today = NSDate()
+//        print(formatter.stringFromDate(today))
+//        
+//        
+//        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
+//        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
+//        let m1 = Meal(date: NSDate(), type: "Lunch", host: Sumer, guest: Emanuel)
+//        x1.meal2 = m1
+//        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
+//        historyData.append(x1)
+//        
+//        let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  "Lunch")
+//        x2.meal1.date = formatter.dateFromString("3-12-2016, 1:30 pm")!
+//        let m2 = Meal(date: NSDate(), type: "Lunch", host: Meaghan, guest: Emanuel)
+//        x2.meal2 = m2
+//        x2.meal2?.date = formatter.dateFromString("3-16-2016, 12:30 pm")!
+//        historyData.append(x2)
+//        
+//        
+//        let x3 = eXchange(host: Emanuel, guest: Danielle, type:  "Dinner")
+//        x3.meal1.date = formatter.dateFromString("3-14-2016, 6:30 pm")!
+//        unfinishedXData.append(x3)
+//        
+//        let x4 = eXchange(host: Emanuel, guest: James, type:  "Dinner")
+//        x4.meal1.date = formatter.dateFromString("4-20-2016, 6:30 pm")!
+//        upcomingData.append(x4)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -163,9 +163,9 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             if (exchange.meal2 == nil) {
                 meal2String = "MEAL WAS NOT INITIALIZED"
             } else {
-                meal2String = dateFormatter.stringFromDate(exchange.meal2!.date)
+                meal2String = exchange.meal2!.date
             }
-            cell.meal1Label.text = "Meal 1: " + dateFormatter.stringFromDate(exchange.meal1.date)
+            cell.meal1Label.text = "Meal 1: " + exchange.meal1.date
             cell.meal2Label.text = "Meal 2: " + meal2String
         }
             
@@ -185,7 +185,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             student = exchange.guest
             cell.nameLabel.text = "You have scheduled a meal eXchange with " + exchange.guest.name + "."
             cell.meal1Label.text = ""
-            cell.meal2Label.text = "For " + exchange.meal1.type + " on " + dateFormatter.stringFromDate(exchange.meal1.date)
+            cell.meal2Label.text = "For " + exchange.meal1.type + " on " + exchange.meal1.date
             
         }
         cell.studentImage.image = UIImage(named: student.imageName)

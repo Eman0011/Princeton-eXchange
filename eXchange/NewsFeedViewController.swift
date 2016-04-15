@@ -60,7 +60,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // basically copy/pasted from Eman's exchange code
     func loadMeals() {
-        let mealsRoot = dataBaseRoot.childByAppendingPath("complete")
+        let mealsRoot = dataBaseRoot.childByAppendingPath("complete-exchange")
         mealsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let meal = self.getMealFromDictionary(snapshot.value as! Dictionary<String, String>)
             self.allMeals.append(meal)
@@ -73,13 +73,25 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     func getMealFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
         let netID1 = dictionary["host"]!
         let netID2 = dictionary["guest"]!
+        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+        var host: Student? = nil
+        studentsRoot.queryEqualToValue(netID1).observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict1 = snapshot.value as! Dictionary<String, String>
+            host = self.getStudentFromDictionary(dict1)
+        })
+        var guest: Student? = nil
+        studentsRoot.queryEqualToValue(netID2).observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict2 = snapshot.value as! Dictionary<String, String>
+            guest = self.getStudentFromDictionary(dict2)
+        })
         
-        // here's where the problem is: either we use the netids to make another query
-        // and create student objects to make a meal, or we can change the meal
-        // constructor to just take strings and fix all of the bugs that that creates
-        
-        let meal = Meal(date: dictionary["date"]!, type: dictionary["type"]!, host: dictionary["host"]!, guest: dictionary["guest"]!)
+        let meal = Meal(date: dictionary["date"]!, type: dictionary["type"]!, host: host!, guest: guest!)
         return meal
+    }
+    
+    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
+        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
+        return student
     }
     
 //    func loadMockData() {
