@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class eXchangeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
 
@@ -16,12 +17,11 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var tableView: UITableView!
     @IBOutlet var requestButton: UIButton!
     @IBOutlet var pendingButton: UIButton!
-
     
     
     // MARK: Global variable initialization
     
-    var mockData: [Student] = []
+    var studentsData: [Student] = []
     var searchData: [Student] = []
     var pendingData: [Student] = []
     let searchController = UISearchController(searchResultsController: nil)
@@ -29,8 +29,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var path = -1
     var userNetID: String = ""
     var rescheduleDoneButtonHit: Bool = false
-    
-    
+    var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     // MARK: Initializing functions
     
     override func viewDidLoad() {
@@ -47,7 +46,9 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         pendingButton.backgroundColor = UIColor.blackColor()
         
         
-        self.loadMockData()
+//        self.loadstudentsData()
+        
+        self.loadStudents()
         
         // setup search bar
         searchController.searchResultsUpdater = self
@@ -63,36 +64,85 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    // used as a filler until we have a database to access
-    func loadMockData() {
-        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-        mockData.append(Emanuel)
-        
-        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
-        mockData.append(Danielle)
-        
-        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
-        mockData.append(Meaghan)
-        
-        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-        mockData.append(Sumer)
-        
-        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "")
-        mockData.append(James)
-        
-        let Extra = Student(name: "Other", netid: "", club: "--", proxNumber: "")
-        mockData.append(Extra)
-        mockData.append(Extra)
-        mockData.append(Extra)
-        mockData.append(Extra)
-        
-        pendingData.append(Danielle)
-        pendingData.append(Emanuel)
-        pendingData.append(James)
-        pendingData.append(Sumer)
-
-        
+    func loadStudents() {
+        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+        studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
+            let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
+            self.studentsData.append(student)
+            self.tableView.reloadData()
+            }, withCancelBlock:  { error in
+        })
     }
+    
+    func addStudents() {
+        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
+        studentsData.append(Danielle)
+        
+        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
+        studentsData.append(Meaghan)
+        
+        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
+        studentsData.append(Sumer)
+        
+        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
+        studentsData.append(James)
+        
+        var students = Dictionary<String, Dictionary<String, String>>()
+        students[Emanuel.netid] = getDictionary(Emanuel)
+        students[Danielle.netid] = getDictionary(Danielle)
+        students[Meaghan.netid] = getDictionary(Meaghan)
+        students[Sumer.netid] = getDictionary(Sumer)
+        students[James.netid] = getDictionary(James)
+        
+        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+        studentsRoot.setValue(students)
+    }
+    
+    func getDictionary(student: Student) -> Dictionary<String, String> {
+        var dictionary: Dictionary<String, String> = Dictionary<String, String>()
+        dictionary["netID"] = student.netid
+        dictionary["name"] = student.name
+        dictionary["club"] = student.club
+        dictionary["proxNumber"] = student.proxNumber
+        return dictionary
+    }
+    
+    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
+        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
+        return student
+    }
+    
+//    // used as a filler until we have a database to access
+//    func loadstudentsData() {
+//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+//        studentsData.append(Emanuel)
+//        
+//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
+//        studentsData.append(Danielle)
+//        
+//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
+//        studentsData.append(Meaghan)
+//        
+//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+//        studentsData.append(Sumer)
+//        
+//        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "")
+//        studentsData.append(James)
+//        
+//        let Extra = Student(name: "Other", netid: "", club: "--", proxNumber: "")
+//        studentsData.append(Extra)
+//        studentsData.append(Extra)
+//        studentsData.append(Extra)
+//        studentsData.append(Extra)
+//        
+//        pendingData.append(Danielle)
+//        pendingData.append(Emanuel)
+//        pendingData.append(James)
+//        pendingData.append(Sumer)
+//
+//        
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -139,7 +189,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             return searchData.count
         }
         if requestSelected {
-            return mockData.count
+            return studentsData.count
         } else {
             return pendingData.count
         }
@@ -167,7 +217,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         // If the user is not searching, just populate cells with all appropriate groups of users
         else {
             if requestSelected {
-                student = mockData[indexPath.row]
+                student = studentsData[indexPath.row]
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
             } else {
@@ -267,7 +317,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         if requestSelected {
-            searchData = mockData.filter { student in
+            searchData = studentsData.filter { student in
                 return student.name.lowercaseString.containsString(searchText.lowercaseString)
             }
         } else {
@@ -332,7 +382,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 newViewController.selectedUser = self.searchData[indexPath!.row]
             }
             else {
-                newViewController.selectedUser = self.mockData[indexPath!.row]
+                newViewController.selectedUser = self.studentsData[indexPath!.row]
             }
             print("debugging")
         }
