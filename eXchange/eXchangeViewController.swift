@@ -30,6 +30,8 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var userNetID: String = ""
     var rescheduleDoneButtonHit: Bool = false
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
+    
+    
     // MARK: Initializing functions
     
     override func viewDidLoad() {
@@ -74,31 +76,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         })
     }
     
-    func addStudents() {
-        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
-        studentsData.append(Danielle)
-        
-        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
-        studentsData.append(Meaghan)
-        
-        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
-        studentsData.append(Sumer)
-        
-        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
-        studentsData.append(James)
-        
-        var students = Dictionary<String, Dictionary<String, String>>()
-        students[Emanuel.netid] = getDictionary(Emanuel)
-        students[Danielle.netid] = getDictionary(Danielle)
-        students[Meaghan.netid] = getDictionary(Meaghan)
-        students[Sumer.netid] = getDictionary(Sumer)
-        students[James.netid] = getDictionary(James)
-        
-        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-        studentsRoot.setValue(students)
-    }
-    
     func getDictionary(student: Student) -> Dictionary<String, String> {
         var dictionary: Dictionary<String, String> = Dictionary<String, String>()
         dictionary["netID"] = student.netid
@@ -112,6 +89,35 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
         return student
     }
+    
+    
+    
+    //    func addStudents() {
+    //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+    //        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
+    //        studentsData.append(Danielle)
+    //
+    //        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
+    //        studentsData.append(Meaghan)
+    //
+    //        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
+    //        studentsData.append(Sumer)
+    //
+    //        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
+    //        studentsData.append(James)
+    //
+    //        var students = Dictionary<String, Dictionary<String, String>>()
+    //        students[Emanuel.netid] = getDictionary(Emanuel)
+    //        students[Danielle.netid] = getDictionary(Danielle)
+    //        students[Meaghan.netid] = getDictionary(Meaghan)
+    //        students[Sumer.netid] = getDictionary(Sumer)
+    //        students[James.netid] = getDictionary(James)
+    //
+    //        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+    //        studentsRoot.setValue(students)
+    //    }
+
+    
     
 //    // used as a filler until we have a database to access
 //    func loadstudentsData() {

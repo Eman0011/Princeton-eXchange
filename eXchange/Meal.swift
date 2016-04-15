@@ -11,13 +11,15 @@ import Foundation
 class Meal {
     var host: Student
     var guest: Student
-    var date: NSDate
+    var date: String
     var type: String
+    var likes: Int
     
-    init(date: NSDate, type: String, host: Student, guest: Student) {
+    init(date: String, type: String, host: Student, guest: Student) {
         self.host = host
         self.guest = guest
         self.date = date
         self.type = type
+        self.likes = 0
     }
 }

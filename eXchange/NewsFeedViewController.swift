@@ -7,9 +7,7 @@
 //
 
 import UIKit
-var princetonButtonSelected = true
-var mealLiked = [Bool]()
-var currCellNum = 0
+import Firebase
 
 class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -20,8 +18,14 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
     
-    var mockMeals: [Meal] = []
+    var princetonButtonSelected = true
+    var mealLiked = [Bool]()
+    var currCellNum = 0
+    
+    //var mockMeals: [Meal] = []
+    var allMeals: [Meal] = []
     var filteredMeals: [Meal] = []
+    var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +38,11 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         myClubButton.layer.cornerRadius = 5
         myClubButton.backgroundColor = UIColor.blackColor()
         
-        loadMockData()
+        //loadMockData()
         
-        for meal in mockMeals {
+        self.loadMeals()
+        
+        for meal in allMeals {
             if (meal.host.club == currentUser.club) {
                 filteredMeals.append(meal)
             }
@@ -51,38 +57,63 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     
-    func loadMockData() {
-        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
-        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
-        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-        //        let James = Student(name: "James Almeida", netid: "", club: "", proxNumber: "")
-        
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy, hh:mm a"
-        formatter.AMSymbol = "am"
-        formatter.PMSymbol = "pm"
-        
-        let today = NSDate()
-        print(formatter.stringFromDate(today))
-        
-        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
-        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
-        x1.completeExchange(formatter.dateFromString("3-22-2016, 12:00 pm")!, type: "Lunch", host: Sumer, guest: Emanuel)
-        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
-        mockMeals.append(x1.meal1)
-        mockMeals.append(x1.meal2!)
-        
-        let x2 = eXchange(host: Emanuel, guest: Meaghan, type: "Dinner")
-        x2.meal1.date = formatter.dateFromString("3-12-2016, 7:30 pm")!
-        x2.completeExchange(formatter.dateFromString("3-16-2016, 6:30 pm")!, type: "Dinner", host: Meaghan, guest: Emanuel)
-        mockMeals.append(x2.meal1)
-        mockMeals.append(x2.meal2!)
-        
-        let x3 = eXchange(host: Emanuel, guest: Danielle, type: "Lunch")
-        x3.meal1.date = formatter.dateFromString("3-14-2016, 1:30 pm")!
-        mockMeals.append(x3.meal1)
+    
+    // basically copy/pasted from Eman's exchange code
+    func loadMeals() {
+        let mealsRoot = dataBaseRoot.childByAppendingPath("complete")
+        mealsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
+            let meal = self.getMealFromDictionary(snapshot.value as! Dictionary<String, String>)
+            self.allMeals.append(meal)
+            self.tableView.reloadData()
+            }, withCancelBlock:  { error in
+        })
     }
+    
+    
+    func getMealFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
+        let netID1 = dictionary["host"]!
+        let netID2 = dictionary["guest"]!
+        
+        // here's where the problem is: either we use the netids to make another query
+        // and create student objects to make a meal, or we can change the meal
+        // constructor to just take strings and fix all of the bugs that that creates
+        
+        let meal = Meal(date: dictionary["date"]!, type: dictionary["type"]!, host: dictionary["host"]!, guest: dictionary["guest"]!)
+        return meal
+    }
+    
+//    func loadMockData() {
+//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
+//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
+//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+//        //        let James = Student(name: "James Almeida", netid: "", club: "", proxNumber: "")
+//        
+//        let formatter = NSDateFormatter()
+//        formatter.dateFormat = "MM-dd-yyyy, hh:mm a"
+//        formatter.AMSymbol = "am"
+//        formatter.PMSymbol = "pm"
+//        
+//        let today = NSDate()
+//        print(formatter.stringFromDate(today))
+//        
+//        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
+//        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
+//        x1.completeExchange(formatter.dateFromString("3-22-2016, 12:00 pm")!, type: "Lunch", host: Sumer, guest: Emanuel)
+//        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
+//        mockMeals.append(x1.meal1)
+//        mockMeals.append(x1.meal2!)
+//        
+//        let x2 = eXchange(host: Emanuel, guest: Meaghan, type: "Dinner")
+//        x2.meal1.date = formatter.dateFromString("3-12-2016, 7:30 pm")!
+//        x2.completeExchange(formatter.dateFromString("3-16-2016, 6:30 pm")!, type: "Dinner", host: Meaghan, guest: Emanuel)
+//        mockMeals.append(x2.meal1)
+//        mockMeals.append(x2.meal2!)
+//        
+//        let x3 = eXchange(host: Emanuel, guest: Danielle, type: "Lunch")
+//        x3.meal1.date = formatter.dateFromString("3-14-2016, 1:30 pm")!
+//        mockMeals.append(x3.meal1)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -116,7 +147,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if princetonButtonSelected {
-            return mockMeals.count
+            return allMeals.count
         }
         else {
             return filteredMeals.count
@@ -135,7 +166,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             currCellNum = indexPath.row
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.newsLabel?.numberOfLines = 0
-            meal = mockMeals[indexPath.row]
+            meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
             // old way of setting text:
             // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"

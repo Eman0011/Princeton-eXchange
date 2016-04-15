@@ -24,7 +24,7 @@ class NewsFeedTableViewCell: UITableViewCell {
         super.awakeFromNib()
         self.likesLabel.text = "\u{e022}"
         print("curr cell num")
-       print(currCellNum)        // Initialization code
+       //print(currCellNum)        // Initialization code
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
