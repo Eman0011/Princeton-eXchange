@@ -26,7 +26,8 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     var allMeals: [Meal] = []
     var filteredMeals: [Meal] = []
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
-    
+    var studentsData: [Student] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,8 +42,8 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         //loadMockData()
         
         self.loadMeals()
-        
-        print(allMeals)
+        let tbc = self.tabBarController as! eXchangeTabBarController
+        self.studentsData = tbc.studentsData
         
         for meal in allMeals {
             if (meal.host.club == currentUser.club) {
@@ -62,44 +63,32 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // basically copy/pasted from Eman's exchange code
     func loadMeals() {
-        let mealsRoot = dataBaseRoot.childByAppendingPath("incomplete-exchange/emanuelc")
-        mealsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
-//            print(snapshot.value)
-//            print("hi")
-//            print(snapshot.value as! Dictionary<String, String>)
-//            print("world")
-            //let meal =
-            self.getMealFromDictionary(snapshot.value as! Dictionary<String, String>)
-            //self.allMeals.append(meal)
+        
+        let mealsRoot = dataBaseRoot.childByAppendingPath("newsfeed")
+        mealsRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
+            let meal: Meal = self.getMealFromDictionary(dict)
+            self.allMeals.append(meal)
             self.tableView.reloadData()
-            }, withCancelBlock:  { error in
         })
     }
     
     
-    func getMealFromDictionary(dictionary: Dictionary<String, String>) {
+    func getMealFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
         let netID1 = dictionary["Host"]!
         let netID2 = dictionary["Guest"]!
-        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-        
         var host: Student? = nil
-        studentsRoot.queryEqualToValue(netID1).observeEventType(.ChildAdded, withBlock: { snapshot in
-            let dict1 = snapshot.value as! Dictionary<String, String>
-            print("dict1")
-            print(dict1)
-            host = self.getStudentFromDictionary(dict1)
-        })
         var guest: Student? = nil
-        studentsRoot.queryEqualToValue(netID2).observeEventType(.ChildAdded, withBlock: { snapshot in
-            let dict2 = snapshot.value as! Dictionary<String, String>
-            guest = self.getStudentFromDictionary(dict2)
-        })
-        
-        print("made students")
-        print(host)
-        print(guest)
-//        let meal = Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
-//        return meal
+        for student in studentsData {
+            if (student.netid == netID1) {
+                host = student
+            }
+            if (student.netid == netID2) {
+                guest = student
+            }
+        }
+        let meal = Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
+        return meal
     }
     
     func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
