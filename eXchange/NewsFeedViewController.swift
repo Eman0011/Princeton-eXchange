@@ -42,6 +42,8 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.loadMeals()
         
+        print(allMeals)
+        
         for meal in allMeals {
             if (meal.host.club == currentUser.club) {
                 filteredMeals.append(meal)
@@ -60,23 +62,31 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // basically copy/pasted from Eman's exchange code
     func loadMeals() {
-        let mealsRoot = dataBaseRoot.childByAppendingPath("complete-exchange")
+        let mealsRoot = dataBaseRoot.childByAppendingPath("incomplete-exchange/emanuelc")
         mealsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
-            let meal = self.getMealFromDictionary(snapshot.value as! Dictionary<String, String>)
-            self.allMeals.append(meal)
+//            print(snapshot.value)
+//            print("hi")
+//            print(snapshot.value as! Dictionary<String, String>)
+//            print("world")
+            //let meal =
+            self.getMealFromDictionary(snapshot.value as! Dictionary<String, String>)
+            //self.allMeals.append(meal)
             self.tableView.reloadData()
             }, withCancelBlock:  { error in
         })
     }
     
     
-    func getMealFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
-        let netID1 = dictionary["host"]!
-        let netID2 = dictionary["guest"]!
+    func getMealFromDictionary(dictionary: Dictionary<String, String>) {
+        let netID1 = dictionary["Host"]!
+        let netID2 = dictionary["Guest"]!
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+        
         var host: Student? = nil
         studentsRoot.queryEqualToValue(netID1).observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict1 = snapshot.value as! Dictionary<String, String>
+            print("dict1")
+            print(dict1)
             host = self.getStudentFromDictionary(dict1)
         })
         var guest: Student? = nil
@@ -85,11 +95,15 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             guest = self.getStudentFromDictionary(dict2)
         })
         
-        let meal = Meal(date: dictionary["date"]!, type: dictionary["type"]!, host: host!, guest: guest!)
-        return meal
+        print("made students")
+        print(host)
+        print(guest)
+//        let meal = Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
+//        return meal
     }
     
     func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
+        print(dictionary)
         let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
         return student
     }
