@@ -89,7 +89,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         unfinishedRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
-            let exchange: eXchange = self.getPendingOrUpcomingFromDictionary(dict)
+            let exchange: eXchange = self.getIncompleteOrUpcomingFromDictionary(dict)
             self.unfinishedData.append(exchange)
             self.tableView.reloadData()
         })
@@ -101,7 +101,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         upcomingRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
-            let exchange: eXchange = self.getPendingOrUpcomingFromDictionary(dict)
+            let exchange: eXchange = self.getIncompleteOrUpcomingFromDictionary(dict)
             self.upcomingData.append(exchange)
             self.tableView.reloadData()
         })
@@ -127,7 +127,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         return exchange
     }
     
-    func getPendingOrUpcomingFromDictionary(dictionary: Dictionary<String, String>) -> eXchange {
+    func getIncompleteOrUpcomingFromDictionary(dictionary: Dictionary<String, String>) -> eXchange {
         let hostID = dictionary["Host"]
         let guestID = dictionary["Guest"]
         var host: Student? = nil
