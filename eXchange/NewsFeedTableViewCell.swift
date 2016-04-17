@@ -23,8 +23,6 @@ class NewsFeedTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.likesLabel.text = "\u{e022}"
-        print("curr cell num")
-       //print(currCellNum)        // Initialization code
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -48,12 +46,6 @@ class NewsFeedTableViewCell: UITableViewCell {
             self.likeButton.setTitle("Unlike", forState: .Normal)
             self.likeButton.setTitleColor(UIColor.orangeColor(), forState: .Normal)
 
-        }
-        if counter == 0 {
-            self.likesLabel.text = "\u{e022}"
-        }
-        else {
-            self.likesLabel.text = "\u{e022} " + String(counter)
         }
     }
 

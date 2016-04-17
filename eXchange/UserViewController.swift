@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class UserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -17,13 +18,18 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var upcomingButton: UIButton!
     
     var historyData: [eXchange] = []
-    var unfinishedXData: [eXchange] = []
+    var unfinishedData: [eXchange] = []
     var upcomingData: [eXchange] = []
+    var studentsData: [Student] = []
+    
     var historySelected = true
     var unfinishedSelected = false
     var upcomingSelected = false
     let formatter = NSDateFormatter()
     var daysLeft = 0
+    var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
+    var userNetID: String = ""
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +49,17 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.PMSymbol = "pm"
         
         daysLeft = getDaysLeft()
+        
+        let tbc = self.tabBarController as! eXchangeTabBarController
+        self.studentsData = tbc.studentsData
+        self.userNetID = tbc.userNetID
+        
+        print(self.userNetID)
+        
+        self.loadHistory()
+        self.loadUnfinished()
+        self.loadUpcoming()
+        
 //        self.loadMockData()
         
         // Uncomment the following line to preserve selection between presentations
@@ -51,6 +68,88 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+    }
+    
+    func loadHistory() {
+        let path = "complete-exchange/" + userNetID
+        print(path)
+        let historyRoot = dataBaseRoot.childByAppendingPath(path)
+        
+        historyRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
+            let exchange: eXchange = self.getCompleteFromDictionary(dict)
+            self.historyData.append(exchange)
+            self.tableView.reloadData()
+        })
+    }
+    
+    func loadUnfinished() {
+        let path = "incomplete-exchange/" + userNetID
+        let unfinishedRoot = dataBaseRoot.childByAppendingPath(path)
+        
+        unfinishedRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
+            let exchange: eXchange = self.getPendingOrUpcomingFromDictionary(dict)
+            self.unfinishedData.append(exchange)
+            self.tableView.reloadData()
+        })
+    }
+    
+    func loadUpcoming() {
+        let path = "upcoming/" + userNetID
+        let upcomingRoot = dataBaseRoot.childByAppendingPath(path)
+        
+        upcomingRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
+            let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
+            let exchange: eXchange = self.getPendingOrUpcomingFromDictionary(dict)
+            self.upcomingData.append(exchange)
+            self.tableView.reloadData()
+        })
+    }
+    
+    
+    func getCompleteFromDictionary(dictionary: Dictionary<String, String>) -> eXchange {
+        let netID2 = dictionary["Student"]
+        var student1: Student? = nil
+        var student2: Student? = nil
+        
+        for student in studentsData {
+            if (student.netid == userNetID) {
+                student1 = student
+            }
+            if (student.netid == netID2) {
+                student2 = student
+            }
+        }
+        
+        let exchange = eXchange(host: student1!, guest: student2!, type: dictionary["Type"]!)
+        
+        return exchange
+    }
+    
+    func getPendingOrUpcomingFromDictionary(dictionary: Dictionary<String, String>) -> eXchange {
+        let hostID = dictionary["Host"]
+        let guestID = dictionary["Guest"]
+        var host: Student? = nil
+        var guest: Student? = nil
+
+        
+        for student in studentsData {
+            if (student.netid == hostID) {
+                host = student
+            }
+            if (student.netid == guestID) {
+                guest = student
+            }
+        }
+        
+        
+        print(host)
+        print(guest)
+        
+        let exchange = eXchange(host: host!, guest: guest!, type: dictionary["Type"]!)
+        
+        return exchange
     }
     
 //    func loadMockData() {
@@ -139,7 +238,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             return historyData.count
         }
         else if unfinishedSelected {
-            return unfinishedXData.count
+            return unfinishedData.count
         }
         else {
             return upcomingData.count
@@ -172,7 +271,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         else if unfinishedSelected {
             historySelected = false
             upcomingSelected = false
-            let exchange = unfinishedXData[indexPath.row]
+            let exchange = unfinishedData[indexPath.row]
             student = exchange.guest
             cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
             cell.meal1Label.text = "\(daysLeft) days left to complete!"
@@ -262,7 +361,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         if (unfinishedSelected) {
             let newViewController:CompleteUnfinishedViewController = segue.destinationViewController as! CompleteUnfinishedViewController
             let indexPath = self.tableView.indexPathForSelectedRow
-            newViewController.selectedUser = self.unfinishedXData[indexPath!.row].guest
+            newViewController.selectedUser = self.unfinishedData[indexPath!.row].guest
             
         }
     }

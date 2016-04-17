@@ -27,6 +27,8 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     var filteredMeals: [Meal] = []
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var studentsData: [Student] = []
+    
+    var userNetID: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         self.loadMeals()
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.studentsData = tbc.studentsData
+        self.userNetID = tbc.userNetID
         
         for meal in allMeals {
             if (meal.host.club == currentUser.club) {
@@ -88,14 +91,15 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         let meal = Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
+        meal.likes = Int(dictionary["Likes"]!)!
         return meal
     }
     
-    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
-        print(dictionary)
-        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
-        return student
-    }
+//    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
+//        print(dictionary)
+//        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
+//        return student
+//    }
     
 //    func loadMockData() {
 //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
@@ -183,6 +187,11 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            
+            // like button no longer works because we're accessing from database
+            cell.likesLabel.text = String(meal.likes + cell.counter)
+            
+            
             // old way of setting text:
             // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
             

@@ -10,7 +10,9 @@ import UIKit
 import WebKit
 
 class LoginViewController: UIViewController, WKNavigationDelegate {
+    
     var netid: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let url = NSURL(string: "http://www.cs.princeton.edu/~cmoretti/cos333/CAS/CAStestpy.cgi")

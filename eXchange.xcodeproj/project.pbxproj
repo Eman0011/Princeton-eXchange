@@ -138,12 +138,12 @@
 				03F1944C1CB60A6300BBB16E /* LoginViewController.swift */,
 				032E92DD1C9E28C600A2ABF7 /* eXchangeViewController.swift */,
 				0314C2EE1C9FC8FA0030A957 /* NewsFeedViewController.swift */,
-				B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */,
 				032E92E31C9F6B4700A2ABF7 /* UserViewController.swift */,
 				B3AD32441CAF54CE004F2FC6 /* CreateRequestViewController.swift */,
 				B3EC70771CB763580087283F /* RescheduleRequestViewController.swift */,
 				B3EC70791CB77BCB0087283F /* CompleteUnfinishedViewController.swift */,
 				032E92DC1C9E28C600A2ABF7 /* eXchangeTableViewCell.swift */,
+				B3EC70751CB7441A0087283F /* NewsFeedTableViewCell.swift */,
 				B3AD32461CAF72D6004F2FC6 /* UserTableViewCell.swift */,
 				032E92B11C9DDC9200A2ABF7 /* Main.storyboard */,
 				032E92E51C9F713B00A2ABF7 /* eXchange.swift */,
@@ -262,7 +262,7 @@
 				TargetAttributes = {
 					032E92A91C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = KA5ED35D47;
+						DevelopmentTeam = SL962NMQ3M;
 					};
 					032E92BD1C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -536,7 +536,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = eXchange/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eman0011;
+				PRODUCT_BUNDLE_IDENTIFIER = jamesalmeida24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -551,7 +551,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = eXchange/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = eman0011;
+				PRODUCT_BUNDLE_IDENTIFIER = jamesalmeida24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

@@ -36,6 +36,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
         
