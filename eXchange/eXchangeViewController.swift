@@ -24,13 +24,16 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var studentsData: [Student] = []
     var searchData: [Student] = []
     var pendingData: [Meal] = []
+    
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
-    var path = -1
-    var userNetID: String = ""
     var rescheduleDoneButtonHit: Bool = false
+    var path = -1
+
+    var userNetID: String = ""
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
-    var didLoad: Bool = false
     
     
     // MARK: Initializing functions
@@ -47,6 +50,9 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.studentsData = tbc.studentsData
+            self.currentUser = tbc.currentUser
+            print("testing " + self.currentUser.netid)
+            print("testing2 " + self.currentUser.club)
             print(self.studentsData)
             self.loadPending()
             
@@ -58,16 +64,8 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             self.pendingButton.layer.cornerRadius = 5
             self.pendingButton.backgroundColor = UIColor.blackColor()
             
-            //        self.loadstudentsData()
-            
-            //self.loadStudents()
             print("\ndone waiting\n")
             
-            
-            //print(self.studentsData)
-            
-            //print(pendingData)
-            // self.addStudents()
             // setup search bar
             self.searchController.searchResultsUpdater = self
             self.searchController.dimsBackgroundDuringPresentation = false
@@ -233,12 +231,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             if requestSelected {
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
-            } else {
-                if student.name != "" {
-                    cell.nameLabel.text = student.name + " wants to get a meal!"
-                    cell.clubLabel.text = student.club
-                }
             }
+//            else {
+//                if student.name != "" {
+//                    cell.nameLabel.text = student.name + " wants to get a meal!"
+//                    cell.clubLabel.text = student.club
+//                }
+//            }
         }
         
         // If the user is not searching, just populate cells with all appropriate groups of users
@@ -256,8 +255,8 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 }
 
                 if student.name != "" {
-                    cell.nameLabel.text = student.name + " wants to get a meal!"
-                    cell.clubLabel.text = student.club
+                    cell.nameLabel.text = student.name + " wants to get " + pendingData[indexPath.row].type + " at " + pendingData[indexPath.row].host.club
+                    cell.clubLabel.text = ""
                 }
             }
         }
@@ -332,20 +331,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
-////    func isLandscapeOrientation() -> Bool {
-////        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
-////    }
-//    
-//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-////        if isLandscapeOrientation() {
-////            return hasImageAtIndexPath(indexPath) ? 140.0 : 120.0
-////        } else {
-////            return hasImageAtIndexPath(indexPath) ? 235.0 : 155.0
-////        }
-//        return 100;
-//    }
-    
-    
     // MARK: - Search Functions
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
@@ -365,29 +350,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    
-    
     
     
     // MARK: - Navigation
@@ -418,7 +380,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             else {
                 newViewController.selectedUser = self.studentsData[indexPath!.row]
             }
-            print("debugging")
+            newViewController.currentUser = self.currentUser
         }
         else if segue.identifier == "rescheduleRequestSegue" {
             let newViewController:RescheduleRequestViewController = segue.destinationViewController as! RescheduleRequestViewController
@@ -437,4 +399,47 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ////    func isLandscapeOrientation() -> Bool {
+    ////        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
+    ////    }
+    //
+    //    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    ////        if isLandscapeOrientation() {
+    ////            return hasImageAtIndexPath(indexPath) ? 140.0 : 120.0
+    ////        } else {
+    ////            return hasImageAtIndexPath(indexPath) ? 235.0 : 155.0
+    ////        }
+    //        return 100;
+    //    }
+    
+    
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    // Return false if you do not want the specified item to be editable.
+    return true
+    }
+    */
+    
+    /*
+    // Override to support editing the table view.
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    if editingStyle == .Delete {
+    // Delete the row from the data source
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    } else if editingStyle == .Insert {
+    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
+    }
+    */
+    
 }

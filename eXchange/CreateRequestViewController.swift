@@ -16,10 +16,11 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var mealSelectedLabel: UILabel!
     
     
-    var temp: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    let currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var pickerData: [String] = []
+    
+    var selectedClub: String = ""
     
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
@@ -27,8 +28,10 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     override func viewDidLoad() {
         super.viewDidLoad()
         mealSelectedLabel.text = selectedUser.name
+        
         pickerData.append(selectedUser.club)
         pickerData.append(currentUser.club)
+        
         clubPicker.dataSource = self
         clubPicker.delegate = self
     }
@@ -38,9 +41,37 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     @IBAction func doneButton(sender: AnyObject) {
+        let pendingRoot = dataBaseRoot.childByAppendingPath("pending/jamespa")
+        pendingRoot.observeEventType(.Value, withBlock: { snapshot in
+            let counter = snapshot.childrenCount
+            print(counter)
+        });
+        
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        
+        var host: Student? = nil
+        var guest: Student? = nil
+        
+        if (selectedClub == selectedUser.club) {
+            host = selectedUser
+            guest = currentUser
+        }
+        else {
+            host = currentUser
+            guest = selectedUser
+        }
+        
+        let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch"]
+        
+        
+        //updateChildValues is exactly like setValue except it doesn't delete the old data
+        pendingRoot.updateChildValues(newEntry)
         self.dismissViewControllerAnimated(true, completion: {});
         print("SENT DATA")
     }
+    
 
     
     //MARK: - Delegates and data sources
@@ -59,6 +90,7 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         mealSelectedLabel.text = pickerData[row]
+        selectedClub = pickerData[row]
     }
     
 }

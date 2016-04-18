@@ -11,6 +11,7 @@ import Firebase
 
 class eXchangeTabBarController: UITabBarController {
     var userNetID: String = "emanuelc"
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var studentsData: [Student] = []
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
@@ -27,6 +28,12 @@ class eXchangeTabBarController: UITabBarController {
     
     func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
         let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
+
+        if (student.netid == userNetID) {
+            currentUser = student
+        }
+        
+        
         return student
     }
 }
