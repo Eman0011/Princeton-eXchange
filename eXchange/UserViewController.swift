@@ -54,8 +54,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.studentsData = tbc.studentsData
         self.userNetID = tbc.userNetID
         
-        print(self.userNetID)
-        
         self.loadHistory()
         self.loadUnfinished()
         self.loadUpcoming()
@@ -72,7 +70,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func loadHistory() {
         let path = "complete-exchange/" + userNetID
-        print(path)
         let historyRoot = dataBaseRoot.childByAppendingPath(path)
         
         historyRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
@@ -142,10 +139,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
                 guest = student
             }
         }
-        
-        
-        print(host)
-        print(guest)
         
         let exchange = eXchange(host: host!, guest: guest!, type: dictionary["Type"]!)
         

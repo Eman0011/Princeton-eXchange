@@ -23,13 +23,14 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     var studentsData: [Student] = []
     var searchData: [Student] = []
-    var pendingData: [Student] = []
+    var pendingData: [Meal] = []
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
     var path = -1
     var userNetID: String = ""
     var rescheduleDoneButtonHit: Bool = false
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
+    var didLoad: Bool = false
     
     
     // MARK: Initializing functions
@@ -39,25 +40,42 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
+        print("Current user: " + userNetID)
+        print("waiting\n")
         
-        eXchangeBanner.image = UIImage(named:"exchange_banner")!
-        self.tableView.rowHeight = 100.0
+        let delay = 1 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.studentsData = tbc.studentsData
+            print(self.studentsData)
+            self.loadPending()
+            
+            self.self.eXchangeBanner.image = UIImage(named:"exchange_banner")!
+            self.tableView.rowHeight = 100.0
+            
+            self.requestButton.layer.cornerRadius = 5
+            self.requestButton.backgroundColor = UIColor.orangeColor()
+            self.pendingButton.layer.cornerRadius = 5
+            self.pendingButton.backgroundColor = UIColor.blackColor()
+            
+            //        self.loadstudentsData()
+            
+            //self.loadStudents()
+            print("\ndone waiting\n")
+            
+            
+            //print(self.studentsData)
+            
+            //print(pendingData)
+            // self.addStudents()
+            // setup search bar
+            self.searchController.searchResultsUpdater = self
+            self.searchController.dimsBackgroundDuringPresentation = false
+            self.definesPresentationContext = true
+            self.tableView.tableHeaderView = self.searchController.searchBar
+
+        }
         
-        requestButton.layer.cornerRadius = 5
-        requestButton.backgroundColor = UIColor.orangeColor()
-        pendingButton.layer.cornerRadius = 5
-        pendingButton.backgroundColor = UIColor.blackColor()
-        
-        
-//        self.loadstudentsData()
-        
-        self.loadStudents()
-        
-        // setup search bar
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -71,7 +89,22 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
+            print(student.netid)
             self.studentsData.append(student)
+            print(self.studentsData)
+            //self.tableView.reloadData()
+            //self.didLoad = true
+            }, withCancelBlock:  { error in
+        })
+    }
+    
+    func loadPending() {
+        let pendingPath = "pending/" + userNetID
+        let pendingRoot = dataBaseRoot.childByAppendingPath(pendingPath)
+        pendingRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
+            let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
+            let meal: Meal = self.getPendingFromDictionary(dict)
+            self.pendingData.append(meal)
             self.tableView.reloadData()
             }, withCancelBlock:  { error in
         })
@@ -91,65 +124,52 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         return student
     }
     
+    func getPendingFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
+        let netID1 = dictionary["Host"]
+        let netID2 = dictionary["Guest"]
+        var host: Student? = nil
+        var guest: Student? = nil
+        
+        for student in studentsData {
+            if (student.netid == netID1) {
+                host = student
+            }
+            if (student.netid == netID2) {
+                guest = student
+            }
+        }
+        return Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
+    }
     
     
-    //    func addStudents() {
-    //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-    //        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
-    //        studentsData.append(Danielle)
-    //
-    //        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
-    //        studentsData.append(Meaghan)
-    //
-    //        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
-    //        studentsData.append(Sumer)
-    //
-    //        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
-    //        studentsData.append(James)
-    //
-    //        var students = Dictionary<String, Dictionary<String, String>>()
-    //        students[Emanuel.netid] = getDictionary(Emanuel)
-    //        students[Danielle.netid] = getDictionary(Danielle)
-    //        students[Meaghan.netid] = getDictionary(Meaghan)
-    //        students[Sumer.netid] = getDictionary(Sumer)
-    //        students[James.netid] = getDictionary(James)
-    //
-    //        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-    //        studentsRoot.setValue(students)
-    //    }
-
     
-    
-//    // used as a filler until we have a database to access
-//    func loadstudentsData() {
+//    func addStudents() {
 //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-//        studentsData.append(Emanuel)
-//        
-//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
+//        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
 //        studentsData.append(Danielle)
 //        
-//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
+//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
 //        studentsData.append(Meaghan)
 //        
-//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+//        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
 //        studentsData.append(Sumer)
 //        
-//        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "")
+//        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
 //        studentsData.append(James)
 //        
-//        let Extra = Student(name: "Other", netid: "", club: "--", proxNumber: "")
-//        studentsData.append(Extra)
-//        studentsData.append(Extra)
-//        studentsData.append(Extra)
-//        studentsData.append(Extra)
+//        var students = Dictionary<String, Dictionary<String, String>>()
+//        students[Emanuel.netid] = getDictionary(Emanuel)
+//        students[Danielle.netid] = getDictionary(Danielle)
+//        students[Meaghan.netid] = getDictionary(Meaghan)
+//        students[Sumer.netid] = getDictionary(Sumer)
+//        //students[James.netid] = getDictionary(James)
 //        
-//        pendingData.append(Danielle)
-//        pendingData.append(Emanuel)
-//        pendingData.append(James)
-//        pendingData.append(Sumer)
-//
+//        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
 //        
+//        //updateChildValues is exactly like setValue except it doesn't delete the old data
+//        studentsRoot.updateChildValues(students)
 //    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -228,7 +248,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
             } else {
-                student = pendingData[indexPath.row]
+                if (self.pendingData[indexPath.row].host.netid == userNetID) {
+                    student = pendingData[indexPath.row].guest
+                }
+                else {
+                    student = pendingData[indexPath.row].host
+                }
+
                 if student.name != "" {
                     cell.nameLabel.text = student.name + " wants to get a meal!"
                     cell.clubLabel.text = student.club
@@ -327,11 +353,12 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             searchData = studentsData.filter { student in
                 return student.name.lowercaseString.containsString(searchText.lowercaseString)
             }
-        } else {
-            searchData = pendingData.filter { student in
-                return student.name.lowercaseString.containsString(searchText.lowercaseString)
-            }
         }
+        // else {
+//            searchData = pendingData.filter { student in
+//                return student.name.lowercaseString.containsString(searchText.lowercaseString)
+//            }
+//        }
         tableView.reloadData()
     }
     
@@ -396,9 +423,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         else if segue.identifier == "rescheduleRequestSegue" {
             let newViewController:RescheduleRequestViewController = segue.destinationViewController as! RescheduleRequestViewController
             
-            newViewController.selectedUser = self.pendingData[path]
+            if (self.pendingData[path].host.netid == userNetID) {
+                newViewController.selectedUser = self.pendingData[path].guest
+            }
             
-            //path = -1
+            else if (self.pendingData[path].guest.netid == userNetID) {
+                newViewController.selectedUser = self.pendingData[path].host
+            }
         }
         
     // Get the new view controller using segue.destinationViewController.

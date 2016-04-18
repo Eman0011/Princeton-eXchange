@@ -43,8 +43,9 @@ class LoginViewController: UIViewController, WKNavigationDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destination = segue.destinationViewController as! eXchangeTabBarController
-        destination.userNetID = self.netid
+        //let destination = segue.destinationViewController as! eXchangeTabBarController
+        // uncomment this to un-hardcode userNetID
+        // destination.userNetID = self.netid
     }
 
 }

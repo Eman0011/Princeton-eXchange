@@ -7,16 +7,22 @@
 //
 
 import UIKit
+import Firebase
 
 class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var clubPicker: UIPickerView!
     @IBOutlet weak var mealSelectedLabel: UILabel!
+    
+    
     var temp: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     let currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
     var pickerData: [String] = []
+    
+    var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
