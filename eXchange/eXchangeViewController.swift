@@ -138,35 +138,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         return Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
     }
-    
-    
-    
-//    func addStudents() {
-//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-//        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
-//        studentsData.append(Danielle)
-//        
-//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
-//        studentsData.append(Meaghan)
-//        
-//        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
-//        studentsData.append(Sumer)
-//        
-//        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
-//        studentsData.append(James)
-//        
-//        var students = Dictionary<String, Dictionary<String, String>>()
-//        students[Emanuel.netid] = getDictionary(Emanuel)
-//        students[Danielle.netid] = getDictionary(Danielle)
-//        students[Meaghan.netid] = getDictionary(Meaghan)
-//        students[Sumer.netid] = getDictionary(Sumer)
-//        //students[James.netid] = getDictionary(James)
-//        
-//        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-//        
-//        //updateChildValues is exactly like setValue except it doesn't delete the old data
-//        studentsRoot.updateChildValues(students)
-//    }
 
     
     override func didReceiveMemoryWarning() {
@@ -368,8 +339,55 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         print(indexPath.row)
         path = indexPath.row
         
+        
         if (response == "Accept") {
             //send the exchange to the database
+            let upcomingString1 = "upcoming/" + pendingData[indexPath.row].host.netid
+            let upcomingString2 = "upcoming/" + pendingData[indexPath.row].guest.netid
+
+            let upcomingRoot1 = dataBaseRoot.childByAppendingPath(upcomingString1)
+            let upcomingRoot2 = dataBaseRoot.childByAppendingPath(upcomingString2)
+
+            var endRoot1 = -1
+            var endRoot2 = -1
+            
+            upcomingRoot1.observeEventType(.Value, withBlock: { snapshot in
+                let counter = snapshot.childrenCount
+                print(counter)
+                endRoot1 = Int(counter)
+            });
+            
+            upcomingRoot2.observeEventType(.Value, withBlock: { snapshot in
+                let counter = snapshot.childrenCount
+                print(counter)
+                endRoot2 = Int(counter)
+            });
+            
+            
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM-dd-yyyy"
+            
+            let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": "Lunch"]
+            
+            
+            let delay = 1 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                let newUpcomingRoot1 = self.dataBaseRoot.childByAppendingPath(upcomingString1 + "/" + String(endRoot1))
+                let newUpcomingRoot2 = self.dataBaseRoot.childByAppendingPath(upcomingString2 + "/" + String(endRoot2))
+
+                
+                //updateChildValues is exactly like setValue except it doesn't delete the old data
+                newUpcomingRoot1.updateChildValues(newEntry)
+                newUpcomingRoot2.updateChildValues(newEntry)
+
+                self.dismissViewControllerAnimated(true, completion: {});
+                print("SENT DATA")
+            }
+            
+            
+            
+            
             
             //remove the request from pending requests
             pendingData.removeAtIndex(indexPath.row)
@@ -514,5 +532,32 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     }
     */
+    
+    //    func addStudents() {
+    //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+    //        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
+    //        studentsData.append(Danielle)
+    //
+    //        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
+    //        studentsData.append(Meaghan)
+    //
+    //        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
+    //        studentsData.append(Sumer)
+    //
+    //        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
+    //        studentsData.append(James)
+    //
+    //        var students = Dictionary<String, Dictionary<String, String>>()
+    //        students[Emanuel.netid] = getDictionary(Emanuel)
+    //        students[Danielle.netid] = getDictionary(Danielle)
+    //        students[Meaghan.netid] = getDictionary(Meaghan)
+    //        students[Sumer.netid] = getDictionary(Sumer)
+    //        //students[James.netid] = getDictionary(James)
+    //
+    //        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+    //
+    //        //updateChildValues is exactly like setValue except it doesn't delete the old data
+    //        studentsRoot.updateChildValues(students)
+    //    }
     
 }
