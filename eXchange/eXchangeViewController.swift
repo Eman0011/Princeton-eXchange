@@ -255,7 +255,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 }
 
                 if student.name != "" {
-                    cell.nameLabel.text = student.name + " wants to get " + pendingData[indexPath.row].type + " at " + pendingData[indexPath.row].host.club
+                    let string1 = student.name + " wants to get " + pendingData[indexPath.row].type + " at " + pendingData[indexPath.row].host.club
+                    let string2 = " on " + self.getDayOfWeekString(pendingData[indexPath.row].date)!
+
+                    cell.nameLabel.text = string1 + string2
                     cell.clubLabel.text = ""
                 }
             }
@@ -263,6 +266,76 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
 
         cell.studentImage.image = UIImage(named: student.imageName)
         return cell
+    }
+    
+    func getDayOfWeekString(today:String)->String? {
+        let formatter  = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        if let todayDate = formatter.dateFromString(today) {
+            let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+            let myComponents = myCalendar.components([.Weekday, .Month , .Day], fromDate: todayDate)
+            let month = myComponents.month
+            print(month)
+            let date = myComponents.day
+            let weekDay = myComponents.weekday
+            var stringDay = ""
+            var stringMonth = ""
+            switch weekDay {
+            case 1:
+                stringDay = "Sunday, "
+            case 2:
+                stringDay = "Monday, "
+            case 3:
+                stringDay = "Tuesday, "
+            case 4:
+                stringDay = "Wednesday, "
+            case 5:
+                stringDay = "Thursday, "
+            case 6:
+                stringDay = "Friday, "
+            case 7:
+                stringDay = "Saturday, "
+            default:
+                print("Error fetching days")
+                stringDay = "Day"
+            }
+            
+            switch month {
+            case 1:
+                stringMonth = "January "
+            case 2:
+                stringMonth = "February "
+            case 3:
+                stringMonth = "March "
+            case 4:
+                stringMonth = "April "
+            case 5:
+                stringMonth = "May "
+            case 6:
+                stringMonth = "June "
+            case 7:
+                stringMonth = "July "
+            case 8:
+                stringMonth = "August "
+            case 9:
+                stringMonth = "September "
+            case 10:
+                stringMonth = "October "
+            case 11:
+                stringMonth = "November "
+            case 12:
+                stringMonth = "December "
+
+            default:
+                print("Error fetching month")
+                stringDay = "Month"
+            }
+            print("date: ")
+            print(date)
+            return stringDay + stringMonth + String(date)
+        } else {
+            return nil
+        }
     }
     
     
