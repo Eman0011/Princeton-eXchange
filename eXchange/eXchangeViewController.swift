@@ -383,15 +383,11 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
 
                 self.dismissViewControllerAnimated(true, completion: {});
                 print("SENT DATA")
+                
+                //remove the request from pending requests
+                self.pendingData.removeAtIndex(indexPath.row)
+                self.tableView.reloadData()
             }
-            
-            
-            
-            
-            
-            //remove the request from pending requests
-            pendingData.removeAtIndex(indexPath.row)
-            tableView.reloadData()
             
         }
         else if (response == "Reschedule") {
@@ -483,6 +479,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             else if (self.pendingData[path].guest.netid == userNetID) {
                 newViewController.selectedUser = self.pendingData[path].host
             }
+            newViewController.currentUser = self.currentUser
         }
         
     // Get the new view controller using segue.destinationViewController.

@@ -28,10 +28,9 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     override func viewDidLoad() {
         super.viewDidLoad()
         mealSelectedLabel.text = selectedUser.name
-        
+        pickerData.append("")
         pickerData.append(selectedUser.club)
         pickerData.append(currentUser.club)
-        
         clubPicker.dataSource = self
         clubPicker.delegate = self
     }
@@ -41,43 +40,45 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     @IBAction func doneButton(sender: AnyObject) {
-        let pendingString = "pending/" + self.selectedUser.netid
-        let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
-        var endRoot = -1
-        
-        pendingRoot.observeEventType(.Value, withBlock: { snapshot in
-            let counter = snapshot.childrenCount
-            print(counter)
-            endRoot = Int(counter)
-        });
-        
-        
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        
-        var host: Student? = nil
-        var guest: Student? = nil
-        
-        if (selectedClub == selectedUser.club) {
-            host = selectedUser
-            guest = currentUser
-        }
-        else {
-            host = currentUser
-            guest = selectedUser
-        }
-        
-        let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch"]
-        
-        let delay = 1 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {
-            let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
+        if (selectedClub != "") {
+            let pendingString = "pending/" + self.selectedUser.netid
+            let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
+            var endRoot = -1
             
-            //updateChildValues is exactly like setValue except it doesn't delete the old data
-            newPendingRoot.updateChildValues(newEntry)
-            self.dismissViewControllerAnimated(true, completion: {});
-            print("SENT DATA")
+            pendingRoot.observeEventType(.Value, withBlock: { snapshot in
+                let counter = snapshot.childrenCount
+                print(counter)
+                endRoot = Int(counter)
+            });
+            
+            
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM-dd-yyyy"
+            
+            var host: Student? = nil
+            var guest: Student? = nil
+            
+            if (selectedClub == selectedUser.club) {
+                host = selectedUser
+                guest = currentUser
+            }
+            else {
+                host = currentUser
+                guest = selectedUser
+            }
+            
+            let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch", "Club": selectedClub]
+            
+            let delay = 1 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
+                
+                //updateChildValues is exactly like setValue except it doesn't delete the old data
+                newPendingRoot.updateChildValues(newEntry)
+                self.dismissViewControllerAnimated(true, completion: {});
+                print("SENT DATA")
+            }
         }
     }
     

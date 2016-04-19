@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
@@ -14,10 +15,15 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     @IBOutlet weak var clubPicker: UIPickerView!
     @IBOutlet weak var mealSelectedLabel: UILabel!
     
-    var temp: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
+    
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    let currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var pickerData: [String] = []
+    
+    var selectedClub: String = ""
+    
+    var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +34,52 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
         clubPicker.delegate = self
     }
     
+    @IBAction func doneButton(sender: AnyObject) {
+        let pendingString = "pending/" + self.selectedUser.netid
+        let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
+        var endRoot = -1
+        
+        pendingRoot.observeEventType(.Value, withBlock: { snapshot in
+            let counter = snapshot.childrenCount
+            print(counter)
+            endRoot = Int(counter)
+        });
+        
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        
+        var host: Student? = nil
+        var guest: Student? = nil
+        
+        if (selectedClub == selectedUser.club) {
+            host = selectedUser
+            guest = currentUser
+        }
+        else {
+            host = currentUser
+            guest = selectedUser
+        }
+        
+        let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch"]
+        
+        let delay = 1 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
+            
+            //updateChildValues is exactly like setValue except it doesn't delete the old data
+            newPendingRoot.updateChildValues(newEntry)
+            self.dismissViewControllerAnimated(true, completion: {});
+            print("RESCHEDULED DATA")
+        }
+        
+    }
+    
+
+    @IBAction func cancelButton(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: {});
+    }
     
     //MARK: - Delegates and data sources
     //MARK: Data Sources
@@ -45,7 +97,7 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         mealSelectedLabel.text = pickerData[row]
-
+        selectedClub = pickerData[row]
     }
     
     
