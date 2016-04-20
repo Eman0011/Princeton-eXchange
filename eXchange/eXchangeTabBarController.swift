@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class eXchangeTabBarController: UITabBarController {
-    var userNetID: String = "jamespa"
+    var userNetID: String = "emanuelc"
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var studentsData: [Student] = []
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")

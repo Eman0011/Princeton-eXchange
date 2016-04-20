@@ -52,11 +52,27 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
             let pendingString = "pending/" + self.selectedUser.netid
             let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
             var endRoot = -1
-            
-            pendingRoot.observeEventType(.Value, withBlock: { snapshot in
-                let counter = snapshot.childrenCount
-                print(counter)
-                endRoot = Int(counter)
+        
+            pendingRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                var num: Int = 0
+                let children = snapshot.children
+                let count = snapshot.childrenCount
+
+                while let child = children.nextObject() as? FDataSnapshot {
+                    if (num != Int(child.key)) {
+                        print("num1: " + String(num))
+                        print("child.key: " + String(Int(child.key)))
+                        endRoot = num
+                        break
+                    }
+                    else {
+                        num+=1
+                    }
+                    print("num: " + String(num))
+                }
+                if (endRoot == -1) {
+                    endRoot = Int(count)
+                }
             });
             
             
@@ -85,7 +101,7 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
                 //updateChildValues is exactly like setValue except it doesn't delete the old data
                 newPendingRoot.updateChildValues(newEntry)
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("SENT DATA")
+                print("SENT DATA FROM CREATE")
             }
         }
     }

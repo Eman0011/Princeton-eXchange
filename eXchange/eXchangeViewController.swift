@@ -55,24 +55,25 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             print("testing2 " + self.currentUser.club)
             print(self.studentsData)
             self.loadPending()
-            
-            self.self.eXchangeBanner.image = UIImage(named:"exchange_banner")!
-            self.tableView.rowHeight = 100.0
-            
-            self.requestButton.layer.cornerRadius = 5
-            self.requestButton.backgroundColor = UIColor.orangeColor()
-            self.pendingButton.layer.cornerRadius = 5
-            self.pendingButton.backgroundColor = UIColor.blackColor()
-            
+        
             print("\ndone waiting\n")
-            
-            // setup search bar
-            self.searchController.searchResultsUpdater = self
-            self.searchController.dimsBackgroundDuringPresentation = false
-            self.definesPresentationContext = true
-            self.tableView.tableHeaderView = self.searchController.searchBar
 
+            
+            self.tableView.reloadData()
         }
+        self.self.eXchangeBanner.image = UIImage(named:"exchange_banner")!
+        self.tableView.rowHeight = 100.0
+        self.requestButton.layer.cornerRadius = 5
+        self.requestButton.backgroundColor = UIColor.orangeColor()
+        self.pendingButton.layer.cornerRadius = 5
+        self.pendingButton.backgroundColor = UIColor.blackColor()
+        
+        
+        // setup search bar
+        self.searchController.searchResultsUpdater = self
+        self.searchController.dimsBackgroundDuringPresentation = false
+        self.definesPresentationContext = true
+        self.tableView.tableHeaderView = self.searchController.searchBar
         
         
         // Uncomment the following line to preserve selection between presentations
@@ -89,7 +90,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
             print(student.netid)
             self.studentsData.append(student)
-            print(self.studentsData)
             //self.tableView.reloadData()
             //self.didLoad = true
             }, withCancelBlock:  { error in
@@ -246,7 +246,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
             let myComponents = myCalendar.components([.Weekday, .Month , .Day], fromDate: todayDate)
             let month = myComponents.month
-            print(month)
+
             let date = myComponents.day
             let weekDay = myComponents.weekday
             var stringDay = ""
@@ -301,8 +301,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Error fetching month")
                 stringDay = "Month"
             }
-            print("date: ")
-            print(date)
             return stringDay + stringMonth + String(date)
         } else {
             return nil
@@ -336,7 +334,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     func executeAction(alert: UIAlertAction!, indexPath: NSIndexPath){
         let response = alert.title!
         print(response)
-        print(indexPath.row)
+        print("indexPath.row: " + String(indexPath.row) + "\n")
         path = indexPath.row
         
         
@@ -352,22 +350,74 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             var endRoot2 = -1
             
             upcomingRoot1.observeEventType(.Value, withBlock: { snapshot in
-                let counter = snapshot.childrenCount
-                print(counter)
-                endRoot1 = Int(counter)
+                var num: Int = 0
+                let children = snapshot.children
+                let count = snapshot.childrenCount
+                
+                while let child = children.nextObject() as? FDataSnapshot {
+                    if (num != Int(child.key)) {
+                        endRoot1 = num
+                        break
+                    }
+                    else {
+                        num+=1
+                    }
+                }
+                if (endRoot1 == -1) {
+                    endRoot1 = Int(count)
+                }
             });
             
             upcomingRoot2.observeEventType(.Value, withBlock: { snapshot in
-                let counter = snapshot.childrenCount
-                print(counter)
-                endRoot2 = Int(counter)
+                var num: Int = 0
+                let children = snapshot.children
+                let count = snapshot.childrenCount
+                
+                while let child = children.nextObject() as? FDataSnapshot {
+                    if (num != Int(child.key)) {
+                        endRoot2 = num
+                        break
+                    }
+                    else {
+                        num+=1
+                    }
+                }
+                if (endRoot2 == -1) {
+                    endRoot2 = Int(count)
+                }
             });
+            
             
             
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM-dd-yyyy"
             
             let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": "Lunch", "Club": pendingData[indexPath.row].host.club]
+            
+            let pendingString1 = "pending/" + self.currentUser.netid + "/"
+            
+            let pendingRootToUpdate = self.dataBaseRoot.childByAppendingPath(pendingString1)
+            
+            pendingRootToUpdate.observeEventType(.Value, withBlock: { snapshot in
+                let children = snapshot.children
+                while let child = children.nextObject() as? FDataSnapshot {
+                    let clubString = (child.value["Club"] as! NSString) as String
+                    let guestString = (child.value["Guest"] as! NSString) as String
+                    let hostString = (child.value["Host"] as! NSString) as String
+                    let dateString = (child.value["Date"] as! NSString) as String
+                    let typeString = (child.value["Type"] as! NSString) as String
+                    
+                    if(clubString == self.pendingData[indexPath.row].host.club &&
+                        guestString == self.pendingData[indexPath.row].guest.netid &&
+                        hostString == self.pendingData[indexPath.row].host.netid &&
+                        dateString == self.pendingData[indexPath.row].date &&
+                        typeString == self.pendingData[indexPath.row].type) {
+                        let pendingString2 = pendingString1 + String(child.key)
+                        let pendingRootToRemove = self.dataBaseRoot.childByAppendingPath(pendingString2)
+                        pendingRootToRemove.removeValue()
+                    }
+                }
+            });
             
             
             let delay = 1 * Double(NSEC_PER_SEC)
@@ -383,6 +433,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
 
                 self.dismissViewControllerAnimated(true, completion: {});
                 print("SENT DATA")
+            
                 
                 //remove the request from pending requests
                 self.pendingData.removeAtIndex(indexPath.row)
