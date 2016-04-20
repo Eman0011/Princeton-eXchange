@@ -501,12 +501,6 @@
                                     <!--2016-04-02 01:09:19 +0000-->
                                 </date>
                             </datePicker>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Selected:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHO-EA-4mD">
-                                <rect key="frame" x="0.0" y="457" width="600" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rh7-Zk-h4d">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <items>
@@ -524,24 +518,30 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="arA-sF-KaF">
+                            <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="arA-sF-KaF">
                                 <rect key="frame" x="0.0" y="288" width="600" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="Ktv-Md-Do1"/>
                                 </constraints>
                             </pickerView>
+                            <pickerView tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPQ-cR-S0B">
+                                <rect key="frame" x="0.0" y="430" width="600" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="chN-ae-xDx"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fHO-EA-4mD" firstAttribute="top" secondItem="arA-sF-KaF" secondAttribute="bottom" constant="19" id="5sQ-bX-xp5"/>
+                            <constraint firstItem="nPQ-cR-S0B" firstAttribute="trailing" secondItem="arA-sF-KaF" secondAttribute="trailing" id="4d9-hN-Tse"/>
                             <constraint firstItem="WZA-Vb-Bef" firstAttribute="trailing" secondItem="arA-sF-KaF" secondAttribute="trailing" id="634-v9-u80"/>
                             <constraint firstItem="arA-sF-KaF" firstAttribute="leading" secondItem="WZA-Vb-Bef" secondAttribute="leading" id="7bJ-sa-SDe"/>
                             <constraint firstItem="rh7-Zk-h4d" firstAttribute="top" secondItem="kWs-ar-fGZ" secondAttribute="top" constant="20" id="BvS-y2-ZfW"/>
+                            <constraint firstAttribute="bottom" secondItem="nPQ-cR-S0B" secondAttribute="bottom" constant="20" symbolic="YES" id="I8q-B3-suA"/>
                             <constraint firstItem="WZA-Vb-Bef" firstAttribute="top" secondItem="rh7-Zk-h4d" secondAttribute="bottom" id="MlA-DG-lET"/>
                             <constraint firstItem="arA-sF-KaF" firstAttribute="top" secondItem="WZA-Vb-Bef" secondAttribute="bottom" constant="8" id="OIl-n7-ijb"/>
+                            <constraint firstItem="nPQ-cR-S0B" firstAttribute="leading" secondItem="arA-sF-KaF" secondAttribute="leading" id="Qkn-ob-Lm3"/>
                             <constraint firstAttribute="trailing" secondItem="WZA-Vb-Bef" secondAttribute="trailing" id="XuK-db-pjn"/>
-                            <constraint firstItem="fHO-EA-4mD" firstAttribute="leading" secondItem="arA-sF-KaF" secondAttribute="leading" id="awE-ze-qrZ"/>
-                            <constraint firstItem="arA-sF-KaF" firstAttribute="trailing" secondItem="fHO-EA-4mD" secondAttribute="trailing" id="dXU-4u-fVS"/>
                             <constraint firstItem="rh7-Zk-h4d" firstAttribute="trailing" secondItem="WZA-Vb-Bef" secondAttribute="trailing" id="kYG-pK-EMU"/>
                             <constraint firstItem="rh7-Zk-h4d" firstAttribute="leading" secondItem="WZA-Vb-Bef" secondAttribute="leading" id="khJ-Ho-TWE"/>
                             <constraint firstItem="rh7-Zk-h4d" firstAttribute="leading" secondItem="kWs-ar-fGZ" secondAttribute="leading" id="rTT-CE-PH4"/>
@@ -550,7 +550,7 @@
                     <connections>
                         <outlet property="clubPicker" destination="arA-sF-KaF" id="i8j-sZ-z98"/>
                         <outlet property="datePicker" destination="WZA-Vb-Bef" id="dpM-JW-c24"/>
-                        <outlet property="mealSelectedLabel" destination="fHO-EA-4mD" id="Eud-f7-0Mp"/>
+                        <outlet property="mealTypePicker" destination="nPQ-cR-S0B" id="XH4-I1-7ab"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QSe-6X-hpq" userLabel="First Responder" sceneMemberID="firstResponder"/>

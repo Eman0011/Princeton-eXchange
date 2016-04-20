@@ -13,13 +13,14 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
 
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var clubPicker: UIPickerView!
-    @IBOutlet weak var mealSelectedLabel: UILabel!
+    @IBOutlet weak var mealTypePicker: UIPickerView!
     
-    
-    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var pickerData: [String] = []
-    
+    var mealTypePickerData: [String] = []
+
+    var selectedType: String = ""
     var selectedClub: String = ""
     
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
@@ -27,12 +28,17 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mealSelectedLabel.text = selectedUser.name
-        pickerData.append("")
+        pickerData.append("Please select a club")
         pickerData.append(selectedUser.club)
         pickerData.append(currentUser.club)
+        mealTypePickerData.append("Please select a meal")
+        mealTypePickerData.append("Lunch")
+        mealTypePickerData.append("Dinner")
+        
         clubPicker.dataSource = self
         clubPicker.delegate = self
+        mealTypePicker.dataSource = self
+        mealTypePicker.delegate = self
     }
     
     @IBAction func cancelButton(sender: AnyObject) {
@@ -40,7 +46,9 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     @IBAction func doneButton(sender: AnyObject) {
-        if (selectedClub != "") {
+        if ((selectedClub == selectedUser.club || selectedClub == currentUser.club) && (selectedType == "Lunch" || selectedType == "Dinner")) {
+            print(selectedClub)
+            print(selectedType)
             let pendingString = "pending/" + self.selectedUser.netid
             let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
             var endRoot = -1
@@ -67,7 +75,7 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
                 guest = selectedUser
             }
             
-            let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch", "Club": selectedClub]
+            let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": selectedType, "Club": selectedClub]
             
             let delay = 1 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -95,12 +103,21 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     
     //MARK: Delegates
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
+        if (pickerView.tag == 1) {
+            return pickerData[row]
+        }
+        else {
+            return mealTypePickerData[row]
+        }
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        mealSelectedLabel.text = pickerData[row]
-        selectedClub = pickerData[row]
+        if (pickerView.tag == 1) {
+            selectedClub = pickerData[row]
+        }
+        else {
+            selectedType = mealTypePickerData[row]
+        }
     }
     
 }
