@@ -48,9 +48,14 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         self.studentsData = tbc.studentsData
         self.userNetID = tbc.userNetID
         
-        for meal in allMeals {
-            if (meal.host.club == currentUser.club) {
-                filteredMeals.append(meal)
+        let delay = 1 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            
+            for meal in self.allMeals {
+                if (meal.host.club == self.currentUser.club) {
+                    self.filteredMeals.append(meal)
+                }
             }
         }
         
@@ -67,7 +72,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     // basically copy/pasted from Eman's exchange code
     func loadMeals() {
         
-        let mealsRoot = dataBaseRoot.childByAppendingPath("newsfeed")
+        let mealsRoot = dataBaseRoot.childByAppendingPath("newsfeed/")
         mealsRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let meal: Meal = self.getMealFromDictionary(dict)
@@ -95,44 +100,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         return meal
     }
     
-//    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
-//        print(dictionary)
-//        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
-//        return student
-//    }
-    
-//    func loadMockData() {
-//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
-//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
-//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-//        //        let James = Student(name: "James Almeida", netid: "", club: "", proxNumber: "")
-//        
-//        let formatter = NSDateFormatter()
-//        formatter.dateFormat = "MM-dd-yyyy, hh:mm a"
-//        formatter.AMSymbol = "am"
-//        formatter.PMSymbol = "pm"
-//        
-//        let today = NSDate()
-//        print(formatter.stringFromDate(today))
-//        
-//        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
-//        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
-//        x1.completeExchange(formatter.dateFromString("3-22-2016, 12:00 pm")!, type: "Lunch", host: Sumer, guest: Emanuel)
-//        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
-//        mockMeals.append(x1.meal1)
-//        mockMeals.append(x1.meal2!)
-//        
-//        let x2 = eXchange(host: Emanuel, guest: Meaghan, type: "Dinner")
-//        x2.meal1.date = formatter.dateFromString("3-12-2016, 7:30 pm")!
-//        x2.completeExchange(formatter.dateFromString("3-16-2016, 6:30 pm")!, type: "Dinner", host: Meaghan, guest: Emanuel)
-//        mockMeals.append(x2.meal1)
-//        mockMeals.append(x2.meal2!)
-//        
-//        let x3 = eXchange(host: Emanuel, guest: Danielle, type: "Lunch")
-//        x3.meal1.date = formatter.dateFromString("3-14-2016, 1:30 pm")!
-//        mockMeals.append(x3.meal1)
-//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -183,15 +150,31 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if princetonButtonSelected {
             currCellNum = indexPath.row
+            print("CurrCellNUM: " + String(currCellNum))
+            let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(currCellNum))
+            
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
-            
+            var numLikes = "-1"
             // like button no longer works because we're accessing from database
-            cell.likesLabel.text = String(meal.likes + cell.counter)
-            
-            
+            //cell.likesLabel.text = String(meal.likes + cell.counter)
+            newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
+                var dict = snapshot.value as! Dictionary<String, String>
+                print(dict)
+                numLikes = dict["Likes"]!
+                dict["Likes"] = String(Int(numLikes)! + cell.counter)
+                newsfeedRoot.updateChildValues(dict)
+                print("updated")
+                print(dict)
+            })
+            let delay = 2 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                cell.likesLabel.text = String(numLikes) + " \u{e022}"
+                print(numLikes)
+            }
             // old way of setting text:
             // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
             
@@ -217,6 +200,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         else {
             currCellNum = indexPath.row
+            print("CURRCELLNUM: " + String(currCellNum))
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
