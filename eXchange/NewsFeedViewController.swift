@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+var currCellNum = 0
 
 class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -18,13 +19,13 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
     
-    var princetonButtonSelected = true
-    var mealLiked = [Bool]()
-    var currCellNum = 0
-    
-    //var mockMeals: [Meal] = []
     var allMeals: [Meal] = []
     var filteredMeals: [Meal] = []
+    var princetonButtonSelected = true
+    var mealLiked = [Bool]()
+    
+    //var mockMeals: [Meal] = []
+    
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var studentsData: [Student] = []
     
@@ -150,10 +151,10 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if princetonButtonSelected {
             currCellNum = indexPath.row
-            print("CurrCellNUM: " + String(currCellNum))
             let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(currCellNum))
-            
+            //indpath = indexPath
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+            //cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
@@ -201,7 +202,9 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         else {
             currCellNum = indexPath.row
             print("CURRCELLNUM: " + String(currCellNum))
+         //   indpath = indexPath
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+            //cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")

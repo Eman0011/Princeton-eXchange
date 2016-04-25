@@ -460,11 +460,41 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         else if (response == "Decline") {
-            //remove the request
-            pendingData.removeAtIndex(indexPath.row)
-            tableView.reloadData()
+            let pendingString1 = "pending/" + self.currentUser.netid + "/"
             
-            //optionally send a notification to requester that user couldn't make it
+            let pendingRootToUpdate = self.dataBaseRoot.childByAppendingPath(pendingString1)
+            pendingRootToUpdate.observeEventType(.Value, withBlock: { snapshot in
+                let children = snapshot.children
+                while let child = children.nextObject() as? FDataSnapshot {
+                    let clubString = (child.value["Club"] as! NSString) as String
+                    let guestString = (child.value["Guest"] as! NSString) as String
+                    let hostString = (child.value["Host"] as! NSString) as String
+                    let dateString = (child.value["Date"] as! NSString) as String
+                    let typeString = (child.value["Type"] as! NSString) as String
+                    print("here : " + String(indexPath.row))
+                    if(clubString == self.pendingData[indexPath.row].host.club &&
+                        guestString == self.pendingData[indexPath.row].guest.netid &&
+                        hostString == self.pendingData[indexPath.row].host.netid &&
+                        dateString == self.pendingData[indexPath.row].date &&
+                        typeString == self.pendingData[indexPath.row].type) {
+                        let pendingString2 = pendingString1 + String(child.key)
+                        let pendingRootToRemove = self.dataBaseRoot.childByAppendingPath(pendingString2)
+                        pendingRootToRemove.removeValue()
+                    }
+                }
+            });
+            let delay = 1 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                self.dismissViewControllerAnimated(true, completion: {});
+                print("SENT DATA")
+                
+                
+                //remove the request from pending requests
+                self.pendingData.removeAtIndex(indexPath.row)
+                self.tableView.reloadData()
+            }
+        
         }
     }
     

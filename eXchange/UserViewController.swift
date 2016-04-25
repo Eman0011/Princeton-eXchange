@@ -99,6 +99,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         upcomingRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let exchange: eXchange = self.getIncompleteOrUpcomingFromDictionary(dict)
+           // print(exchange.meal1.date)
             self.upcomingData.append(exchange)
             self.tableView.reloadData()
         })
@@ -141,6 +142,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let exchange = eXchange(host: host!, guest: guest!, type: dictionary["Type"]!)
+        let meal = Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
+        exchange.meal1 = meal
         
         return exchange
     }
