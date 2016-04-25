@@ -154,22 +154,23 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(currCellNum))
             //indpath = indexPath
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
-            //cell.row = indexPath.row
+            cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
             var numLikes = "-1"
             // like button no longer works because we're accessing from database
-            //cell.likesLabel.text = String(meal.likes + cell.counter)
+            cell.likesLabel.text = String(meal.likes)// + cell.counter)
             newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>
-                print(dict)
+                //print(dict)
                 numLikes = dict["Likes"]!
-                dict["Likes"] = String(Int(numLikes)! + cell.counter)
-                newsfeedRoot.updateChildValues(dict)
-                print("updated")
-                print(dict)
-            })
+                dict["Likes"] = String(Int(numLikes))
+                //+ cell.counter)
+                //newsfeedRoot.updateChildValues(dict)
+                //print("updated")
+               // print(dict)
+           })
             let delay = 2 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
@@ -204,7 +205,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             print("CURRCELLNUM: " + String(currCellNum))
          //   indpath = indexPath
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
-            //cell.row = indexPath.row
+            cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
