@@ -152,30 +152,28 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         if princetonButtonSelected {
             currCellNum = indexPath.row
             let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(currCellNum))
-            //indpath = indexPath
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
             var numLikes = "-1"
-            // like button no longer works because we're accessing from database
-            cell.likesLabel.text = String(meal.likes)// + cell.counter)
-            newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
+
+            cell.likesLabel.text = String(meal.likes) + " \u{e022}"
+           newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>
-                //print(dict)
+                print(dict)
                 numLikes = dict["Likes"]!
-                dict["Likes"] = String(Int(numLikes))
+                cell.likesLabel.text = String(numLikes) + " \u{e022}"
+                //dict["Likes"] = String(Int(numLikes))
                 //+ cell.counter)
                 //newsfeedRoot.updateChildValues(dict)
-                //print("updated")
-               // print(dict)
+               
            })
             let delay = 2 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 cell.likesLabel.text = String(numLikes) + " \u{e022}"
-                print(numLikes)
             }
             // old way of setting text:
             // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
@@ -197,14 +195,14 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
 //            newsText.appendAttributedString(boldClub)
             
             cell.newsLabel!.attributedText = newsText
-            
+print("HERE")
             return cell
         }
         else {
             currCellNum = indexPath.row
             print("CURRCELLNUM: " + String(currCellNum))
-         //   indpath = indexPath
-            let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+
+        let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
