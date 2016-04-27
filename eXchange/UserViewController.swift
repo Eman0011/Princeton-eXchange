@@ -8,7 +8,10 @@
 
 import UIKit
 import Firebase
-var row = 0
+
+var daysLeft = 0
+
+
 class UserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
@@ -22,13 +25,13 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     var upcomingData: [eXchange] = []
     var studentsData: [Student] = []
     
+
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var historySelected = true
     var unfinishedSelected = false
     var upcomingSelected = false
     let formatter = NSDateFormatter()
-    var daysLeft = 0
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var userNetID: String = ""
 
@@ -59,13 +62,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.loadHistory()
         self.loadUnfinished()
         self.loadUpcoming()
-        
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
     }
     
@@ -100,7 +96,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         upcomingRoot.observeEventType(.ChildAdded, withBlock: { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let exchange: eXchange = self.getIncompleteOrUpcomingFromDictionary(dict)
-           // print(exchange.meal1.date)
             self.upcomingData.append(exchange)
             self.tableView.reloadData()
         })
@@ -149,40 +144,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         return exchange
     }
     
-//    func loadMockData() {
-//        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-//        let Danielle = Student(name: "Danielle Pintz", netid: "", club: "Independent", proxNumber: "")
-//        let Meaghan = Student(name: "Meaghan O'Neill", netid: "", club: "Ivy", proxNumber: "")
-//        let Sumer = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
-//        let James = Student(name: "James Almeida", netid: "", club: "Cap & Gown", proxNumber: "")
-//        
-//        let today = NSDate()
-//        print(formatter.stringFromDate(today))
-//        
-//        
-//        let x1 = eXchange(host: Emanuel, guest: Sumer,  type: "Lunch")
-//        x1.meal1.date = formatter.dateFromString("3-7-2016, 1:30 pm")!
-//        let m1 = Meal(date: NSDate(), type: "Lunch", host: Sumer, guest: Emanuel)
-//        x1.meal2 = m1
-//        x1.meal2?.date = formatter.dateFromString("3-22-2016, 12:00 pm")!
-//        historyData.append(x1)
-//        
-//        let x2 = eXchange(host: Emanuel, guest: Meaghan, type:  "Lunch")
-//        x2.meal1.date = formatter.dateFromString("3-12-2016, 1:30 pm")!
-//        let m2 = Meal(date: NSDate(), type: "Lunch", host: Meaghan, guest: Emanuel)
-//        x2.meal2 = m2
-//        x2.meal2?.date = formatter.dateFromString("3-16-2016, 12:30 pm")!
-//        historyData.append(x2)
-//        
-//        
-//        let x3 = eXchange(host: Emanuel, guest: Danielle, type:  "Dinner")
-//        x3.meal1.date = formatter.dateFromString("3-14-2016, 6:30 pm")!
-//        unfinishedXData.append(x3)
-//        
-//        let x4 = eXchange(host: Emanuel, guest: James, type:  "Dinner")
-//        x4.meal1.date = formatter.dateFromString("4-20-2016, 6:30 pm")!
-//        upcomingData.append(x4)
-//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -305,26 +266,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         return xEnd - xStart
     }
     
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
     
     
     
@@ -356,9 +297,9 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             newViewController.currentUser = self.currentUser
             newViewController.selectedUser = self.selectedUser
             let indexPath = self.tableView.indexPathForSelectedRow
-            row = indexPath!.row
             newViewController.selectedUser = self.unfinishedData[indexPath!.row].guest
-            
+            newViewController.setType = self.unfinishedData[indexPath!.row].meal1.type
+            newViewController.setClub = self.unfinishedData[indexPath!.row].meal1.guest.club
         }
     }
 }

@@ -80,12 +80,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.tableHeaderView = self.searchController.searchBar
         
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
     }
     
     func loadStudents() {
@@ -94,8 +88,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
             print(student.netid)
             self.studentsData.append(student)
-            //self.tableView.reloadData()
-            //self.didLoad = true
+          
             }, withCancelBlock:  { error in
         })
     }
@@ -207,12 +200,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
             }
-//            else {
-//                if student.name != "" {
-//                    cell.nameLabel.text = student.name + " wants to get a meal!"
-//                    cell.clubLabel.text = student.club
-//                }
-//            }
         }
         
         // If the user is not searching, just populate cells with all appropriate groups of users
@@ -429,14 +416,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 let newUpcomingRoot1 = self.dataBaseRoot.childByAppendingPath(upcomingString1 + "/" + String(endRoot1))
                 let newUpcomingRoot2 = self.dataBaseRoot.childByAppendingPath(upcomingString2 + "/" + String(endRoot2))
 
-                
-                //updateChildValues is exactly like setValue except it doesn't delete the old data
                 newUpcomingRoot1.updateChildValues(newEntry)
                 newUpcomingRoot2.updateChildValues(newEntry)
 
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("SENT DATA")
-            
                 
                 //remove the request from pending requests
                 self.pendingData.removeAtIndex(indexPath.row)
@@ -498,7 +481,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("SENT DATA")
                 
                 
                 //remove the request from pending requests
@@ -518,11 +500,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 return student.name.lowercaseString.containsString(searchText.lowercaseString)
             }
         }
-        // else {
-//            searchData = pendingData.filter { student in
-//                return student.name.lowercaseString.containsString(searchText.lowercaseString)
-//            }
-//        }
+
         tableView.reloadData()
     }
     

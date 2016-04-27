@@ -30,6 +30,7 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
 
     
     override func viewDidLoad() {
+        datePicker.minimumDate = NSDate()
         super.viewDidLoad()
         pickerData.append("Please select a club")
         pickerData.append(selectedUser.club)
@@ -79,7 +80,6 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/")
-            //updateChildValues is exactly like setValue except it doesn't delete the old data
             newPendingRoot.updateChildValues(newEntry)
             
             let pendingString1 = "pending/" + self.currentUser.netid + "/"

@@ -27,6 +27,7 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
 
     
     override func viewDidLoad() {
+        datePicker.minimumDate = NSDate()
         super.viewDidLoad()
         pickerData.append("Please select a club")
         pickerData.append(selectedUser.club)
@@ -97,11 +98,8 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
-                
-                //updateChildValues is exactly like setValue except it doesn't delete the old data
                 newPendingRoot.updateChildValues(newEntry)
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("SENT DATA FROM CREATE")
             }
         }
     }

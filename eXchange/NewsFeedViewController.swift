@@ -24,8 +24,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     var filteredMeals: [Meal] = []
     var princetonButtonSelected = true
     
-    //var mockMeals: [Meal] = []
-    
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var studentsData: [Student] = []
     
@@ -42,7 +40,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         myClubButton.layer.cornerRadius = 5
         myClubButton.backgroundColor = UIColor.blackColor()
         
-        //loadMockData()
         
         self.loadMeals()
         let tbc = self.tabBarController as! eXchangeTabBarController
@@ -60,13 +57,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
-        
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
     }
     
@@ -166,9 +156,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
                 print(dict)
                 numLikes = dict["Likes"]!
                 cell.likesLabel.text = String(numLikes) + " \u{e022}"
-                //dict["Likes"] = String(Int(numLikes))
-                //+ cell.counter)
-                //newsfeedRoot.updateChildValues(dict)
                
            })
             let delay = 2 * Double(NSEC_PER_SEC)
@@ -176,70 +163,46 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             dispatch_after(time, dispatch_get_main_queue()) {
                 cell.likesLabel.text = String(numLikes) + " \u{e022}"
             }
-            // old way of setting text:
-            // cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
-            
-            let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
+                       let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
             let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
             let boldMeal = NSMutableAttributedString(string:meal.type, attributes:attrs3)
-            //let boldClub = NSMutableAttributedString(string:meal.host.club, attributes:attrs1)
             
 
-            // + " and " + boldName1 + " eXchanged for " + boldMeal + " at " + boldClub
             let newsText: NSMutableAttributedString = boldName1
             
             newsText.appendAttributedString(NSMutableAttributedString(string: " and "))
             newsText.appendAttributedString(boldName2)
             newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
             newsText.appendAttributedString(boldMeal)
-//            newsText.appendAttributedString(NSMutableAttributedString(string: " at "))
-//            newsText.appendAttributedString(boldClub)
-            
+
             cell.newsLabel!.attributedText = newsText
-print("HERE")
             return cell
         }
         else {
             currCellNum = indexPath.row
-            print("CURRCELLNUM: " + String(currCellNum))
 
         let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.row = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
-            //cell.newsLabel!.text = "\(meal.host.name) and \(meal.guest.name) eXchanged for \(meal.type) at \(meal.host.club)"
             
             let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
             let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
             let boldMeal = NSMutableAttributedString(string:meal.type, attributes:attrs3)
-            //let boldClub = NSMutableAttributedString(string:meal.host.club, attributes:attrs1)
             
-            
-            // + " and " + boldName1 + " eXchanged for " + boldMeal + " at " + boldClub
             let newsText: NSMutableAttributedString = boldName1
             
             newsText.appendAttributedString(NSMutableAttributedString(string: " and "))
             newsText.appendAttributedString(boldName2)
             newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
             newsText.appendAttributedString(boldMeal)
-            //            newsText.appendAttributedString(NSMutableAttributedString(string: " at "))
-            //            newsText.appendAttributedString(boldClub)
-            
+           
             cell.newsLabel!.attributedText = newsText
             
             return cell
         }
     }
 
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
     
 }
