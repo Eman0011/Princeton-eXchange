@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+var row = 0
 class UserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
@@ -60,7 +60,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.loadUnfinished()
         self.loadUpcoming()
         
-//        self.loadMockData()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -274,6 +273,9 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
             cell.meal1Label.text = "\(daysLeft) days left to complete!"
             cell.meal2Label.text = ""
+            
+
+            
         }
         else {
             historySelected = false
@@ -285,6 +287,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.selectedUser = exchange.guest
             cell.meal1Label.text = ""
             cell.meal2Label.text = "For " + exchange.meal1.type + " on " + exchange.meal1.date
+            
             
         }
         cell.studentImage.image = UIImage(named: student.imageName)
@@ -335,19 +338,9 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
      }
      */
     
-    @IBAction func unfinishedUnwind(unwindSegue: UIStoryboardSegue) {
-        if unwindSegue.identifier == "unwindCancel" {
-            print("cancel")
-        }
-            
-        else if unwindSegue.identifier == "unwindDone" {
-            print("done")
-            //this should send an exchange request to another user
-            //probably shouldn't get rid of cell in table
-        }
-    }
     
     override func shouldPerformSegueWithIdentifier(identifier: String,sender: AnyObject?) -> Bool {
+        
         if (unfinishedSelected) {
         return true
         }
@@ -363,6 +356,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             newViewController.currentUser = self.currentUser
             newViewController.selectedUser = self.selectedUser
             let indexPath = self.tableView.indexPathForSelectedRow
+            row = indexPath!.row
             newViewController.selectedUser = self.unfinishedData[indexPath!.row].guest
             
         }

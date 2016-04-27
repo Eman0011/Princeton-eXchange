@@ -665,13 +665,11 @@
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="aBE-77-OIl">
                                             <connections>
                                                 <action selector="cancelButton:" destination="bNo-te-tj6" id="IOi-Kg-I8e"/>
-                                                <segue destination="s4G-Hm-BJq" kind="unwind" identifier="unwindCancel" unwindAction="unfinishedUnwind:" id="qbU-4g-M9a"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="BTd-4c-N89">
                                             <connections>
                                                 <action selector="doneButton:" destination="bNo-te-tj6" id="QwX-ho-HUN"/>
-                                                <segue destination="s4G-Hm-BJq" kind="unwind" identifier="unwindDone" unwindAction="unfinishedUnwind:" id="iFW-Zu-3G8"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -705,7 +703,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5RV-qK-JUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="s4G-Hm-BJq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1958" y="1277"/>
         </scene>

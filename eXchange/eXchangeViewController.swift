@@ -32,6 +32,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
 
     var userNetID: String = ""
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var rescheduledate: String = ""
+    var rescheduletype: String = ""
+    var rescheduleclub: String = ""
+    var rescheduleselecteduser: String = ""
     
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     
@@ -447,13 +451,21 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             performSegueWithIdentifier("rescheduleRequestSegue", sender: nil)
             //let tempStudent: Student = pendingData[indexPath.row]
 
-//            if rescheduleDoneButtonHit {
+           if rescheduleDoneButtonHit {
 //                //if user hits done, create the new exchange and delete the old one
 //                pendingData.removeAtIndex(indexPath.row)
 //                print("removed")
-//            }
             
-            //if user hits cancel, do nothing
+          //  let newEntry: Dictionary<String, String> = ["Date": rescheduledate, "Guest": rescheduleselecteduser, "Host": currentUser, "Type": rescheduletype]
+
+            //let pendingString = "pending/" + rescheduleselecteduser
+            //let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/")
+            //updateChildValues is exactly like setValue except it doesn't delete the old data
+            //newPendingRoot.updateChildValues(newEntry)
+            
+
+       }
+            
 
             
             tableView.reloadData()

@@ -47,7 +47,6 @@ class CompleteUnfinishedViewController: UIViewController, UIPickerViewDataSource
     
     
     @IBAction func doneButton(sender: AnyObject) {
-        print("HERE")
         if ((selectedClub == selectedUser.club || selectedClub == currentUser.club) && (selectedType == "Lunch" || selectedType == "Dinner")) {
             print(selectedClub)
             print(selectedType)
@@ -102,10 +101,12 @@ class CompleteUnfinishedViewController: UIViewController, UIPickerViewDataSource
                 
                 //updateChildValues is exactly like setValue except it doesn't delete the old data
                 newPendingRoot.updateChildValues(newEntry)
+                
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("SENT DATA FROM CREATE")
+                print("SENT DATA FROM COM UNFINISHED")
             }
         }
+        
 
     }
     
