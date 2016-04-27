@@ -22,6 +22,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     var upcomingData: [eXchange] = []
     var studentsData: [Student] = []
     
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var historySelected = true
     var unfinishedSelected = false
     var upcomingSelected = false
@@ -49,10 +51,10 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.PMSymbol = "pm"
         
         daysLeft = getDaysLeft()
-        
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.studentsData = tbc.studentsData
         self.userNetID = tbc.userNetID
+        self.currentUser = tbc.currentUser
         
         self.loadHistory()
         self.loadUnfinished()
@@ -279,6 +281,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             let exchange = upcomingData[indexPath.row]
             student = exchange.guest
             cell.nameLabel.text = "You have scheduled a meal eXchange with " + exchange.guest.name + "."
+            self.currentUser = exchange.host
+            self.selectedUser = exchange.guest
             cell.meal1Label.text = ""
             cell.meal2Label.text = "For " + exchange.meal1.type + " on " + exchange.meal1.date
             
@@ -356,6 +360,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (unfinishedSelected) {
             let newViewController:CompleteUnfinishedViewController = segue.destinationViewController as! CompleteUnfinishedViewController
+            newViewController.currentUser = self.currentUser
+            newViewController.selectedUser = self.selectedUser
             let indexPath = self.tableView.indexPathForSelectedRow
             newViewController.selectedUser = self.unfinishedData[indexPath!.row].guest
             

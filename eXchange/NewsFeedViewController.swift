@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 var currCellNum = 0
+var mealLiked = [Bool]()
 
 class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -22,7 +23,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     var allMeals: [Meal] = []
     var filteredMeals: [Meal] = []
     var princetonButtonSelected = true
-    var mealLiked = [Bool]()
     
     //var mockMeals: [Meal] = []
     
@@ -56,6 +56,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             for meal in self.allMeals {
                 if (meal.host.club == self.currentUser.club) {
                     self.filteredMeals.append(meal)
+                    mealLiked.append(false)
                 }
             }
         }
