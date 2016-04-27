@@ -136,17 +136,6 @@ class CompleteUnfinishedViewController: UIViewController, UIPickerViewDataSource
         else {
             selectedType = mealTypePickerData[row]
         }
-    }
-    /*
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
-    }
-    
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        mealSelectedLabel.text = pickerData[row]
-        
-    }
-*/
-    
+    }    
     
 }

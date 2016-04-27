@@ -313,7 +313,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
         
         // If the user taps on a cell in the request a meal tab, then segue to the create request view controller
         if requestSelected {
@@ -579,75 +578,4 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // Pass the selected object to the new view controller.
     }
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ////    func isLandscapeOrientation() -> Bool {
-    ////        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
-    ////    }
-    //
-    //    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    ////        if isLandscapeOrientation() {
-    ////            return hasImageAtIndexPath(indexPath) ? 140.0 : 120.0
-    ////        } else {
-    ////            return hasImageAtIndexPath(indexPath) ? 235.0 : 155.0
-    ////        }
-    //        return 100;
-    //    }
-    
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    //    func addStudents() {
-    //        let Emanuel = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "960755555")
-    //        let Danielle = Student(name: "Danielle Pintz", netid: "dpintz", club: "Independent", proxNumber: "960755555")
-    //        studentsData.append(Danielle)
-    //
-    //        let Meaghan = Student(name: "Meaghan O'Neill", netid: "mconeill", club: "Ivy", proxNumber: "960755555")
-    //        studentsData.append(Meaghan)
-    //
-    //        let Sumer = Student(name: "Sumer Parikh", netid: "sumerp", club: "Cap & Gown", proxNumber: "960755555")
-    //        studentsData.append(Sumer)
-    //
-    //        let James = Student(name: "James Almeida", netid: "jamespa", club: "Cap & Gown", proxNumber: "960755555")
-    //        studentsData.append(James)
-    //
-    //        var students = Dictionary<String, Dictionary<String, String>>()
-    //        students[Emanuel.netid] = getDictionary(Emanuel)
-    //        students[Danielle.netid] = getDictionary(Danielle)
-    //        students[Meaghan.netid] = getDictionary(Meaghan)
-    //        students[Sumer.netid] = getDictionary(Sumer)
-    //        //students[James.netid] = getDictionary(James)
-    //
-    //        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-    //
-    //        //updateChildValues is exactly like setValue except it doesn't delete the old data
-    //        studentsRoot.updateChildValues(students)
-    //    }
-    
 }
