@@ -24,11 +24,6 @@ class NewsFeedTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.likesLabel.text = "\u{e022}"
-        /*if (mealLiked[row]) {
-            hasTapped = true
-            self.likeButton.setTitle("Unlike", forState: .Normal)
-            self.likeButton.setTitleColor(UIColor.orangeColor(), forState: .Normal)
-        }*/
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -41,7 +36,6 @@ class NewsFeedTableViewCell: UITableViewCell {
         if hasTapped {
             counter--
             hasTapped = false
-           // mealLiked[row] = false
             self.likeButton.setTitle("Like", forState: .Normal)
             self.likeButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
             let newsRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(row) + "/Likes")

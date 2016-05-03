@@ -90,7 +90,9 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         pendingRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let meal: Meal = self.getPendingFromDictionary(dict)
-            self.pendingData.append(meal)
+            if !(self.pendingData.contains {$0.date == meal.date && $0.host.club == meal.host.club && $0.type == meal.type}) {
+                self.pendingData.append(meal)
+            }
             self.tableView.reloadData()
             }, withCancelBlock:  { error in
         })
@@ -498,7 +500,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         else if unwindSegue.identifier == "unwindDone" {
-            
             // create new pending request in requester's pending
             let oldHost : Student = (mealAtPath?.host)!
             let oldGuest: Student = (mealAtPath?.guest)!
@@ -509,6 +510,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             else {
                 otherUser = oldHost
             }
+            print("HERE")
+            print(selectedClub)
+            print(otherUser.club)
+            print(currentUser.club)
+            print(selectedType)
+            if ((selectedClub == otherUser.club || selectedClub == currentUser.club) && (selectedType == "Lunch" || selectedType == "Dinner")) {
+
             let pendingString = "pending/" + otherUser.netid + "/"
             let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
             var endRoot = -1
@@ -596,6 +604,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 self.rescheduleDoneButtonHit = true
             }
             
+            }
         }
     }
     
@@ -628,5 +637,5 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     }
-
 }
+

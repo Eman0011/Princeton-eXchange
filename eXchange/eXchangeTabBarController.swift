@@ -22,9 +22,7 @@ class eXchangeTabBarController: UITabBarController {
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
-            //if (self.userNetID != student.netid) {
                 self.studentsData.append(student)
-            //}
         })
     }
     

@@ -9,8 +9,8 @@
 import UIKit
 import Firebase
 
-var selectedClub: String = ""
-var selectedType: String = ""
+var selectedClub: String = "Please select a club"
+var selectedType: String = "Please select a meal"
 var selectedDate: String = ""
 
 class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -20,7 +20,7 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
     @IBOutlet var mealTypePicker: UIPickerView!
     
-
+    
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var pickerData: [String] = []
@@ -31,6 +31,8 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
 
     
     override func viewDidLoad() {
+        selectedClub = "Please select a club"
+        selectedType = "Please select a meal"
         datePicker.minimumDate = NSDate()
         super.viewDidLoad()
         pickerData.append("Please select a club")
@@ -83,11 +85,6 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
             
             let pendingString1 = "pending/" + self.currentUser.netid + "/"
             
-            /*let pendingString2 = pendingString1 + String(chil + String(endRoot))
-             d.key)
-             let pendingRootToRemove = self.dataBaseRoot.childByAppendingPath(pendingString2)
-             pendingRootToRemove.removeValue()*/
-            
             self.dismissViewControllerAnimated(true, completion: {});
         }
 
@@ -109,6 +106,7 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
     //MARK: Delegates
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         if (pickerView.tag == 1) {
             return pickerData[row]
         }
@@ -120,6 +118,8 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView.tag == 1) {
             selectedClub = pickerData[row]
+            print("selected club")
+            print(selectedClub)
         }
         else {
             selectedType = mealTypePickerData[row]
