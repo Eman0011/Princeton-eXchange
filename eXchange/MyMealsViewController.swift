@@ -28,8 +28,8 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    var historySelected = true
-    var unfinishedSelected = false
+    var historySelected = false
+    var unfinishedSelected = true
     var upcomingSelected = false
     let formatter = NSDateFormatter()
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
@@ -42,12 +42,12 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.tableView.rowHeight = 100.0
         
-        historyButton.layer.cornerRadius = 5
-        historyButton.backgroundColor = UIColor.orangeColor()
         unfinishedButton.layer.cornerRadius = 5
-        unfinishedButton.backgroundColor = UIColor.blackColor()
+        unfinishedButton.backgroundColor = UIColor.orangeColor()
         upcomingButton.layer.cornerRadius = 5
         upcomingButton.backgroundColor = UIColor.blackColor()
+        historyButton.layer.cornerRadius = 5
+        historyButton.backgroundColor = UIColor.blackColor()
         
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.AMSymbol = "am"
@@ -59,9 +59,9 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.userNetID = tbc.userNetID
         self.currentUser = tbc.currentUser
         
-        self.loadHistory()
         self.loadUnfinished()
         self.loadUpcoming()
+        self.loadHistory()
         
     }
     
@@ -239,8 +239,13 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
             historySelected = false
             upcomingSelected = false
             let exchange = unfinishedData[indexPath.row]
-            student = exchange.guest
-            cell.nameLabel.text = "Meal eXchange with " + exchange.guest.name + "."
+            if (currentUser.netid == exchange.host.netid) {
+                student = exchange.guest
+            }
+            else {
+                student = exchange.host
+            }
+            cell.nameLabel.text = "Meal eXchange with " + student.name + "."
             cell.meal1Label.text = "\(daysLeft) days left to complete!"
             cell.meal2Label.text = ""
             

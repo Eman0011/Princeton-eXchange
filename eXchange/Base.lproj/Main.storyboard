@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iHA-ld-opb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iHA-ld-opb">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -20,23 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4fO-NY-Egl">
-                                <rect key="frame" x="20" y="118" width="280" height="30"/>
+                                <rect key="frame" x="20" y="118" width="276" height="30"/>
                                 <state key="normal" title="Request Meal">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="requestButtonPressed:" destination="CRN-cS-KFk" eventType="touchUpInside" id="ZnL-k8-Dqk"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5uj-Mj-u4M">
-                                <rect key="frame" x="308" y="118" width="272" height="30"/>
-                                <state key="normal" title="Pending Meals">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pendingButtonPressed:" destination="CRN-cS-KFk" eventType="touchUpInside" id="NPu-Yr-xYG"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MKg-kJ-QF3">
@@ -119,6 +109,16 @@
                                     <outlet property="delegate" destination="CRN-cS-KFk" id="bOI-b4-elB"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5uj-Mj-u4M">
+                                <rect key="frame" x="304" y="118" width="276" height="30"/>
+                                <state key="normal" title="Pending Meals">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pendingButtonPressed:" destination="CRN-cS-KFk" eventType="touchUpInside" id="NPu-Yr-xYG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -132,7 +132,7 @@
                             <constraint firstItem="5uj-Mj-u4M" firstAttribute="leading" secondItem="4fO-NY-Egl" secondAttribute="trailing" constant="8" id="ah7-ZV-9Ae"/>
                             <constraint firstItem="MKg-kJ-QF3" firstAttribute="leading" secondItem="4fO-NY-Egl" secondAttribute="leading" id="gsF-ai-m2S"/>
                             <constraint firstItem="4fO-NY-Egl" firstAttribute="top" secondItem="MKg-kJ-QF3" secondAttribute="bottom" id="h7x-dV-sJZ"/>
-                            <constraint firstItem="5uj-Mj-u4M" firstAttribute="width" secondItem="4fO-NY-Egl" secondAttribute="width" constant="-8" id="hSE-0t-Khi"/>
+                            <constraint firstItem="5uj-Mj-u4M" firstAttribute="width" secondItem="4fO-NY-Egl" secondAttribute="width" id="hSE-0t-Khi"/>
                             <constraint firstItem="5uj-Mj-u4M" firstAttribute="top" secondItem="MKg-kJ-QF3" secondAttribute="bottom" id="hYb-UD-ksr"/>
                             <constraint firstItem="MKg-kJ-QF3" firstAttribute="top" secondItem="5kd-oO-bq5" secondAttribute="top" constant="8" id="iN9-yK-zOq"/>
                             <constraint firstItem="5uj-Mj-u4M" firstAttribute="height" secondItem="4fO-NY-Egl" secondAttribute="height" id="kxh-s4-aPu"/>
@@ -207,16 +207,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5La-lO-Wlv">
-                                <rect key="frame" x="20" y="118" width="180" height="30"/>
-                                <state key="normal" title="Completed">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="historyButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="r4V-TW-WfF"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yFO-JE-I60">
                                 <rect key="frame" x="20" y="8" width="560" height="110"/>
                                 <constraints>
@@ -288,56 +278,78 @@
                                     <outlet property="delegate" destination="2gH-u9-gRa" id="V1m-sZ-Vt1"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SeP-T5-CSw">
-                                <rect key="frame" x="202" y="118" width="200" height="30"/>
-                                <state key="normal" title="Unfinished">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3O-BC-Uoc">
+                                <rect key="frame" x="20" y="118" width="181" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="181" id="o7u-Qe-DzK"/>
+                                </constraints>
+                                <state key="normal" title="Incomplete">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="o7u-Qe-DzK"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="unfinishedButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="DpR-Yc-dVa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtg-G0-imo">
+                                <rect key="frame" x="399" y="118" width="181" height="30"/>
+                                <state key="normal" title="Complete">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="unfinishedButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="LLv-eV-CDV"/>
+                                    <action selector="historyButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="9g0-S2-leO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jDv-YE-b4f">
-                                <rect key="frame" x="396" y="118" width="184" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JuN-yc-3Hn">
+                                <rect key="frame" x="210" y="118" width="181" height="30"/>
                                 <state key="normal" title="Upcoming">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="upcomingButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="YAY-6P-4mf"/>
+                                    <action selector="upcomingButtonPressed:" destination="2gH-u9-gRa" eventType="touchUpInside" id="yIX-yn-ONj"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jDv-YE-b4f" firstAttribute="leading" secondItem="SeP-T5-CSw" secondAttribute="trailing" constant="17" id="0xw-VJ-YYs"/>
-                            <constraint firstItem="SeP-T5-CSw" firstAttribute="leading" secondItem="5La-lO-Wlv" secondAttribute="trailing" constant="18" id="5pr-aG-hY0"/>
+                            <constraint firstItem="JuN-yc-3Hn" firstAttribute="width" secondItem="t3O-BC-Uoc" secondAttribute="width" id="5GG-Ag-1cd"/>
                             <constraint firstItem="yFO-JE-I60" firstAttribute="leading" secondItem="MBx-0j-Xkq" secondAttribute="leadingMargin" id="7Tl-fn-2DZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="jDv-YE-b4f" secondAttribute="trailing" id="AmR-eD-IE0"/>
-                            <constraint firstItem="SeP-T5-CSw" firstAttribute="width" secondItem="5La-lO-Wlv" secondAttribute="width" id="H8p-sy-mDK"/>
+                            <constraint firstItem="JuN-yc-3Hn" firstAttribute="top" secondItem="yFO-JE-I60" secondAttribute="bottom" id="FmX-Ge-BAf"/>
+                            <constraint firstItem="JuN-yc-3Hn" firstAttribute="centerX" secondItem="yFO-JE-I60" secondAttribute="centerX" id="G17-Tw-4ba"/>
+                            <constraint firstItem="jtg-G0-imo" firstAttribute="baseline" secondItem="JuN-yc-3Hn" secondAttribute="baseline" id="JE1-30-1dd"/>
                             <constraint firstItem="8fM-sw-1cL" firstAttribute="bottom" secondItem="Dnx-RB-qUX" secondAttribute="top" id="KqT-Nw-52l"/>
+                            <constraint firstItem="jtg-G0-imo" firstAttribute="leading" secondItem="JuN-yc-3Hn" secondAttribute="trailing" constant="8" symbolic="YES" id="LCi-IP-Ija"/>
                             <constraint firstItem="8fM-sw-1cL" firstAttribute="leading" secondItem="MBx-0j-Xkq" secondAttribute="leading" id="Lx4-SZ-xY7"/>
                             <constraint firstItem="yFO-JE-I60" firstAttribute="top" secondItem="MBx-0j-Xkq" secondAttribute="topMargin" constant="8" id="N96-ZK-rfZ"/>
-                            <constraint firstItem="5La-lO-Wlv" firstAttribute="top" secondItem="yFO-JE-I60" secondAttribute="bottom" id="RYs-MA-ULO"/>
-                            <constraint firstItem="8fM-sw-1cL" firstAttribute="top" secondItem="jDv-YE-b4f" secondAttribute="bottom" id="S52-1Z-E6n"/>
-                            <constraint firstItem="jDv-YE-b4f" firstAttribute="height" secondItem="5La-lO-Wlv" secondAttribute="height" id="eys-ep-Vwt"/>
-                            <constraint firstItem="5La-lO-Wlv" firstAttribute="baseline" secondItem="SeP-T5-CSw" secondAttribute="baseline" id="h6J-1d-bnO"/>
+                            <constraint firstItem="jtg-G0-imo" firstAttribute="width" secondItem="t3O-BC-Uoc" secondAttribute="width" id="Xnk-xC-BH1"/>
+                            <constraint firstItem="t3O-BC-Uoc" firstAttribute="baseline" secondItem="JuN-yc-3Hn" secondAttribute="baseline" id="Ycq-vg-xv8"/>
+                            <constraint firstItem="JuN-yc-3Hn" firstAttribute="leading" secondItem="t3O-BC-Uoc" secondAttribute="trailing" constant="9" id="a3v-zQ-y93"/>
                             <constraint firstAttribute="trailing" secondItem="8fM-sw-1cL" secondAttribute="trailing" id="iJc-2f-9No"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="5La-lO-Wlv" secondAttribute="leading" id="jQT-5V-B80"/>
                             <constraint firstItem="yFO-JE-I60" firstAttribute="centerX" secondItem="8fM-sw-1cL" secondAttribute="centerX" id="lob-Ym-lX3"/>
-                            <constraint firstItem="SeP-T5-CSw" firstAttribute="baseline" secondItem="jDv-YE-b4f" secondAttribute="baseline" id="m7Y-bM-MxT"/>
-                            <constraint firstItem="SeP-T5-CSw" firstAttribute="height" secondItem="5La-lO-Wlv" secondAttribute="height" id="nL8-Gr-6NT"/>
-                            <constraint firstItem="jDv-YE-b4f" firstAttribute="width" secondItem="5La-lO-Wlv" secondAttribute="width" id="zBS-QP-JEH"/>
+                            <constraint firstItem="t3O-BC-Uoc" firstAttribute="leading" secondItem="yFO-JE-I60" secondAttribute="leading" id="rma-M7-kI9"/>
+                            <constraint firstItem="8fM-sw-1cL" firstAttribute="top" secondItem="JuN-yc-3Hn" secondAttribute="bottom" id="t6w-iq-Gye"/>
+                            <constraint firstItem="jtg-G0-imo" firstAttribute="trailing" secondItem="yFO-JE-I60" secondAttribute="trailing" id="tVd-J8-aMX"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="a3v-zQ-y93"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="My Meals" image="myMealsIcon" id="r4a-ck-zBB"/>
                     <connections>
                         <outlet property="eXchangeBanner" destination="yFO-JE-I60" id="eaQ-v5-Zj3"/>
-                        <outlet property="historyButton" destination="5La-lO-Wlv" id="Ncg-f2-UAj"/>
+                        <outlet property="historyButton" destination="jtg-G0-imo" id="nti-ia-8m2"/>
                         <outlet property="tableView" destination="8fM-sw-1cL" id="Gmp-CB-5Fi"/>
-                        <outlet property="unfinishedButton" destination="SeP-T5-CSw" id="ses-uc-1eI"/>
-                        <outlet property="upcomingButton" destination="jDv-YE-b4f" id="aTB-aV-cHX"/>
+                        <outlet property="unfinishedButton" destination="t3O-BC-Uoc" id="QXH-3u-cXt"/>
+                        <outlet property="upcomingButton" destination="JuN-yc-3Hn" id="EkV-8c-NVU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5kw-MD-ujS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -357,23 +369,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O1T-Xo-lvT">
-                                <rect key="frame" x="20" y="118" width="280" height="30"/>
+                                <rect key="frame" x="20" y="118" width="276" height="30"/>
                                 <state key="normal" title="Princeton">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="princetonButtonPressed:" destination="sJK-N3-b39" eventType="touchUpInside" id="EAr-pU-WFq"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPW-V9-T52">
-                                <rect key="frame" x="308" y="118" width="272" height="30"/>
-                                <state key="normal" title="My Club">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="myClubButtonPressed:" destination="sJK-N3-b39" eventType="touchUpInside" id="y3Q-96-Wxg"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sq7-um-P5C">
@@ -452,13 +454,23 @@
                                     <outlet property="delegate" destination="sJK-N3-b39" id="5mW-Ip-Wwp"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPW-V9-T52">
+                                <rect key="frame" x="304" y="118" width="276" height="30"/>
+                                <state key="normal" title="My Club">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="myClubButtonPressed:" destination="sJK-N3-b39" eventType="touchUpInside" id="y3Q-96-Wxg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="p2J-jO-jn6" firstAttribute="centerX" secondItem="sq7-um-P5C" secondAttribute="centerX" id="2Qd-Zr-zpl"/>
                             <constraint firstItem="tPW-V9-T52" firstAttribute="top" secondItem="sq7-um-P5C" secondAttribute="bottom" id="49Y-vD-Qlb"/>
                             <constraint firstItem="tPW-V9-T52" firstAttribute="leading" secondItem="O1T-Xo-lvT" secondAttribute="trailing" constant="8" id="6L0-4K-MAw"/>
-                            <constraint firstItem="tPW-V9-T52" firstAttribute="width" secondItem="O1T-Xo-lvT" secondAttribute="width" constant="-8" id="7Lp-Y0-fcK"/>
+                            <constraint firstItem="tPW-V9-T52" firstAttribute="width" secondItem="O1T-Xo-lvT" secondAttribute="width" id="7Lp-Y0-fcK"/>
                             <constraint firstItem="tPW-V9-T52" firstAttribute="height" secondItem="O1T-Xo-lvT" secondAttribute="height" id="F0B-ct-55C"/>
                             <constraint firstItem="sq7-um-P5C" firstAttribute="top" secondItem="N3I-qf-NrN" secondAttribute="top" constant="8" id="JfU-I3-hbs"/>
                             <constraint firstItem="O1T-Xo-lvT" firstAttribute="top" secondItem="sq7-um-P5C" secondAttribute="bottom" id="Jl9-Xp-p81"/>
