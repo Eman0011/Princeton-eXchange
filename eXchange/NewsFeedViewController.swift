@@ -18,7 +18,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var princetonButton: UIButton!
     @IBOutlet var myClubButton: UIButton!
     
-    var currentUser: Student = Student(name: "Sumer Parikh", netid: "", club: "Cap & Gown", proxNumber: "")
+    var currentUser: Student? = nil
     
     var allMeals: [Meal] = []
     var filteredMeals: [Meal] = []
@@ -45,13 +45,14 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.studentsData = tbc.studentsData
         self.userNetID = tbc.userNetID
+        self.currentUser = tbc.currentUser
         
         let delay = 1 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             
             for meal in self.allMeals {
-                if (meal.host.club == self.currentUser.club) {
+                if (meal.host.club == self.currentUser!.club) {
                     self.filteredMeals.append(meal)
                     mealLiked.append(false)
                 }

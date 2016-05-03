@@ -222,7 +222,7 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             } else {
                 meal2String = exchange.meal2!.date
             }
-            cell.meal1Label.text = "Meal 1: " + exchange.meal1.date
+            cell.meal1Label.text = "Meal 1: \(exchange.meal1.date)"
             cell.meal2Label.text = "Meal 2: " + meal2String
         }
             
@@ -242,12 +242,19 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             historySelected = false
             unfinishedSelected = false
             let exchange = upcomingData[indexPath.row]
-            student = exchange.guest
-            cell.nameLabel.text = "You have scheduled a meal eXchange with " + exchange.guest.name + "."
+            
+            if (self.upcomingData[indexPath.row].host.netid == userNetID) {
+                student = exchange.guest
+            } else {
+                student = exchange.host
+            }
+            
+            cell.nameLabel.text = "\(exchange.meal1.type) with \(student.name)"
             self.currentUser = exchange.host
             self.selectedUser = exchange.guest
-            cell.meal1Label.text = ""
-            cell.meal2Label.text = "For " + exchange.meal1.type + " on " + exchange.meal1.date
+            cell.meal1Label.text = "\(exchange.host.club) on \(exchange.meal1.date)"
+            cell.meal2Label.text = ""
+
             
             
         }

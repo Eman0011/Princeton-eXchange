@@ -226,7 +226,9 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
 
-        cell.studentImage.image = UIImage(named: student.imageName)
+//        cell.studentImage.image = UIImage(named: student.imageName)
+        cell.studentImage.image = UIImage(named: "princetonTiger.png")
+
         return cell
     }
     
