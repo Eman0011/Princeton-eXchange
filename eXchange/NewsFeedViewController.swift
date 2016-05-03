@@ -154,7 +154,6 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.likesLabel.text = String(meal.likes) + " \u{e022}"
            newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>
-                print(dict)
                 numLikes = dict["Likes"]!
                 cell.likesLabel.text = String(numLikes) + " \u{e022}"
                

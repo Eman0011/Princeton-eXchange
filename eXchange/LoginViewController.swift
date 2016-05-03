@@ -36,16 +36,15 @@ class LoginViewController: UIViewController, WKNavigationDelegate {
                 let line = lines[0]
                 let start = line.characters.indexOf(",")?.advancedBy(2)
                 self.netid = line.substringFromIndex(start!)
-                print(self.netid)
                 self.performSegueWithIdentifier("login", sender: self)
             }
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        //let destination = segue.destinationViewController as! eXchangeTabBarController
+        let destination = segue.destinationViewController as! eXchangeTabBarController
         // uncomment this to un-hardcode userNetID
-        // destination.userNetID = self.netid
+        destination.userNetID = self.netid
     }
 
 }

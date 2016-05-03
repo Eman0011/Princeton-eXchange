@@ -48,8 +48,6 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     
     @IBAction func doneButton(sender: AnyObject) {
         if ((selectedClub == selectedUser.club || selectedClub == currentUser.club) && (selectedType == "Lunch" || selectedType == "Dinner")) {
-            print(selectedClub)
-            print(selectedType)
             let pendingString = "pending/" + self.selectedUser.netid
             let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
             var endRoot = -1
@@ -61,15 +59,13 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
 
                 while let child = children.nextObject() as? FDataSnapshot {
                     if (num != Int(child.key)) {
-                        print("num1: " + String(num))
-                        print("child.key: " + String(Int(child.key)))
+                      
                         endRoot = num
                         break
                     }
                     else {
                         num+=1
                     }
-                    print("num: " + String(num))
                 }
                 if (endRoot == -1) {
                     endRoot = Int(count)
