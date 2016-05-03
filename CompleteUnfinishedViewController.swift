@@ -19,8 +19,8 @@ class CompleteUnfinishedViewController: UIViewController {
     
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
-    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
 
     var setType: String = ""
     var setClub: String = ""

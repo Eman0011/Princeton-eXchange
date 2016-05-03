@@ -13,15 +13,15 @@ class Student {
     var netid: String
     var club: String
     var proxNumber: String
-    var image: String?
     var friendScore: Int
+    var image: String
     
-    init(name: String, netid: String, club: String, proxNumber: String) {
+    init(name: String, netid: String, club: String, proxNumber: String, image: String) {
         self.name = name
         self.netid = netid
         self.club = club
         self.proxNumber = proxNumber
-        self.image = ""
         self.friendScore = 0
+        self.image = image
     }
 }

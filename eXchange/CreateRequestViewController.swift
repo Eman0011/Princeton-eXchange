@@ -15,8 +15,8 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var clubPicker: UIPickerView!
     @IBOutlet weak var mealTypePicker: UIPickerView!
     
-    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
     var pickerData: [String] = []
     var mealTypePickerData: [String] = []
 
