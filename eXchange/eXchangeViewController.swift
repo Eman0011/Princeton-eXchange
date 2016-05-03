@@ -22,8 +22,11 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: Global variable initialization
     
     var studentsData: [Student] = []
+    var friendsData: [Student] = []
     var searchData: [Student] = []
     var pendingData: [Meal] = []
+    
+    var friendsDict = [String : String]()
 
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
@@ -53,7 +56,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.studentsData = tbc.studentsData
+            self.friendsDict = tbc.friendsDict
             self.currentUser = tbc.currentUser
+            print(self.friendsDict)
+            //self.getFriendsFromDict()
             self.loadPending()
       
             self.tableView.reloadData()
@@ -92,6 +98,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             }, withCancelBlock:  { error in
         })
     }
+//    
+//    func getFriendsFromDict() {
+//        
+//    }
     
     func getPendingFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
         let netID1 = dictionary["Host"]
