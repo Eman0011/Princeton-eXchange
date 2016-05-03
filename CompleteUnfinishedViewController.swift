@@ -54,15 +54,12 @@ class CompleteUnfinishedViewController: UIViewController {
                 
                 while let child = children.nextObject() as? FDataSnapshot {
                     if (num != Int(child.key)) {
-                        print("num1: " + String(num))
-                        print("child.key: " + String(Int(child.key)))
                         endRoot = num
                         break
                     }
                     else {
                         num+=1
                     }
-                    print("num: " + String(num))
                 }
                 if (endRoot == -1) {
                     endRoot = Int(count)

@@ -48,22 +48,14 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
-        print("Current user: " + userNetID)
-        print("waiting\n")
         
         let delay = 2 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.studentsData = tbc.studentsData
             self.currentUser = tbc.currentUser
-            print("testing " + self.currentUser.netid)
-            print("testing2 " + self.currentUser.club)
-            print(self.studentsData)
             self.loadPending()
-        
-            print("\ndone waiting\n")
-
-            
+      
             self.tableView.reloadData()
         }
         self.self.eXchangeBanner.image = UIImage(named:"exchange_banner")!
@@ -86,7 +78,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
-            print(student.netid)
             self.studentsData.append(student)
           
             }, withCancelBlock:  { error in
@@ -258,7 +249,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             case 7:
                 stringDay = "Sat, "
             default:
-                print("Error fetching days")
                 stringDay = "Day"
             }
             
@@ -289,7 +279,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 stringMonth = "December "
 
             default:
-                print("Error fetching month")
                 stringDay = "Month"
             }
             return stringDay + stringMonth + String(date)
@@ -323,8 +312,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // Define special actions for accept, reschedule, and decline options
     func executeAction(alert: UIAlertAction!, indexPath: NSIndexPath){
         let response = alert.title!
-        print(response)
-        print("indexPath.row: " + String(indexPath.row) + "\n")
+       
         path = indexPath.row
         mealAtPath = pendingData[path]
         
@@ -431,25 +419,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             //prompt the user to create a new exchange
             
             performSegueWithIdentifier("rescheduleRequestSegue", sender: nil)
-            //let tempStudent: Student = pendingData[indexPath.row]
-
-           if rescheduleDoneButtonHit {
-//                //if user hits done, create the new exchange and delete the old one
-//                pendingData.removeAtIndex(indexPath.row)
-//                print("removed")
-            
-          //  let newEntry: Dictionary<String, String> = ["Date": rescheduledate, "Guest": rescheduleselecteduser, "Host": currentUser, "Type": rescheduletype]
-
-            //let pendingString = "pending/" + rescheduleselecteduser
-            //let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/")
-            //updateChildValues is exactly like setValue except it doesn't delete the old data
-            //newPendingRoot.updateChildValues(newEntry)
-            
-
-       }
-            
-
-            
+  
             tableView.reloadData()
         }
         
@@ -465,7 +435,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                     let hostString = (child.value["Host"] as! NSString) as String
                     let dateString = (child.value["Date"] as! NSString) as String
                     let typeString = (child.value["Type"] as! NSString) as String
-                    print("here : " + String(indexPath.row))
                     if(clubString == self.pendingData[indexPath.row].host.club &&
                         guestString == self.pendingData[indexPath.row].guest.netid &&
                         hostString == self.pendingData[indexPath.row].host.netid &&
@@ -514,7 +483,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
         if unwindSegue.identifier == "unwindCancel" {
             rescheduleDoneButtonHit = false
-            print("cancel")
         }
         
         else if unwindSegue.identifier == "unwindDone" {
@@ -530,7 +498,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 otherUser = oldHost
             }
             let pendingString = "pending/" + otherUser.netid + "/"
-            print(otherUser.netid)
             let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
             var endRoot = -1
             
@@ -539,19 +506,15 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 let children = snapshot.children
                 let count = snapshot.childrenCount
                 
-                print(count)
                 
                 while let child = children.nextObject() as? FDataSnapshot {
                     if (num != Int(child.key)) {
-                        print("num1: " + String(num))
-                        print("child.key: " + String(Int(child.key)))
                         endRoot = num
                         break
                     }
                     else {
                         num+=1
                     }
-                    print("num: " + String(num))
                 }
                 if (endRoot == -1) {
                     endRoot = Int(count)
@@ -582,7 +545,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
                 newPendingRoot.updateChildValues(newEntry)
                 self.dismissViewControllerAnimated(true, completion: {});
-                print("RESCHEDULED DATA")
             }
 
             
@@ -622,8 +584,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 self.rescheduleDoneButtonHit = true
             }
             
-            print("removed")
-            print("done")
         }
     }
     

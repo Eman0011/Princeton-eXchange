@@ -36,7 +36,6 @@ class LoginViewController: UIViewController, WKNavigationDelegate {
                 let line = lines[0]
                 let start = line.characters.indexOf(",")?.advancedBy(2)
                 self.netid = line.substringFromIndex(start!)
-                print(self.netid)
                 self.performSegueWithIdentifier("login", sender: self)
             }
         }

@@ -48,14 +48,12 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
   
     @IBAction func doneButton(sender: AnyObject) {
-        print("HERE")
         let pendingString = "pending/" + self.selectedUser.netid
         let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
         var endRoot = -1
         
         pendingRoot.observeEventType(.Value, withBlock: { snapshot in
             let counter = snapshot.childrenCount
-            print(counter)
             endRoot = Int(counter)
         });
         
@@ -91,14 +89,12 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
              pendingRootToRemove.removeValue()*/
             
             self.dismissViewControllerAnimated(true, completion: {});
-            print("RESCHEDULED DATA")
         }
 
     }
    
 
     @IBAction func cancelButton(sender: AnyObject) {
-        print("annuler")
         self.dismissViewControllerAnimated(true, completion: {});
     }
     
