@@ -17,9 +17,7 @@ class eXchange {
     
     init(host: Student, guest: Student, type: String) {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy, hh:mm a"
-        formatter.AMSymbol = "am"
-        formatter.PMSymbol = "pm"
+        formatter.dateFormat = "MM-dd-yyyy"
         
         self.host = host
         self.guest = guest
