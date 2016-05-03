@@ -330,7 +330,7 @@
                             <constraint firstItem="jDv-YE-b4f" firstAttribute="width" secondItem="5La-lO-Wlv" secondAttribute="width" id="x9n-55-T4N"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="MyMeals" image="user" id="r4a-ck-zBB"/>
+                    <tabBarItem key="tabBarItem" title="MyMeals" image="myMealsIcon" id="r4a-ck-zBB"/>
                     <connections>
                         <outlet property="eXchangeBanner" destination="yFO-JE-I60" id="eaQ-v5-Zj3"/>
                         <outlet property="historyButton" destination="5La-lO-Wlv" id="Ncg-f2-UAj"/>
@@ -708,8 +708,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="myMealsIcon" width="295" height="236"/>
         <image name="news_feed" width="32" height="32"/>
         <image name="swap_vert" width="40" height="40"/>
-        <image name="user" width="35" height="35"/>
     </resources>
 </document>
