@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="gz2-iK-ehu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="gz2-iK-ehu">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -237,7 +237,7 @@
             </objects>
             <point key="canvasLocation" x="444" y="1275"/>
         </scene>
-        <!--MyMeals-->
+        <!--My Meals-->
         <scene sceneID="k8E-g6-55P">
             <objects>
                 <viewController id="2gH-u9-gRa" customClass="UserViewController" customModule="eXchange" customModuleProvider="target" sceneMemberID="viewController">
@@ -373,7 +373,7 @@
                             <constraint firstItem="jDv-YE-b4f" firstAttribute="width" secondItem="5La-lO-Wlv" secondAttribute="width" id="x9n-55-T4N"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="MyMeals" image="myMealsIcon" id="r4a-ck-zBB"/>
+                    <tabBarItem key="tabBarItem" title="My Meals" image="myMealsIcon" id="r4a-ck-zBB"/>
                     <connections>
                         <outlet property="eXchangeBanner" destination="yFO-JE-I60" id="eaQ-v5-Zj3"/>
                         <outlet property="historyButton" destination="5La-lO-Wlv" id="Ncg-f2-UAj"/>
@@ -715,13 +715,13 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Club" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G3F-S3-Pw2">
                                 <rect key="frame" x="126" y="425" width="83" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Meal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="npa-Jq-4E2">
                                 <rect key="frame" x="116" y="314" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>

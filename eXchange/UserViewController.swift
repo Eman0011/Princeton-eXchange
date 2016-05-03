@@ -119,8 +119,8 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         let exchange = eXchange(host: student1!, guest: student2!, type: dictionary["Type"]!)
         let mealNum1 = Meal(date: dictionary["Date1"]!, type: dictionary["Type"]!, host: student1!, guest: student2!)
         exchange.meal1 = mealNum1
-        let mealNum2 = Meal(date: dictionary["Date2"]!, type: dictionary["Type"]!, host: student1!, guest: student2!)
-        exchange.meal1 = mealNum2
+        let mealNum2 = Meal(date: dictionary["Date2"]!, type: dictionary["Type"]!, host: student2!, guest: student1!)
+        exchange.meal2 = mealNum2
         
         return exchange
     }
