@@ -21,8 +21,8 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     @IBOutlet var mealTypePicker: UIPickerView!
     
     
-    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
     var pickerData: [String] = []
     
     var mealTypePickerData: [String] = []

@@ -32,7 +32,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var mealAtPath: Meal? = nil
     
     var userNetID: String = ""
-    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
     var rescheduledate: String = ""
     var rescheduletype: String = ""
     var rescheduleclub: String = ""
@@ -74,16 +74,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func loadStudents() {
-        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
-        studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
-            let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
-            self.studentsData.append(student)
-          
-            }, withCancelBlock:  { error in
-        })
-    }
-    
     func loadPending() {
         let pendingPath = "pending/" + userNetID
         let pendingRoot = dataBaseRoot.childByAppendingPath(pendingPath)
@@ -96,20 +86,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             self.tableView.reloadData()
             }, withCancelBlock:  { error in
         })
-    }
-    
-    func getDictionary(student: Student) -> Dictionary<String, String> {
-        var dictionary: Dictionary<String, String> = Dictionary<String, String>()
-        dictionary["netID"] = student.netid
-        dictionary["name"] = student.name
-        dictionary["club"] = student.club
-        dictionary["proxNumber"] = student.proxNumber
-        return dictionary
-    }
-    
-    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
-        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!)
-        return student
     }
     
     func getPendingFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
@@ -218,10 +194,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
-
-//        cell.studentImage.image = UIImage(named: student.imageName)
-        cell.studentImage.image = UIImage(named: "princetonTiger.png")
-
+        
+        if (student.image != "") {
+            let decodedData = NSData(base64EncodedString: student.image, options: NSDataBase64DecodingOptions())
+            cell.studentImage.image = UIImage(data: decodedData!)!
+        } else {
+            cell.studentImage.image = UIImage(named: "princetonTiger.png")
+        }
         return cell
     }
     

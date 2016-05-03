@@ -26,8 +26,8 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var studentsData: [Student] = []
     
 
-    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
-    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
+    var selectedUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
+    var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "", image: "")
     var historySelected = false
     var unfinishedSelected = true
     var upcomingSelected = false
@@ -272,7 +272,7 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             
         }
-        cell.studentImage.image = UIImage(named: student.imageName)
+        cell.studentImage.image = UIImage(named: student.image)
         return cell
     }
     
