@@ -1,10 +1,13 @@
 PODS:
   - Firebase (2.5.1)
+  - RSKImageCropper (1.5.1)
 
 DEPENDENCIES:
   - Firebase (>= 2.5.1)
+  - RSKImageCropper
 
 SPEC CHECKSUMS:
   Firebase: 3565ea88b830f28f2c77ecc524622bc71a20d085
+  RSKImageCropper: edd65fedb3734332818deb139906d6b7f54b8a44
 
 COCOAPODS: 0.39.0

@@ -97,6 +97,25 @@ class CreateRequestViewController: UIViewController, UIPickerViewDataSource, UIP
                 newPendingRoot.updateChildValues(newEntry)
                 self.dismissViewControllerAnimated(true, completion: {});
             }
+            
+            let friendsString = "friends/" + currentUser.netid + "/"
+            let friendsRoot = dataBaseRoot.childByAppendingPath(friendsString + selectedUser.netid)
+            let otherRoot = dataBaseRoot.childByAppendingPath(friendsString)
+            friendsRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                let num = String(snapshot.value)
+                if (num != "<null>") {
+                    let newval = Int(num)!+1
+                    let dict = [self.selectedUser.netid : String(newval)]
+                    otherRoot.updateChildValues(dict)
+                }
+                else {
+                    let dict = [self.selectedUser.netid : String(1)]
+                    otherRoot.updateChildValues(dict)
+                }
+                
+                }, withCancelBlock: { error in
+            })
+
         }
     }
     

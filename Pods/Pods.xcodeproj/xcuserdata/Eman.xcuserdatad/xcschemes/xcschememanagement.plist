@@ -14,15 +14,55 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-eXchangeTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-eXchangeUITests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RSKImageCropper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>95483491D617CAFA0305601D32332CD0</key>
+		<key>7EF7BDC12DB88C626C2C85B70EBF982E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B2D21A257BBF22DAA667ED3D89F3A16C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B7AC9326D819482593FE118E915409D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E8A1112F8B986618D1A773BA7026B0ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E934E2B0CDDDBCFA4CA82DC221CA3395</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FEA5D3707B5F995E44C96467F3A51E02</key>
 		<dict>
 			<key>primary</key>
 			<true/>
