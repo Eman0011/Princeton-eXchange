@@ -24,12 +24,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var studentsData: [Student] = []
     var searchData: [Student] = []
     var pendingData: [Meal] = []
-    
+
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
     var rescheduleDoneButtonHit: Bool = false
     var path = -1
-
+    var mealAtPath: Meal? = nil
+    
     var userNetID: String = ""
     var currentUser: Student = Student(name: "", netid: "", club: "", proxNumber: "")
     var rescheduledate: String = ""
@@ -78,7 +79,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         self.searchController.dimsBackgroundDuringPresentation = false
         self.definesPresentationContext = true
         self.tableView.tableHeaderView = self.searchController.searchBar
-        
         
     }
     
@@ -244,19 +244,19 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             var stringMonth = ""
             switch weekDay {
             case 1:
-                stringDay = "Sunday, "
+                stringDay = "Sun, "
             case 2:
-                stringDay = "Monday, "
+                stringDay = "Mon, "
             case 3:
-                stringDay = "Tuesday, "
+                stringDay = "Tue, "
             case 4:
-                stringDay = "Wednesday, "
+                stringDay = "Wed, "
             case 5:
-                stringDay = "Thursday, "
+                stringDay = "Thu, "
             case 6:
-                stringDay = "Friday, "
+                stringDay = "Fri, "
             case 7:
-                stringDay = "Saturday, "
+                stringDay = "Sat, "
             default:
                 print("Error fetching days")
                 stringDay = "Day"
@@ -326,7 +326,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         print(response)
         print("indexPath.row: " + String(indexPath.row) + "\n")
         path = indexPath.row
-        
+        mealAtPath = pendingData[path]
         
         if (response == "Accept") {
             //send the exchange to the database
@@ -518,9 +518,110 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         else if unwindSegue.identifier == "unwindDone" {
-            rescheduleDoneButtonHit = true
-            pendingData.removeAtIndex(path)
-            tableView.reloadData()
+            
+            // create new pending request in requester's pending
+            let oldHost : Student = (mealAtPath?.host)!
+            let oldGuest: Student = (mealAtPath?.guest)!
+            var otherUser: Student
+            if (oldHost.club == currentUser.club) {
+                otherUser = oldGuest
+            }
+            else {
+                otherUser = oldHost
+            }
+            let pendingString = "pending/" + otherUser.netid + "/"
+            print(otherUser.netid)
+            let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
+            var endRoot = -1
+            
+            pendingRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                var num: Int = 0
+                let children = snapshot.children
+                let count = snapshot.childrenCount
+                
+                print(count)
+                
+                while let child = children.nextObject() as? FDataSnapshot {
+                    if (num != Int(child.key)) {
+                        print("num1: " + String(num))
+                        print("child.key: " + String(Int(child.key)))
+                        endRoot = num
+                        break
+                    }
+                    else {
+                        num+=1
+                    }
+                    print("num: " + String(num))
+                }
+                if (endRoot == -1) {
+                    endRoot = Int(count)
+                }
+            });
+            
+            
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM-dd-yyyy"
+            
+            var host: Student? = nil
+            var guest: Student? = nil
+            
+            if (selectedClub == otherUser.club) {
+                host = otherUser
+                guest = currentUser
+            }
+            else {
+                host = currentUser
+                guest = otherUser
+            }
+            
+            let newEntry: Dictionary<String, String> = ["Club": selectedClub, "Date": selectedDate, "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": selectedType]
+            
+            var delay = 1 * Double(NSEC_PER_SEC)
+            var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
+                newPendingRoot.updateChildValues(newEntry)
+                self.dismissViewControllerAnimated(true, completion: {});
+                print("RESCHEDULED DATA")
+            }
+
+            
+            // this code removes the request from the requested user
+            let pendingString1 = "pending/" + self.currentUser.netid + "/"
+            
+            let pendingRootToUpdate = self.dataBaseRoot.childByAppendingPath(pendingString1)
+            pendingRootToUpdate.observeEventType(.Value, withBlock: { snapshot in
+                let children = snapshot.children
+                while let child = children.nextObject() as? FDataSnapshot {
+                    let clubString = (child.value["Club"] as! NSString) as String
+                    let guestString = (child.value["Guest"] as! NSString) as String
+                    let hostString = (child.value["Host"] as! NSString) as String
+                    let dateString = (child.value["Date"] as! NSString) as String
+                    let typeString = (child.value["Type"] as! NSString) as String
+
+                    if(clubString == self.pendingData[self.path].host.club &&
+                        guestString == self.pendingData[self.path].guest.netid &&
+                        hostString == self.pendingData[self.path].host.netid &&
+                        dateString == self.pendingData[self.path].date &&
+                        typeString == self.pendingData[self.path].type) {
+                            let pendingString2 = pendingString1 + String(child.key)
+                            let pendingRootToRemove = self.dataBaseRoot.childByAppendingPath(pendingString2)
+                            pendingRootToRemove.removeValue()
+                    }
+                }
+            });
+            delay = 1 * Double(NSEC_PER_SEC)
+            time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                self.dismissViewControllerAnimated(true, completion: {});
+                
+                
+                //remove the request from pending requests
+                self.pendingData.removeAtIndex(self.path)
+                self.tableView.reloadData()
+                self.rescheduleDoneButtonHit = true
+            }
+            
             print("removed")
             print("done")
         }

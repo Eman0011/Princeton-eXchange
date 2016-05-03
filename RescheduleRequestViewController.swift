@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+var selectedClub: String = ""
+var selectedType: String = ""
+var selectedDate: String = ""
+
 class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -23,9 +27,6 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
     var mealTypePickerData: [String] = []
     
-    var selectedClub: String = ""
-    var selectedType: String = ""
-
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
     
@@ -127,6 +128,10 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
         else {
             selectedType = mealTypePickerData[row]
         }
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        selectedDate = formatter.stringFromDate(datePicker.date)
     }
     
     

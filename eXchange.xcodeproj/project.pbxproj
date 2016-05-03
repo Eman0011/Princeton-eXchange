@@ -262,7 +262,7 @@
 				TargetAttributes = {
 					032E92A91C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 665L9PZPFS;
+						DevelopmentTeam = SL962NMQ3M;
 					};
 					032E92BD1C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -536,7 +536,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = eXchange/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = danidani;
+				PRODUCT_BUNDLE_IDENTIFIER = jamesalmeida24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -551,7 +551,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = eXchange/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = danidani;
+				PRODUCT_BUNDLE_IDENTIFIER = jamesalmeida24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
