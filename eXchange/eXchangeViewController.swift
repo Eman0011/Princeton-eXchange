@@ -303,7 +303,13 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
         // If the user taps on a cell in the request a meal tab, then segue to the create request view controller
         if requestSelected {
-            performSegueWithIdentifier("createRequestSegue", sender: nil)
+            if (currentUser.netid != self.studentsData[indexPath.row].netid) {
+                if (searchController.active && searchController.searchBar.text != "") {
+                    if (currentUser.netid != self.searchData[indexPath.row].netid) {
+                        performSegueWithIdentifier("createRequestSegue", sender: nil)
+                    }
+                }
+            }
         }
         
         // If the user taps on a cell in the pending meals tab, then popup an alert allowing them to accept, reschedule, decline, or cancel the action
