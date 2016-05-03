@@ -262,7 +262,7 @@
 				TargetAttributes = {
 					032E92A91C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = SL962NMQ3M;
+						DevelopmentTeam = KA5ED35D47;
 					};
 					032E92BD1C9DDC9200A2ABF7 = {
 						CreatedOnToolsVersion = 7.2.1;
