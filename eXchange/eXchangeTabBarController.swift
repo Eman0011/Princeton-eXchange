@@ -13,16 +13,29 @@ class eXchangeTabBarController: UITabBarController {
     var userNetID: String = "sumerp"
     var currentUser: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "")
     var studentsData: [Student] = []
+    var friendsDict  = [String : String]()
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
     override func viewDidLoad() {
         loadStudents()
+        loadFriends()
     }
+    
     func loadStudents() {
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
                 self.studentsData.append(student)
+        })
+    }
+    
+    func loadFriends() {
+        let friendsRoot = dataBaseRoot.childByAppendingPath("friends/" + self.userNetID)
+        friendsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
+            print(snapshot.key)
+            print(snapshot.value)
+            self.friendsDict[snapshot.key] = snapshot.value as? String
+            
         })
     }
     
@@ -32,7 +45,6 @@ class eXchangeTabBarController: UITabBarController {
         if (student.netid == userNetID) {
             currentUser = student
         }
-        
         
         return student
     }
