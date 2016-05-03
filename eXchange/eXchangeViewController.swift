@@ -74,6 +74,11 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.studentsData = []
+        loadStudents()
+    }
+    
     func loadPending() {
         let pendingPath = "pending/" + userNetID
         let pendingRoot = dataBaseRoot.childByAppendingPath(pendingPath)
@@ -105,6 +110,26 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         return Meal(date: dictionary["Date"]!, type: dictionary["Type"]!, host: host!, guest: guest!)
     }
 
+    func loadStudents() {
+        let studentsRoot = dataBaseRoot.childByAppendingPath("students")
+        studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
+            let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
+            self.studentsData.append(student)
+            self.tableView.reloadData()
+        })
+    }
+    
+    func getStudentFromDictionary(dictionary: Dictionary<String, String>) -> Student {
+        let student = Student(name: dictionary["name"]!, netid: dictionary["netID"]!, club: dictionary["club"]!, proxNumber: dictionary["proxNumber"]!, image: dictionary["image"]!)
+        
+        if (student.netid == userNetID) {
+            currentUser = student
+        }
+        
+        
+        return student
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -196,7 +221,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         if (student.image != "") {
-            let decodedData = NSData(base64EncodedString: student.image, options: NSDataBase64DecodingOptions())
+            let decodedData = NSData(base64EncodedString: student.image, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
             cell.studentImage.image = UIImage(data: decodedData!)!
         } else {
             cell.studentImage.image = UIImage(named: "princetonTiger.png")

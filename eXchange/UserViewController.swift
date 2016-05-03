@@ -19,10 +19,15 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad() {
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
-        userImageView.image = UIImage(named: "princetonTiger")
         self.navigationController?.navigationBarHidden = true
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
+        if (tbc.currentUser.image != "") {
+            let decodedData = NSData(base64EncodedString: tbc.currentUser.image, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+            userImageView.image = UIImage(data: decodedData!)!
+        } else {
+            userImageView.image = UIImage(named: "princetonTiger.png")
+        }
     }
     @IBAction func changeUserImage(sender: AnyObject) {
         let photoPicker = UIImagePickerController()
@@ -52,7 +57,7 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imageCropViewController(controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
         userImageView.image = croppedImage
-        let imageData: NSData = UIImagePNGRepresentation(croppedImage)!
+        let imageData: NSData = UIImageJPEGRepresentation(croppedImage, 0.3)!
         let imageString = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         let student = studentsRoot.childByAppendingPath(userNetID)

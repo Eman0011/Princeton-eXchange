@@ -22,5 +22,4 @@ class Student {
         self.proxNumber = proxNumber
         self.image = image
     }
-    g
 }

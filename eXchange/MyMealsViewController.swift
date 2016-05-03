@@ -272,7 +272,12 @@ class MyMealsViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             
         }
-        cell.studentImage.image = UIImage(named: student.image)
+        if (student.image != "") {
+            let decodedData = NSData(base64EncodedString: student.image, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+            cell.studentImage.image = UIImage(data: decodedData!)!
+        } else {
+            cell.studentImage.image = UIImage(named: "princetonTiger.png")
+        }
         return cell
     }
     
