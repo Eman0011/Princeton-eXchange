@@ -82,4 +82,15 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    @IBAction func logOut(sender: AnyObject) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginView = mainStoryboard.instantiateViewControllerWithIdentifier("loginView") as! LoginViewController
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.window?.rootViewController = loginView
+
+//        UIApplication.sharedApplication().keyWindow?.rootViewController = loginView
+
+        
+//        self.performSegueWithIdentifier("login", sender: sender)
+    }
 }
