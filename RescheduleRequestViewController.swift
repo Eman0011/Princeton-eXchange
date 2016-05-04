@@ -50,43 +50,43 @@ class RescheduleRequestViewController: UIViewController, UIPickerViewDataSource,
     
   
     @IBAction func doneButton(sender: AnyObject) {
-        let pendingString = "pending/" + self.selectedUser.netid
-        let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
-        var endRoot = -1
-        
-        pendingRoot.observeEventType(.Value, withBlock: { snapshot in
-            let counter = snapshot.childrenCount
-            endRoot = Int(counter)
-        });
-        
-        
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        
-        var host: Student? = nil
-        var guest: Student? = nil
-        
-        if (selectedClub == selectedUser.club) {
-            host = selectedUser
-            guest = currentUser
-        }
-        else {
-            host = currentUser
-            guest = selectedUser
-        }
-        
-        let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": "Lunch"]
-        
-        let delay = 1 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {
-            let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/")
-            newPendingRoot.updateChildValues(newEntry)
-            
-            let pendingString1 = "pending/" + self.currentUser.netid + "/"
-            
-            self.dismissViewControllerAnimated(true, completion: {});
-        }
+//        let pendingString = "pending/" + self.selectedUser.netid
+//        let pendingRoot = dataBaseRoot.childByAppendingPath(pendingString)
+//        var endRoot = -1
+//        
+//        pendingRoot.observeEventType(.Value, withBlock: { snapshot in
+//            let counter = snapshot.childrenCount
+//            endRoot = Int(counter)
+//        });
+//        
+//        
+//        let formatter = NSDateFormatter()
+//        formatter.dateFormat = "MM-dd-yyyy"
+//        
+//        var host: Student? = nil
+//        var guest: Student? = nil
+//        
+//        if (selectedClub == selectedUser.club) {
+//            host = selectedUser
+//            guest = currentUser
+//        }
+//        else {
+//            host = currentUser
+//            guest = selectedUser
+//        }
+//        
+//        let newEntry: Dictionary<String, String> = ["Date": formatter.stringFromDate(datePicker.date), "Guest": (guest?.netid)!, "Host": (host?.netid)!, "Type": selectedType]
+//        
+//        let delay = 1 * Double(NSEC_PER_SEC)
+//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+//        dispatch_after(time, dispatch_get_main_queue()) {
+//            let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/")
+//            newPendingRoot.updateChildValues(newEntry)
+//            
+//            let pendingString1 = "pending/" + self.currentUser.netid + "/"
+//            
+//            //self.dismissViewControllerAnimated(true, completion: {});
+//        }
 
     }
    

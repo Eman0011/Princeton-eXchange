@@ -457,7 +457,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM-dd-yyyy"
             
-            let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": "Lunch", "Club": pendingData[indexPath.row].host.club]
+            let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": pendingData[indexPath.row].type, "Club": pendingData[indexPath.row].host.club]
             
             let pendingString1 = "pending/" + self.currentUser.netid + "/"
             
@@ -632,7 +632,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             dispatch_after(time, dispatch_get_main_queue()) {
                 let newPendingRoot = self.dataBaseRoot.childByAppendingPath(pendingString + "/" + String(endRoot))
                 newPendingRoot.updateChildValues(newEntry)
-                self.dismissViewControllerAnimated(true, completion: {});
+                //self.dismissViewControllerAnimated(true, completion: {});
             }
 
             
