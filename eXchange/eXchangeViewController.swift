@@ -26,9 +26,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var searchData: [Student] = []
     var pendingData: [Meal] = []
     
-    var friendsDict = [String : String]()
-    var netidToStudentMap = [String : Student] ()
-
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
     var rescheduleDoneButtonHit: Bool = false
@@ -53,19 +50,20 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
         
+        print("Loading...")
+        print("\n")
+        
         let delay = 2 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.studentsData = tbc.studentsData
-            self.friendsDict = tbc.friendsDict
+            self.friendsData = tbc.friendsData
             self.currentUser = tbc.currentUser
-            self.netidToStudentMap = tbc.netidToStudentMap
-            print(self.friendsDict)
-            self.getFriendsFromDict()
             
             self.loadPending()
       
             self.tableView.reloadData()
+            print("Done loading")
         }
         self.self.eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.tableView.rowHeight = 100.0
@@ -100,29 +98,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             self.tableView.reloadData()
             }, withCancelBlock:  { error in
         })
-    }
-    
-    func getFriendsFromDict() {
-        let byValue = {
-            (elem1:(key: String, val: String), elem2:(key: String, val: String))->Bool in
-            if Int(elem1.val) > Int(elem2.val) {
-                return true
-            } else {
-                return false
-            }
-        }
-        
-        let sortedDict = self.friendsDict.sort(byValue)
-        
-        for (key, _) in sortedDict {
-            friendsData.append(netidToStudentMap[key]!)
-            print(netidToStudentMap[key]!.netid)
-            print("break")
-        }
-        
-        for friend in friendsData {
-            print(friend.netid)
-        }
     }
     
     func getPendingFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
@@ -198,7 +173,12 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        if requestSelected {
+            return 2
+        }
+        else {
+            return 1
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -218,11 +198,17 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (section == 1) {
-            return "Those people"
+        if requestSelected {
+            if (section == 1) {
+                return "Princeton"
+            }
+            else {
+                return "Best frandz"
+            }
         }
+        
         else {
-            return "Best frandz"
+            return ""
         }
     }
     
@@ -244,15 +230,34 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             if requestSelected {
                 if (indexPath.section == 1) {
                     student = studentsData[indexPath.row]
-                    
+                    cell.emoji.text = ""
                 }
                 else {
                     student = friendsData[indexPath.row]
+                    if (indexPath.row == 0) {
+                        cell.emoji.text = "\u{e106}"
+                    }
+                    else if (indexPath.row < 4) {
+                        cell.emoji.text = "\u{e056}"
+                    }
+                    else {
+                        cell.emoji.text = "\u{e415}"
+                    }
                     
+                    if (student.friendScore > 50) {
+                        cell.emoji.text = "\u{e34a}\u{e331}\u{1F351}"
+                    }
+                    else if (student.friendScore > 45) {
+                        cell.emoji.text = "\u{1F351}"
+                    }
+                    else if (student.friendScore > 40) {
+                        cell.emoji.text = "\u{e34a}"
+                    }
                 }
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
             } else {
+                cell.emoji.text = ""
                 if (self.pendingData[indexPath.row].host.netid == userNetID) {
                     student = pendingData[indexPath.row].guest
                 }
@@ -350,14 +355,28 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         
         // If the user taps on a cell in the request a meal tab, then segue to the create request view controller
         if requestSelected {
-            if (currentUser.club != self.studentsData[indexPath.row].club) {
-                if (searchController.active && searchController.searchBar.text != "") {
-                    if (currentUser.club != self.searchData[indexPath.row].club) {
+            if (indexPath.section == 1) {
+                if (currentUser.club != self.studentsData[indexPath.row].club) {
+                    if (searchController.active && searchController.searchBar.text != "") {
+                        if (currentUser.club != self.searchData[indexPath.row].club) {
+                            performSegueWithIdentifier("createRequestSegue", sender: nil)
+                        }
+                    }
+                    else {
                         performSegueWithIdentifier("createRequestSegue", sender: nil)
                     }
                 }
-                else {
-                    performSegueWithIdentifier("createRequestSegue", sender: nil)
+            }
+            else {
+                if (currentUser.club != self.friendsData[indexPath.row].club) {
+                    if (searchController.active && searchController.searchBar.text != "") {
+                        if (currentUser.club != self.searchData[indexPath.row].club) {
+                            performSegueWithIdentifier("createRequestSegue", sender: nil)
+                        }
+                    }
+                    else {
+                        performSegueWithIdentifier("createRequestSegue", sender: nil)
+                    }
                 }
             }
         }
@@ -671,7 +690,12 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
                 newViewController.selectedUser = self.searchData[indexPath!.row]
             }
             else {
-                newViewController.selectedUser = self.studentsData[indexPath!.row]
+                if (indexPath?.section == 1) {
+                    newViewController.selectedUser = self.studentsData[indexPath!.row]
+                }
+                else {
+                    newViewController.selectedUser = self.friendsData[indexPath!.row]
+                }
             }
             newViewController.currentUser = self.currentUser
         }
