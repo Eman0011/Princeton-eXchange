@@ -31,7 +31,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ready = true
+        
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.tableView.rowHeight = 100.0
         
@@ -47,23 +47,31 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         self.userNetID = tbc.userNetID
         self.currentUser = tbc.currentUser
         
+        
         let delay = 1 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
-            print(self.allMeals)
-            var i = 0
+            var temp = [Meal]()
+            for (var i = self.allMeals.count-1; i>=0; i=i-1){
+                temp.append(self.allMeals[i])
+            }
+            print("next line is temp")
+            print(temp)
+            
+            self.allMeals = temp
+            ready = true
             for meal in self.allMeals {
                 mealLiked.append(false)
                 if NSUserDefaults.standardUserDefaults().objectForKey("array") != nil
                 {
                     mealLiked = NSUserDefaults.standardUserDefaults().objectForKey("array") as! [Bool]
                 }
-                i = i+1
                 if (meal.host.club == self.currentUser!.club) {
                     self.filteredMeals.append(meal)
                 }
                 
             }
+            self.tableView.reloadData()
         }
         
     }
@@ -75,7 +83,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let meal: Meal = self.getMealFromDictionary(dict)
             self.allMeals.append(meal)
-            self.tableView.reloadData()
+            // self.tableView.reloadData()
         })
         print(allMeals)
         
