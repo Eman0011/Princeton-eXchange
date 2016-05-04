@@ -48,7 +48,11 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         self.currentUser = tbc.currentUser
         
         
+<<<<<<< HEAD
         let delay = 1 * Double(NSEC_PER_SEC)
+=======
+        let delay = 0.1 * Double(NSEC_PER_SEC)
+>>>>>>> b95b5dbb983bb8b080b45707b4cef8814a9f58f3
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             var temp = [Meal]()
@@ -70,8 +74,13 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.filteredMeals.append(meal)
                 }
                 
+<<<<<<< HEAD
             }
             self.tableView.reloadData()
+=======
+           }
+           self.tableView.reloadData()
+>>>>>>> b95b5dbb983bb8b080b45707b4cef8814a9f58f3
         }
         
     }
@@ -83,7 +92,11 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let meal: Meal = self.getMealFromDictionary(dict)
             self.allMeals.append(meal)
+<<<<<<< HEAD
             // self.tableView.reloadData()
+=======
+           // self.tableView.reloadData()
+>>>>>>> b95b5dbb983bb8b080b45707b4cef8814a9f58f3
         })
         print(allMeals)
         
@@ -164,7 +177,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.row2 = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
-            cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            cell.clubImage?.image = UIImage(named: meal.host.club)
             var numLikes = "-1"
             newsfeedRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>

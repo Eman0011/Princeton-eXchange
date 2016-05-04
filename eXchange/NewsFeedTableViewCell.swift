@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+var ready = false
 
 var ready = false
 
@@ -34,8 +35,15 @@ class NewsFeedTableViewCell: UITableViewCell {
         {
             mealLiked = NSUserDefaults.standardUserDefaults().objectForKey("array") as! [Bool]
         }
+<<<<<<< HEAD
         if (ready) {
             if (mealLiked[row]) {
+=======
+        print(mealLiked)
+        print(row)
+        if (ready) {
+        if (mealLiked[row]) {
+>>>>>>> b95b5dbb983bb8b080b45707b4cef8814a9f58f3
             hasTapped = true
             likeButton.setTitle("Unlike", forState: .Normal)
             likeButton.setTitleColor(UIColor.orangeColor(), forState: .Normal)
