@@ -457,7 +457,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM-dd-yyyy"
             
-            let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": "Lunch", "Club": pendingData[indexPath.row].host.club]
+            let newEntry: Dictionary<String, String> = ["Date": pendingData[indexPath.row].date, "Guest": pendingData[indexPath.row].guest.netid, "Host": pendingData[indexPath.row].host.netid, "Type": pendingData[indexPath.row].type, "Club": pendingData[indexPath.row].host.club]
             
             let pendingString1 = "pending/" + self.currentUser.netid + "/"
             

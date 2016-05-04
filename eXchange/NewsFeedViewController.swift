@@ -164,7 +164,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.row2 = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
-            cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            cell.clubImage?.image = UIImage(named: meal.host.club)
             var numLikes = "-1"
             newsfeedRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>
