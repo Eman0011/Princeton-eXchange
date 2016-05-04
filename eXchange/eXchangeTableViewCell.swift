@@ -11,7 +11,7 @@ import UIKit
 
 class eXchangeTableViewCell: UITableViewCell {
 
-    @IBOutlet var emoji: UIImageView!
+    @IBOutlet var emoji: UILabel!
     @IBOutlet var clubLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var studentImage: UIImageView!
