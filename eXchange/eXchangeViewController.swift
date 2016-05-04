@@ -244,9 +244,11 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             if requestSelected {
                 if (indexPath.section == 1) {
                     student = studentsData[indexPath.row]
+                    
                 }
                 else {
                     student = friendsData[indexPath.row]
+                    
                 }
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
