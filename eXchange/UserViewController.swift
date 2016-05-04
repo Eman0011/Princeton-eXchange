@@ -14,14 +14,30 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     @IBOutlet var eXchangeBanner: UIImageView!
     @IBOutlet var userImageView: UIImageView!
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var clubLabel: UILabel!
+    @IBOutlet var netIDlabel: UILabel!
+    
+    @IBOutlet var logOutButton: UIButton!
+    @IBOutlet var changePicButton: UIButton!
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var userNetID: String = ""
     
     override func viewDidLoad() {
         eXchangeBanner.image = UIImage(named:"exchange_banner")!
         self.navigationController?.navigationBarHidden = true
+        
+        
+        changePicButton.layer.cornerRadius = 5
+        changePicButton.backgroundColor = UIColor.blackColor()
+        logOutButton.layer.cornerRadius = 5
+        logOutButton.backgroundColor = UIColor.redColor()
+        
         let tbc = self.tabBarController as! eXchangeTabBarController
         self.userNetID = tbc.userNetID;
+        nameLabel.text = tbc.currentUser.name
+        clubLabel.text = "Club: \(tbc.currentUser.club)"
+        netIDlabel.text = "NetID: \(tbc.userNetID)"
         if (tbc.currentUser.image != "") {
             let decodedData = NSData(base64EncodedString: tbc.currentUser.image, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
             userImageView.image = UIImage(data: decodedData!)!
