@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 var currCellNum = 0
+var princetonButtonSelected = true
 var mealLiked = [Bool]()
 
 class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -19,16 +20,15 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet var myClubButton: UIButton!
     
     var currentUser: Student? = nil
-    
     var allMeals: [Meal] = []
+    
     var filteredMeals: [Meal] = []
-    var princetonButtonSelected = true
     
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
     var studentsData: [Student] = []
     
     var userNetID: String = ""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,22 +47,35 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         self.userNetID = tbc.userNetID
         self.currentUser = tbc.currentUser
         
-        let delay = 1 * Double(NSEC_PER_SEC)
+        
+        let delay = 0.1 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
+            var temp = [Meal]()
+            for (var i = self.allMeals.count-1; i>=0; i=i-1){
+                temp.append(self.allMeals[i])
+            }
+            print("next line is temp")
+            print(temp)
             
+            self.allMeals = temp
+            ready = true
             for meal in self.allMeals {
+                mealLiked.append(false)
+                if NSUserDefaults.standardUserDefaults().objectForKey("array") != nil
+                {
+                    mealLiked = NSUserDefaults.standardUserDefaults().objectForKey("array") as! [Bool]
+                }
                 if (meal.host.club == self.currentUser!.club) {
                     self.filteredMeals.append(meal)
-                    mealLiked.append(false)
                 }
-            }
+                
+           }
+           self.tableView.reloadData()
         }
         
     }
     
-    
-    // basically copy/pasted from Eman's exchange code
     func loadMeals() {
         
         let mealsRoot = dataBaseRoot.childByAppendingPath("newsfeed/")
@@ -70,8 +83,10 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             let dict: Dictionary<String, String> = snapshot.value as! Dictionary<String, String>
             let meal: Meal = self.getMealFromDictionary(dict)
             self.allMeals.append(meal)
-            self.tableView.reloadData()
+           // self.tableView.reloadData()
         })
+        print(allMeals)
+        
     }
     
     
@@ -113,7 +128,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
         princetonButton.backgroundColor = UIColor.blackColor()
         tableView.reloadData()
     }
-
+    
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -126,7 +141,7 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if princetonButtonSelected {
-            return allMeals.count
+            return self.allMeals.count
         }
         else {
             return filteredMeals.count
@@ -146,46 +161,58 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(currCellNum))
             let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
             cell.row = indexPath.row
+            cell.row2 = indexPath.row
             cell.newsLabel?.numberOfLines = 0
             meal = allMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
             var numLikes = "-1"
-
-            cell.likesLabel.text = String(meal.likes) + " \u{e022}"
-           newsfeedRoot.observeEventType(.Value, withBlock: { snapshot in
+            newsfeedRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 var dict = snapshot.value as! Dictionary<String, String>
                 numLikes = dict["Likes"]!
+                print(numLikes)
                 cell.likesLabel.text = String(numLikes) + " \u{e022}"
-               
-           })
-            let delay = 2 * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue()) {
-                cell.likesLabel.text = String(numLikes) + " \u{e022}"
-            }
-                       let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
+            })
+            
+            let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
             let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
             let boldMeal = NSMutableAttributedString(string:meal.type, attributes:attrs3)
             
-
+            
             let newsText: NSMutableAttributedString = boldName1
             
             newsText.appendAttributedString(NSMutableAttributedString(string: " and "))
             newsText.appendAttributedString(boldName2)
             newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
             newsText.appendAttributedString(boldMeal)
-
+            
             cell.newsLabel!.attributedText = newsText
             return cell
         }
         else {
+            
             currCellNum = indexPath.row
-
-        let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
-            cell.row = indexPath.row
+            let cell = tableView.dequeueReusableCellWithIdentifier("newsfeedCell", forIndexPath: indexPath) as! NewsFeedTableViewCell
+            cell.row2 = indexPath.row
+            for ind in 0...allMeals.count-1{
+                let meal1 = allMeals[ind]
+                let meal2 = filteredMeals[currCellNum]
+                if (meal1.date == meal2.date && meal1.type == meal2.type && meal1.guest.netid == meal2.guest.netid && meal1.host.netid == meal2.host.netid) {
+                    cell.row = ind
+                    break
+                }
+                
+            }
             cell.newsLabel?.numberOfLines = 0
             meal = filteredMeals[indexPath.row]
             cell.clubImage?.image = UIImage(named: meal.host.club + ".jpg")
+            
+            var numLikes = "-1"
+            let newsfeedRoot = dataBaseRoot.childByAppendingPath("newsfeed/" + String(cell.row))
+            newsfeedRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                var dict = snapshot.value as! Dictionary<String, String>
+                numLikes = dict["Likes"]!
+                cell.likesLabel.text = String(numLikes) + " \u{e022}"
+            })
             
             let boldName1 = NSMutableAttributedString(string:meal.host.name, attributes:attrs1)
             let boldName2 = NSMutableAttributedString(string:meal.guest.name, attributes:attrs2)
@@ -197,12 +224,12 @@ class NewsFeedViewController: UIViewController, UITableViewDataSource, UITableVi
             newsText.appendAttributedString(boldName2)
             newsText.appendAttributedString(NSMutableAttributedString(string: " eXchanged for "))
             newsText.appendAttributedString(boldMeal)
-           
+            
             cell.newsLabel!.attributedText = newsText
             
             return cell
         }
     }
-
+    
     
 }
