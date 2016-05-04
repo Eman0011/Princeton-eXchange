@@ -17,6 +17,7 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var clubLabel: UILabel!
     @IBOutlet var netIDlabel: UILabel!
+    @IBOutlet var clubImageView: UIImageView!
     
     @IBOutlet var logOutButton: UIButton!
     @IBOutlet var changePicButton: UIButton!
@@ -38,6 +39,7 @@ class UserViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         nameLabel.text = tbc.currentUser.name
         clubLabel.text = "Club: \(tbc.currentUser.club)"
         netIDlabel.text = "NetID: \(tbc.userNetID)"
+        clubImageView.image = UIImage(named: tbc.currentUser.club + ".png")
         if (tbc.currentUser.image != "") {
             let decodedData = NSData(base64EncodedString: tbc.currentUser.image, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
             userImageView.image = UIImage(data: decodedData!)!
