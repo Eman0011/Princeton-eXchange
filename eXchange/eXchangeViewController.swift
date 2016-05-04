@@ -27,6 +27,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     var pendingData: [Meal] = []
     
     var friendsDict = [String : String]()
+    var netidToStudentMap = [String : Student] ()
 
     let searchController = UISearchController(searchResultsController: nil)
     var requestSelected = true
@@ -58,8 +59,10 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             self.studentsData = tbc.studentsData
             self.friendsDict = tbc.friendsDict
             self.currentUser = tbc.currentUser
+            self.netidToStudentMap = tbc.netidToStudentMap
             print(self.friendsDict)
-            //self.getFriendsFromDict()
+            self.getFriendsFromDict()
+            
             self.loadPending()
       
             self.tableView.reloadData()
@@ -98,10 +101,29 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             }, withCancelBlock:  { error in
         })
     }
-//    
-//    func getFriendsFromDict() {
-//        
-//    }
+    
+    func getFriendsFromDict() {
+        let byValue = {
+            (elem1:(key: String, val: String), elem2:(key: String, val: String))->Bool in
+            if Int(elem1.val) > Int(elem2.val) {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        let sortedDict = self.friendsDict.sort(byValue)
+        
+        for (key, _) in sortedDict {
+            friendsData.append(netidToStudentMap[key]!)
+            print(netidToStudentMap[key]!.netid)
+            print("break")
+        }
+        
+        for friend in friendsData {
+            print(friend.netid)
+        }
+    }
     
     func getPendingFromDictionary(dictionary: Dictionary<String, String>) -> Meal {
         let netID1 = dictionary["Host"]
@@ -135,8 +157,6 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         if (student.netid == userNetID) {
             currentUser = student
         }
-        
-        
         return student
     }
     
@@ -178,7 +198,7 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -186,12 +206,25 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
             return searchData.count
         }
         if requestSelected {
-            return studentsData.count
+            if (section == 1) {
+                return studentsData.count
+            }
+            else {
+                return friendsData.count
+            }
         } else {
             return pendingData.count
         }
     }
-
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (section == 1) {
+            return "Those people"
+        }
+        else {
+            return "Best frandz"
+        }
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("exchangeCell", forIndexPath: indexPath) as! eXchangeTableViewCell
@@ -209,7 +242,12 @@ class eXchangeViewController: UIViewController, UITableViewDelegate, UITableView
         // If the user is not searching, just populate cells with all appropriate groups of users
         else {
             if requestSelected {
-                student = studentsData[indexPath.row]
+                if (indexPath.section == 1) {
+                    student = studentsData[indexPath.row]
+                }
+                else {
+                    student = friendsData[indexPath.row]
+                }
                 cell.nameLabel.text = student.name
                 cell.clubLabel.text = student.club
             } else {
