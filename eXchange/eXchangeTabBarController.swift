@@ -10,10 +10,11 @@ import UIKit
 import Firebase
 
 class eXchangeTabBarController: UITabBarController {
-    var userNetID: String = "emanuelc"
+    var userNetID: String = "jamespa"
     var currentUser: Student = Student(name: "Emanuel Castaneda", netid: "emanuelc", club: "Cannon", proxNumber: "", image: "")
     var studentsData: [Student] = []
-    var friendsDict  = [String : String]()
+    var netidToStudentMap = [String : Student] ()
+    var friendsDict = [String : String]()
     var dataBaseRoot = Firebase(url:"https://princeton-exchange.firebaseIO.com")
 
     override func viewDidLoad() {
@@ -25,7 +26,8 @@ class eXchangeTabBarController: UITabBarController {
         let studentsRoot = dataBaseRoot.childByAppendingPath("students")
         studentsRoot.observeEventType(.ChildAdded, withBlock:  { snapshot in
             let student = self.getStudentFromDictionary(snapshot.value as! Dictionary<String, String>)
-                self.studentsData.append(student)
+            self.studentsData.append(student)
+            self.netidToStudentMap[student.netid] = student
         })
     }
     
